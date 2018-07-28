@@ -13,7 +13,7 @@ $(document).ready(function () {
       campo1: ko.observable(""),
       campo2: ko.observable("")
     };
-    context.formviewmodel = form;
+    context.formViewModel = form;
     ko.applyBindings(form, search);
     $("#button1").click(function (e) {
         startsearch1(context);

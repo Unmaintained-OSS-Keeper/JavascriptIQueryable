@@ -9,10 +9,10 @@
 @section header{
     <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/GridController4/zPage08.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/GridController4/zPage09.js")" type="text/javascript"></script>
 }
 
-<h2>Index - Page08</h2>
+<h2>Index - Page09</h2>
 
 <p>
 <pre>
@@ -52,7 +52,9 @@ Linq is not enabled.
   </div>
 </div>
 
-<div id="gpane2" style="display:none">
+<div id="gpane2">
+  <a href="#" data-jcreateaction>Create new customer</a>
+  <br /><br />
   <table id="jtable">
   <tr>
     <td colspan="4"> &nbsp; </td>
@@ -72,7 +74,15 @@ Linq is not enabled.
 </div>
 
 <div id="gdialog2" style="display:none;height:100px">
-  <div id="jlist2" data-bind="template:'jmodifyTemplate'"></div> 
+  <div id="jlist2" data-bind="template:'jcreateTemplate'"></div> 
+  <div>
+    <a href="#" data-jinsertaction>Insert</a>&nbsp;
+    <a href="#" data-jcancelaction>Cancel</a>&nbsp;
+  </div>
+</div>
+
+<div id="gdialog3" style="display:none;height:100px">
+  <div id="jlist3" data-bind="template:'jmodifyTemplate'"></div> 
   <div>
     <a href="#" data-jupdateaction>Update</a>&nbsp;
     <a href="#" data-jcancelaction>Cancel</a>&nbsp;
@@ -103,9 +113,37 @@ Linq is not enabled.
   <b>Total: </b><span data-bind="text: Total" /><br>
 </script>
 
+<script id="jcreateTemplate" type="text/x-jquery-tmpl">
+@using (Html.BeginForm()) {
+<div>
+  <p>Create</p> 
+  <p>
+    <b>CustomerID: </b>@Html.KoTextBoxStrFor(model => model.CustomerID)<br>
+    @Html.ValidationMessageFor(model => model.CustomerID)
+  </p>
+  <p>
+    <b>CompanyName: </b>@Html.KoTextBoxStrFor(model => model.CompanyName)<br>
+    @Html.ValidationMessageFor(model => model.CompanyName)
+  </p> 
+  <p>
+    <b>City: </b>@Html.KoTextBoxStrFor(model => model.City)
+    @Html.ValidationMessageFor(model => model.City)
+  </p>
+  <p>
+    <b>Value1: </b>@Html.KoTextBoxIntFor(model => model.Value1)
+  </p>
+  <p>
+    <b>Value2: </b>@Html.KoTextBoxIntFor(model => model.Value2)
+  </p>    
+  <h3><b>Total: </b><span data-bind="text: Total"></span></h3>
+</div>
+}
+</script>
+
 <script id="jmodifyTemplate" type="text/x-jquery-tmpl">
 @using (Html.BeginForm()) {
 <div> 
+  <p>Modify</p>
   <p>
     <b>CustomerID: </b>@Html.KoTextBoxStrFor(model => model.CustomerID)<br>
     @Html.ValidationMessageFor(model => model.CustomerID)

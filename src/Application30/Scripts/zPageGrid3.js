@@ -3,18 +3,18 @@
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-preview-7.0 
+// javascript-to-IQueryable-preview-8.0  
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
 (function ($, undefined) {
-    $.fn.mobileTemplate = function (options) {
+    $.fn.mobileTemplate = function (options) {  
 
         var that = this;
 
         var backflag = false;
 
-        var requestcurr = {};
+        var requestcurr = {}; 
 
         var arraysource = [];
 

@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-7.0  
+// javascript-to-IQueryable-preview-8.0   
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
 //
 
@@ -28,15 +28,20 @@ function PagingBase() {
     this.detailPanel = "";
     this.detailContainer = "";
     this.dlgdetail = { modal: true, width: 600 };
+    this.createPanel = "";
+    this.createContainer = "";
+    this.dlgcreate = { modal: true, width: 600 };
     this.modifyPanel = "";
     this.modifyContainer = "";
     this.dlgmodify = { modal: true, width: 600 };
     this.knockoutValidation = false;   
     this.customCallBack = undefined;
     this.deleteCallBack = undefined;
+    this.insertCallBack = undefined;
     this.updateCallBack = undefined;
     this.cancelCallBack = undefined;
-    this.formviewmodel = undefined;
+    this.formViewModel = undefined;
+    this.createViewModel = undefined;
     this.enableBackup = true;
     this.source = {};
 
@@ -163,16 +168,24 @@ function PagingBase() {
 
     // ---------------------------------------------------------------
 
-    this.closeDialogFeilure = function () {
-        this._closeModifyDialog("feilure");
+    this.closeCreateDialogFeilure = function () {
+        this._closeDialog("feilure", 1);
     }
 
-    this.closeDialogSuccess = function () {
-        this._closeModifyDialog("success");
+    this.closeCreateDialogSuccess = function () {
+        this._closeDialog("success", 1);
+    }
+
+    this.closeModifyDialogFeilure = function () {
+        this._closeDialog("feilure", 2);
+    }
+
+    this.closeModifyDialogSuccess = function () {
+        this._closeDialog("success", 2);
     }
 
     this.koWhereObjectAnd = function () {
-        if (!this.formviewmodel)
+        if (!this.formViewModel)
             return;
         var vm = this.koWhereViewModel();
         this.beginWhere("and");
@@ -187,7 +200,7 @@ function PagingBase() {
     }
 
     this.koWhereObjectOr = function () {
-        if (!this.formviewmodel)
+        if (!this.formViewModel)
             return;
         var vm = this.koWhereViewModel();
         this.beginWhere("or");
@@ -202,7 +215,7 @@ function PagingBase() {
     }
 
     this.koWhereString = function () {
-        if (!this.formviewmodel)
+        if (!this.formViewModel)
             return;
         var vm = this.koWhereViewModel();
         var clause = "";
@@ -219,9 +232,9 @@ function PagingBase() {
     }
 
     this.koWhereViewModel = function () {
-        if (!this.formviewmodel)
+        if (!this.formViewModel)
             return;
-        var vm = ko.toJS(this.formviewmodel);
+        var vm = ko.toJS(this.formViewModel);
         return vm;
     }
 
@@ -244,7 +257,6 @@ function PagingBase() {
 
     this.clearSearch = function () {
         this._bkdata = undefined;
-        this._colorder = undefined;
         this._owhere = {};
         this._swhere = "";
         this._typeview = "client";
@@ -268,6 +280,8 @@ function PagingBase() {
         this._templatename = this.template;
         this._callBackTemplate = this._renderTemplateClient;
         this._message = this._createMessage();
+        this._resetColumnOrderStyle();
+        this._colorder = undefined;
     }      
 
     this.hasWaitingRequest = function () {
@@ -284,12 +298,7 @@ function PagingBase() {
         this._records = -1;
         this._page = 1;
         this._pageIndex(1, true);
-    }
-
-    this.refresh = function () {
-        var action = this._lastaction;
-        this._pageIndex(this._page, false, action);
-    }
+    }   
 
     this.goPage = function (page) {
         if (this._enablepaging === false) {
@@ -364,7 +373,7 @@ function PagingBase() {
             alert("Paging is not enabled");
             return;
         }
-        if (this._waitaction === true || this._waitschedule === true) {
+        if (this._waitaction === true || this._waitschedule === true) { 
             alert("WaitingRequest"); 
             return;
         }
@@ -375,6 +384,13 @@ function PagingBase() {
         if (enableprefetch === false)
             prefetch = false;
         this._pageIndex(npage, prefetch, "pageL");
+    }
+
+    this.refresh = function () {
+        if (this._enablepaging === false)
+            this._page = 1;
+        var surl = this._createSearch(this._page);
+        this._sendAjaxRequest(surl, false);
     }
 
     this._pageIndex = function (page, enableprefetch, actionlast) {
@@ -392,7 +408,7 @@ function PagingBase() {
                 this.source = entry;
                 if (this._koenabled == false)
                     this._renderTemplateClient(entry);
-                else 
+                else
                     this._renderTemplateKonock(entry);
                 this._raiseDatabound(this, entry);
                 if (enableprefetch === true)
@@ -402,6 +418,7 @@ function PagingBase() {
         }
         var surl = this._createSearch(page);
         this._sendAjaxRequest(surl, enableprefetch);
+        return surl;
     }
 
     this._createSearch = function (currpage) {
@@ -539,7 +556,9 @@ function PagingBase() {
     }
 
     this._dialogConfigure = function () {
-        var dlgcurritem1 = undefined; var dlgcurritem2 = undefined;
+        var dlgcurritem1 = undefined;
+        var dlgcurritem2 = undefined; 
+        var dlgcurritem3 = undefined;
         if (this.mainpane) {
             var $conf1 = $("#" + this.mainpane);
             $conf1.delegate("*[data-jdetailaction]", "click", function (event) {
@@ -547,9 +566,14 @@ function PagingBase() {
                 dlgcurritem1 = this;
                 that._detailAction(this);
             });
-            $conf1.delegate("*[data-jmodifyaction]", "click", function (event) {
+            $conf1.delegate("*[data-jcreateaction]", "click", function (event) {
                 event.stopPropagation();
                 dlgcurritem2 = this;
+                that._createAction(this);
+            });
+            $conf1.delegate("*[data-jmodifyaction]", "click", function (event) {
+                event.stopPropagation();
+                dlgcurritem3 = this;
                 that._modifyAction(this);
             });
             $conf1.delegate("*[data-jcustomaction]", "click", function (event) {
@@ -561,20 +585,31 @@ function PagingBase() {
                 that._deleteAction(this);
             });
         }
+        if (this.createPanel) {
+            var $conf2 = $("#" + this.createPanel);
+            $conf2.delegate("*[data-jinsertaction]", "click", function (event) {
+                event.stopPropagation();
+                that._insertAction(this);
+            });
+            $conf2.delegate("*[data-jcancelaction]", "click", function (event) {
+                event.stopPropagation();
+                $("#" + that.createPanel).dialog("close");
+            });
+        }
         if (this.modifyPanel) {
-            var $conf2 = $("#" + this.modifyPanel);
-            $conf2.delegate("*[data-jupdateaction]", "click", function (event) {
+            var $conf3 = $("#" + this.modifyPanel);
+            $conf3.delegate("*[data-jupdateaction]", "click", function (event) {
                 event.stopPropagation();
                 that._updateAction(this);
             });
-            $conf2.delegate("*[data-jcancelaction]", "click", function (event) {
+            $conf3.delegate("*[data-jcancelaction]", "click", function (event) {
                 event.stopPropagation();
                 $("#" + that.modifyPanel).dialog("close");
             });
         }
         if (this.detailPanel) {
-            var $conf3 = $("#" + this.detailPanel);
-            $conf3.live("dialogopen", function () {
+            var $conf4 = $("#" + this.detailPanel);
+            $conf4.live("dialogopen", function () {
                 if (!dlgcurritem1)
                     return;
                 var parent = $(dlgcurritem1).parents(".pagingbase-ui-selected-ou");
@@ -583,7 +618,7 @@ function PagingBase() {
                     parent.eq(0).addClass("pagingbase-ui-selected-in");
                 }
             });
-            $conf3.live("dialogclose", function () {
+            $conf4.live("dialogclose", function () {
                 if (!dlgcurritem1)
                     return;
                 var parent = $(dlgcurritem1).parents(".pagingbase-ui-selected-in");
@@ -593,9 +628,9 @@ function PagingBase() {
                 }
             });
         }
-        if (this.modifyPanel) {
-            var $conf4 = $("#" + this.modifyPanel);
-            $conf4.live("dialogopen", function () {
+        if (this.createPanel) {
+            var $conf5 = $("#" + this.createPanel);
+            $conf5.live("dialogopen", function () {
                 if (!dlgcurritem2)
                     return;
                 var parent = $(dlgcurritem2).parents(".pagingbase-ui-selected-ou");
@@ -604,7 +639,7 @@ function PagingBase() {
                     parent.eq(0).addClass("pagingbase-ui-selected-in");
                 }
             });
-            $conf4.live("dialogclose", function () {
+            $conf5.live("dialogclose", function () {
                 if (!dlgcurritem2)
                     return;
                 var parent = $(dlgcurritem2).parents(".pagingbase-ui-selected-in");
@@ -613,7 +648,30 @@ function PagingBase() {
                     parent.eq(0).addClass("pagingbase-ui-selected-ou");
                 }
                 if (that._currentaction == "")
-                    that._cancelAction(dlgcurritem2);
+                    that._cancelAction(dlgcurritem2, 1);
+            });
+        }
+        if (this.modifyPanel) {
+            var $conf6 = $("#" + this.modifyPanel);
+            $conf6.live("dialogopen", function () {
+                if (!dlgcurritem3)
+                    return;
+                var parent = $(dlgcurritem3).parents(".pagingbase-ui-selected-ou");
+                if (parent.length > 0) {
+                    parent.eq(0).removeClass("pagingbase-ui-selected-ou");
+                    parent.eq(0).addClass("pagingbase-ui-selected-in");
+                }
+            });
+            $conf6.live("dialogclose", function () {
+                if (!dlgcurritem3)
+                    return;
+                var parent = $(dlgcurritem3).parents(".pagingbase-ui-selected-in");
+                if (parent.length > 0) {
+                    parent.eq(0).removeClass("pagingbase-ui-selected-in");
+                    parent.eq(0).addClass("pagingbase-ui-selected-ou");
+                }
+                if (that._currentaction == "")
+                    that._cancelAction(dlgcurritem3, 2);
             });
         }
     }
@@ -658,12 +716,27 @@ function PagingBase() {
         if (this._koenabled == true) {
             dataitem = ko.dataFor(sender);
             var ele = $("#" + this.detailContainer).get(0);
-            ko.cleanNode(elem);
+            ko.cleanNode(ele);
             $("#" + this.detailContainer).empty();
             ko.applyBindings(dataitem, ele);
             $("#" + this.detailPanel).dialog(that.dlgdetail);
-            this._raisePopupDetail(sender);
+            this._raisePopupDetail(sender); 
         }
+    }
+
+    this._createAction = function (sender) {
+        var elem = $(sender);
+        var field = elem.data();
+        this._currentaction = "";
+        this._koenabled = true;
+        var dataitem = this.createViewModel(sender);
+        var ele = $("#" + this.createContainer).get(0);
+        ko.cleanNode(ele);
+        $("#" + this.createContainer).empty();
+        ko.applyBindings(dataitem, ele);
+        $("#" + this.createPanel).dialog(that.dlgcreate);
+        this._raisePopupCreate(ele);
+        this._parseUnobtrusive(ele);
     }
 
     this._modifyAction = function (sender) {
@@ -676,7 +749,7 @@ function PagingBase() {
         this._currentaction = "";
         var dataitem = ko.dataFor(sender);     
         var ele = $("#" + this.modifyContainer).get(0);
-        ko.cleanNode(elem);
+        ko.cleanNode(ele);
         $("#" + this.modifyContainer).empty();
         ko.applyBindings(dataitem, ele);
         $("#" + this.modifyPanel).dialog(that.dlgmodify);
@@ -691,7 +764,7 @@ function PagingBase() {
             return;
         }
         this._bkdata = undefined;
-        var param = this._createActionParam(sender);
+        var param = this._getActionParam(sender);
         this.customCallBack(param);
     } 
 
@@ -701,8 +774,19 @@ function PagingBase() {
             return;
         }
         this._bkdata = undefined;
-        var param = this._createActionParam(sender);
+        var param = this._getActionParam(sender);
         this.deleteCallBack(param);
+    }
+
+    this._insertAction = function (sender) {
+        if (this._koenabled == false) {
+            alert("insertAction allowed if knockout")
+            return;
+        }
+        var elem = this._getCreateContainer();
+        var param = this._getActionParam(elem);
+        if (this._jqueryValidateCreateForm() == true)
+            this.insertCallBack(param);
     }
 
     this._updateAction = function (sender) {
@@ -711,24 +795,39 @@ function PagingBase() {
             return;
         }
         var elem = this._getModifyContainer();
-        var param = this._createActionParam(elem);
-        if (this._jqueryValidateForm() == true)
+        var param = this._getActionParam(elem);
+        if (this._jqueryValidateModifyForm() == true)
             this.updateCallBack(param);
     }
 
-    this._cancelAction = function (sender) {
+    this._cancelAction = function (sender, type) {
         if (this._koenabled == false) {
             alert("cancelAction allowed if knockout")
             return;
         }
-        var elem = this._getModifyContainer();
-        var param = this._createActionParam(elem);
-        this._restoreDataItem(param);
+        var elem;
+        if (type == 1)
+            elem = this._getCreateContainer();
+        if (type == 2)
+            elem = this._getModifyContainer();
+        var param = this._getActionParam(elem);
+        this._restoreDataItem(param); 
         this.cancelCallBack(param);
         this._bkdata = undefined;
     }
 
-    this._jqueryValidateForm = function () {
+    this._jqueryValidateCreateForm = function () {
+        if (this._koenabled == false) {
+            return true;
+        }
+        if (this.knockoutValidation == false) {
+            return true;
+        }
+        var form = "#" + this.createPanel + " form";
+        return $(form).valid();
+    }
+
+    this._jqueryValidateModifyForm = function () {
         if (    this._koenabled == false    ) {
             return true;
         }
@@ -743,17 +842,20 @@ function PagingBase() {
         jQuery.validator.unobtrusive.parse($("form", sender));
     }
 
-    this._closeModifyDialog = function (status) {
-        if (status == "feilure" && this.enableBackup == true ) {
+    this._closeDialog = function (status, type) {
+        if (type == 2 && status == "feilure" && this.enableBackup == true ) {
             if (this._koenabled == true && this._bkdata != undefined) {
                 var elem = this._getModifyContainer();
-                var param = this._createActionParam(elem); 
+                var param = this._getActionParam(elem); 
                 this._restoreDataItem(param);
             }
         }           
         this._bkdata = undefined;
         this._currentaction = "closeDialog";
-        $("#" + that.modifyPanel).dialog("close");
+        if (type == 1)
+            $("#" + that.createPanel).dialog("close");
+        if (type == 2)
+            $("#" + that.modifyPanel).dialog("close");
         this._currentaction = "";
     }
 
@@ -800,7 +902,7 @@ function PagingBase() {
         return this._bkdata;
     } 
 
-    this._createActionParam = function (elem) {
+    this._getActionParam = function (elem) {
         var dataitemKo =  ko.dataFor(elem);
         var dataitemJs = ko.toJS(dataitemKo);
         var param = {
@@ -826,7 +928,12 @@ function PagingBase() {
     this._getDetailContainer = function () {
         var elem = $("#" + this.detailContainer).get(0);
         return elem;
-    }     
+    }
+
+    this._getCreateContainer = function () {
+        var elem = $("#" + this.createContainer).get(0);
+        return elem;
+    }   
 
     this._getModifyContainer = function () {
         var elem = $("#" + this.modifyContainer).get(0);
@@ -838,6 +945,12 @@ function PagingBase() {
         event.elemitem = elem;
         $(this).trigger(event);
     }
+
+    this._raisePopupCreate = function (elem) {
+        var event = jQuery.Event("popupcreate");
+        event.elemitem = elem;
+        $(this).trigger(event);
+    }  
 
     this._raisePopupModify = function (elem) {
         var event = jQuery.Event("popupmodify");
@@ -853,6 +966,14 @@ function PagingBase() {
             pane.css("opacity", 0.3);
         if (event.isloading === false)
             pane.css("opacity", 1.0);
+    }
+
+    this._resetColumnOrderStyle = function () {
+        var class1 = "pagingbase-ui-ordercol-selected";
+        if (this._colorder) {
+            var $colorder = $(this._colorder);
+            $colorder.removeClass(class1);
+        }        
     }
 
     this._setColumnOrderStyle = function (col) {
@@ -1020,6 +1141,21 @@ function PagingBase() {
     }
 
     // ---------------------------------------------------------------
+
+    this.showGridKo = function (value1, value2, value3) {     
+        this._callBackTemplate = this._renderTemplateKonock;
+        if (   typeof value2 == 'function'   )
+            this._callBackMapKnock = value2;
+        if (   typeof value3 == 'function'   )
+            this._callBackTemplate = value3;
+        this._typeview = "client";
+        this._koenabled = true;
+        var arrsource = this._tryObservable(value1);       
+        that.source = arrsource;
+        that._callBackTemplate(arrsource);
+        that._raiseDatabound(this, arrsource);
+        return arrsource;
+    }
 
     this.from = function (resturl, group) {
         this.clearSearch();

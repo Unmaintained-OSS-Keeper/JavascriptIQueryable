@@ -13,11 +13,17 @@ $(document).ready(function () {
                 country: ko.observable("")
             };
         },
+        tcreateViewModel: function () {
+            return new dataItem2();
+        },
         tcustomCallBack: function (obj) {
             customfrm(obj);
         },
         tdeleteCallBack: function (obj) {
             deletefrm(obj);
+        },
+        tinsertCallBack: function (obj) {
+            insertfrm(obj);
         },
         tupdateCallBack: function (obj) {
             updatefrm(obj);
@@ -28,18 +34,29 @@ $(document).ready(function () {
         tcacheEnabled: false,
         tdetailPanel: "gdialog1",
         tdetailContainer: "jlist1",
-        tmodifyPanel: "gdialog2",
-        tmodifyContainer: "jlist2",
+        tcreatePanel: "gdialog2",
+        tcreateContainer: "jlist2",
+        tmodifyPanel: "gdialog3",
+        tmodifyContainer: "jlist3",
         tknockoutValidation: true,
         tlinqEnabled: true,
         ttype: "2"
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
       bind('popupdetail', function (event) {
-          //alert("databound");
+          var dataitemKo = ko.dataFor(event.elemitem);
+          var dataitemJs = ko.toJS(dataitemKo);
+          //alert("popupdialog");
+      }).
+      bind('popupcreate', function (event) {
+          var dataitemKo = ko.dataFor(event.elemitem);
+          var dataitemJs = ko.toJS(dataitemKo);
+          //alert("popupcreate");
       }).
       bind('popupmodify', function (event) {
-          //alert("databound");
+          var dataitemKo = ko.dataFor(event.elemitem);
+          var dataitemJs = ko.toJS(dataitemKo);
+          //alert("popupmodify");
       }).
       bind('databound', function (event) {
           //alert("databound");
@@ -57,17 +74,38 @@ function searchfrm(context) {
 
 function mapKnock(data) {
     return ko.observableArray(ko.utils.arrayMap(data, function (item) {
-            return new dataItem(item);
+            return new dataItem1(item);
         })
     );
 };
 
-function dataItem(item) {
+function dataItem1(item) {
     var that = this;  
     this.CustomerID = ko.observable(item.CustomerID);
     this.CompanyName = ko.observable(item.CompanyName);
     this.Address = ko.observable(item.Address);
     this.City = ko.observable(item.City);
+    this.Value1 = ko.observable(0);
+    this.Value2 = ko.observable(0);
+    this.Total = ko.observable(0);
+
+    this.Value1.subscribe(function (value) {
+        var ret = that.Value1() + that.Value2();
+        that.Total(ret);
+    });
+
+    this.Value2.subscribe(function (value) {
+        var ret = that.Value1() + that.Value2();
+        that.Total(ret);
+    });
+};
+
+function dataItem2(item) {
+    var that = this;
+    this.CustomerID = ko.observable("aa");
+    this.CompanyName = ko.observable("bb");
+    this.Address = ko.observable("cc");
+    this.City = ko.observable("dd");
     this.Value1 = ko.observable(0);
     this.Value2 = ko.observable(0);
     this.Total = ko.observable(0);
@@ -92,6 +130,22 @@ function deletefrm(obj) {
         },
         success: function (result) {
             //obj.context.refresh();
+            alert(result);
+        }
+    });
+};
+
+function insertfrm(obj) {
+    $.ajax({ url: "/Grid4/InsertViewModel2/", type: 'post',
+        data: ko.toJSON(obj.dataitemJs),
+        contentType: 'application/json',
+        error: function (request, state, error) {
+            obj.context.closeCreateDialogFeilure();
+            alert("Ajax error:" + error);
+        },
+        success: function (result) {
+            //obj.context.refresh();
+            obj.context.closeCreateDialogSuccess();
             alert(result);
         }
     });

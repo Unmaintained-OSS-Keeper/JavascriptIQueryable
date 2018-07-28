@@ -21,6 +21,10 @@ $(document).ready(function () {
     $("#gpane2").bind('databound', function (event) {
         //alert("databound");
     });  
+
+    $("#refresh").click(function (e) {
+        $("#gpane2").gridTemplate("refresh");
+    });
 });
 
 function searchfrm1(context) {
@@ -69,4 +73,3 @@ function searchfrm2(context) {
     //
     //
 }
--->

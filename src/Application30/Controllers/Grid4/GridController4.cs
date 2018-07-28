@@ -79,6 +79,12 @@ namespace Application30.Controllers
             return View();
         }
 
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page09()
+        {
+            return View();
+        }
+
         // ---------------------------------
 
         [HttpPost]
@@ -113,6 +119,20 @@ namespace Application30.Controllers
 
         [HttpPost]
         [OutputCache(Duration = 0, VaryByParam = "*")]
+        public JsonResult InsertViewModel1(CustomerViewModel1 entity)
+        {
+            var message = "Insert1 error: " + entity.CustomerID;
+            if (ModelState.IsValid == true)
+            {
+                if (entity.City == "pippo")
+                    throw new Exception("pippo");
+                message = "Insert1 ok: " + entity.CustomerID;
+            }
+            return Json(message);
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
         public JsonResult UpdateViewModel1(CustomerViewModel1 entity)
         {
             var message = "Update1 error: " + entity.CustomerID;
@@ -140,6 +160,20 @@ namespace Application30.Controllers
         }
 
         // ---------------------------------
+
+        [HttpPost]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public JsonResult InsertViewModel2(CustomerViewModel2 entity)
+        {
+            var message = "Insert2 error: " + entity.CustomerID;
+            if (ModelState.IsValid == true)
+            {
+                if (entity.City == "pippo")
+                    throw new Exception("pippo");
+                message = "Insert2 ok: " + entity.CustomerID;
+            }
+            return Json(message);
+        }
 
         [HttpPost]
         [OutputCache(Duration = 0, VaryByParam = "*")]

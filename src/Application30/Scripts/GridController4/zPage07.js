@@ -74,12 +74,12 @@ function updatefrm(obj) {
         data: ko.toJSON(obj.dataitemJs),
         contentType: 'application/json',
         error: function (request, state, error) {
-            obj.context.closeDialogFeilure();
+            obj.context.closeModifyDialogFeilure();
             alert("Ajax error:" + error);
         },
         success: function (result) {
             //obj.context.refresh();
-            obj.context.closeDialogSuccess();
+            obj.context.closeModifyDialogSuccess();
             alert(result);
         }
     });

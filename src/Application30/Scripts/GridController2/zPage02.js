@@ -12,6 +12,18 @@ $(document).ready(function () {
            //alert("databound");
          }
     );
+
+    $("#gpane2").bind('isloading', function (event) {
+        //alert("isloading");
+    });
+
+    $("#gpane2").bind('databound', function (event) {
+        //alert("databound");
+    });  
+
+    $("#refresh").click(function (e) {
+        $("#gpane2").gridTemplate("refresh");
+    });
 });
 
 function searchfrm(context) {

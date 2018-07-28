@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-7.0 
+// javascript-to-IQueryable-preview-8.0  
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
@@ -35,17 +35,22 @@
             tlinqEnabled: true,
             tdetailPanel: "",
             tdetailContainer: "",
+            tcreatePanel: "",
+            tcreateContainer: "",
             tmodifyPanel: "",
             tmodifyContainer: "",
             tdlgparent: { modal: true, width: 600 },
             tdlgdetail: { modal: true, width: 600 },
+            tdlgcreate: { modal: true, width: 600 },
             tdlgmodify: { modal: true, width: 600 },
             tknockoutValidation: false,
             tcustomCallBack: undefined,
             tdeleteCallBack: undefined,
+            tinsertCallBack: undefined,
             tupdateCallBack: undefined,
             tcancelCallBack: undefined,
             tformViewModel: undefined,
+            tcreateViewModel: undefined,
             tenableBackup: true,
             tpage: 1
         };
@@ -63,15 +68,19 @@
                 basegrid.detailPanel = st.tdetailPanel;
                 basegrid.detailContainer = st.tdetailContainer;
                 basegrid.dlgdetail = st.tdlgdetail;
+                basegrid.createPanel = st.tcreatePanel;
+                basegrid.createContainer = st.tcreateContainer;
+                basegrid.dlgcreate = st.tdlgcreate;
                 basegrid.modifyPanel = st.tmodifyPanel;
                 basegrid.modifyContainer = st.tmodifyContainer;
                 basegrid.dlgmodify = st.tdlgmodify;
                 basegrid.knockoutValidation = st.tknockoutValidation;
                 basegrid.customCallBack = st.tcustomCallBack;
                 basegrid.deleteCallBack = st.tdeleteCallBack;
+                basegrid.insertCallBack = st.tinsertCallBack;
                 basegrid.updateCallBack = st.tupdateCallBack;
                 basegrid.cancelCallBack = st.tcancelCallBack;
-
+                basegrid.createViewModel = st.tcreateViewModel;
                 basegrid.enableBackup = st.tenableBackup;
                 basegrid.initPagingBase(); 
                 //
@@ -119,10 +128,13 @@
                         if (event.isloading == true)
                             $("#" + settings.tpane3).show();
                         else
-                            $("#" + settings.tpane3).hide(); 
+                            $("#" + settings.tpane3).hide();  
                     };
                 });
                 $(basegrid).bind('popupdetail', function (event) {  
+                    $(that).trigger(event);
+                });
+                $(basegrid).bind('popupcreate', function (event) {
                     $(that).trigger(event);
                 });
                 $(basegrid).bind('popupmodify', function (event) {
@@ -132,14 +144,14 @@
                     $(that).trigger(event); 
                 });              
                 //
-                omethods._setupPanel(1);
+                omethods._setupPanel(1); 
             },
 
             _confKnockoutForm: function (formpanel) {
                 ko.cleanNode(formpanel);
                 var form = settings.tformViewModel();
-                basegrid.formviewmodel = form;
-                ko.applyBindings(form, formpanel);
+                basegrid.formViewModel = form;
+                ko.applyBindings(form, formpanel); 
             },
 
             _setupPanel: function (value) {
@@ -171,22 +183,37 @@
             },
 
             getObjectInstance: function () {
-                return $(this).data("__PagingBase__"); 
+                return $(this).data("__PagingBase__");
+            },
+
+            refresh: function () {
+                var obj = $(this).data("__PagingBase__");
+                return obj.refresh();
             },
 
             getSource: function () {
                 var obj = $(this).data("__PagingBase__");
                 return obj.source;
+            },           
+
+            closeCreateDialogFeilure: function () {
+                var obj = $(this).data("__PagingBase__");
+                obj._closeCreateDialogFeilure();
             },
 
-            closeDialogFeilure: function () {
+            closeCreateDialogSuccess: function () {
                 var obj = $(this).data("__PagingBase__");
-                obj._closeDialogFeilure();
+                obj._closeCreateDialogSuccess();
             },
 
-            closeDialogSuccess: function () {
+            closeModifyDialogFeilure: function () {
                 var obj = $(this).data("__PagingBase__");
-                obj._closeDialogSuccess();
+                obj._closeModifyDialogFeilure();
+            },
+
+            closeModifyDialogSuccess: function () {
+                var obj = $(this).data("__PagingBase__");
+                obj._closeModifyDialogSuccess();
             }
         };
 

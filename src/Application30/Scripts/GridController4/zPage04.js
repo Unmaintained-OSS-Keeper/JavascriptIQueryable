@@ -37,12 +37,12 @@ $(document).ready(function () {
       bind('popupdetail', function (event) {
           var dataitemKo = ko.dataFor(event.elemitem);
           var dataitemJs = ko.toJS(dataitemKo);
-          alert("popupdialog");
+          //alert("popupdialog");
       }).
       bind('popupmodify', function (event) {
           var dataitemKo = ko.dataFor(event.elemitem);
           var dataitemJs = ko.toJS(dataitemKo);
-          alert("popupmodify");
+          //alert("popupmodify");
       }).
       bind('databound', function (event) {
           //alert("databound");
@@ -83,12 +83,12 @@ function updatefrm(obj) {
         data: ko.toJSON(obj.dataitemJs),
         contentType: 'application/json',
         error: function (request, state, error) {
-            obj.context.closeDialogFeilure();
+            obj.context.closeModifyDialogFeilure();
             alert("Ajax error:" + error);
         },
         success: function (result) {
             //obj.context.refresh();
-            obj.context.closeDialogSuccess();
+            obj.context.closeModifyDialogSuccess();
             alert(result);
         }
     });

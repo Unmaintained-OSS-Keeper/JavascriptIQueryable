@@ -129,6 +129,27 @@ Properties of the popup "detail".
 </tr>
 
 <tr>
+<td>tcreatePanel (only knockoutjs)</td>
+<td>
+Id of the popup "create" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>tcreateContainer (only knockoutjs)</td>
+<td>
+Id of the popup "create" template container.
+</td>
+</tr>
+
+<tr>
+<td>tdlgcreate (only knockoutjs)</td>
+<td>
+Properties of the popup "create".
+</td>
+</tr>
+
+<tr>
 <td>tmodifyPanel (only knockoutjs)</td>
 <td>
 Id of the popup "modify" 'div'.
@@ -153,6 +174,13 @@ Properties of the popup "modify".
 <td>tformViewModel (only knockoutjs)</td>
 <td>
 A function that create the search viewmodel object.
+</td>
+</tr>
+
+<tr>
+<td>tcreateViewModel (only knockoutjs)</td>
+<td>
+A function that create the create viewmodel object.
 </td>
 </tr>
 
@@ -182,6 +210,20 @@ The function callback of the "data-jcustomaction" attribute. It must put on the 
 <td>tdeleteCallBack (only knockoutjs)</td>
 <td>
 The function callback of the "data-jdeleteaction" attribute. It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>tinsertCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jinsertaction" attribute. It must put on the modify template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>tcancelCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcancelaction" attribute. It must put on the modify template (tcreatePanel/tcreateConteiner). 
 </td>
 </tr>
 
@@ -242,24 +284,40 @@ Get the current data source( $(...).gridTemplate("getSource") )
 </tr>
 
 <tr>
-<td>closeDialogSuccess()</td>
+<td>closeCreateDialogSuccess()</td>
+<td>
+Close the create popup. 
+( $(...).gridTemplate("closeCreateDialogSuccess") )
+</td>
+</tr>
+
+<tr>
+<td>closeCreateDialogFeilure()</td>
+<td>
+Close the create popup. 
+ ( $(...).gridTemplate("closeCreateDialogFeilure") )
+</td>
+</tr>
+
+<tr>
+<td>closeModifyDialogSuccess()</td>
 <td>
 Close the edit/modify popup. When you open a edit/modify popup, the code do a backup 
 of the viewmodel value (string, number, boolean). So when you change the value of a 
 field and close the popup without "save" it will restore the original value.
 
-( $(...).gridTemplate("closeDialogSuccess") )
+( $(...).gridTemplate("closeModifyDialogSuccess") )
 </td>
 </tr>
 
 <tr>
-<td>closeDialogFeilure()</td>
+<td>closeModifyDialogFeilure()</td>
 <td>
 Close the edit/modify popup applay the backup/restore behaviour. When you open a
 edit/modify popup, the code do a backup of the viewmodel value (string, number, 
 boolean). So when you change the value of a field and close the popup without "save"
  it will restore the original value.
- ( $(...).gridTemplate("closeDialogFeilure") )
+ ( $(...).gridTemplate("closeModifyDialogFeilure") )
 </td>
 </tr>
 
@@ -276,6 +334,10 @@ boolean). So when you change the value of a field and close the popup without "s
 
 <tr>
 <td>Event: "popupdetail"</td>
+<td>
+
+<tr>
+<td>Event: "popupcreate"</td>
 <td>
 
 <tr>
@@ -351,6 +413,27 @@ Properties of the popup "detail".
 </tr>
 
 <tr>
+<td>createPanel (only knockoutjs)</td>
+<td>
+Id of the popup "create" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>createContainer (only knockoutjs)</td>
+<td>
+Id of the popup "create" template container.
+</td>
+</tr>
+
+<tr>
+<td>dlgcreate (only knockoutjs)</td>
+<td>
+Properties of the popup "create".
+</td>
+</tr>
+
+<tr>
 <td>modifyPanel (only knockoutjs)</td>
 <td>
 Id of the popup "modify" 'div'.
@@ -379,6 +462,13 @@ A function that create the search viewmodel object.
 </tr>
 
 <tr>
+<td>createViewModel (only knockoutjs)</td>
+<td>
+A function that create the create viewmodel object.
+</td>
+</tr>
+
+<tr>
 <td>customCallBack (only knockoutjs)</td>
 <td>
 The function callback of the "data-jcustomaction" attribute. It must put on the main template. 
@@ -389,6 +479,20 @@ The function callback of the "data-jcustomaction" attribute. It must put on the 
 <td>deleteCallBack (only knockoutjs)</td>
 <td>
 The function callback of the "data-jdeleteaction" attribute. It must put on the main template.
+</td>
+</tr>
+
+<tr>
+<td>insertCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jinsertaction" attribute. It must put on the create template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>cancelCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcancelaction" attribute. It must put on the create template (tcreatePanel/tcreateConteiner). 
 </td>
 </tr>
 
@@ -633,6 +737,18 @@ applies the template.
 </tr>
 
 <tr>
+<td>showGridKo(data,callBackMapKnock,callBackTemplate)</td>
+<td>
+Request a knockout-template. data is an array of json data. callBackMapKnock,callBackTemplate
+params are optionals. Param "callBackMapKnock" is the callback function that trasform the array
+returned from the server to observable, applying a custom logic (by default will be converted 
+to observable). Param "callBackTemplate" is the callback function inside of which, there is 
+the logic that applies the template. This is useful if you works with in memory data, you can
+filter it using linq.js - LINQ for JavaScript.
+</td>
+</tr>
+
+<tr>
 <td>continueWith(callBackfunc)</td>
 <td>
 Set the callback function that will be called the first time.
@@ -662,6 +778,10 @@ Call the "loadData()" and return "this".
 <td>
 
 <tr>
+<td>Event: "popupcreate"</td>
+<td>
+
+<tr>
 <td>Event: "popupmodify"</td>
 <td>
 
@@ -671,7 +791,7 @@ Call the "loadData()" and return "this".
 
 <br /><br />
 
-<h3>Callback arguments (customCallBack,deleteCallBack,updateCallBack,cancelCallBack)</h3>
+<h3>Callback arguments (customCallBack,deleteCallBack,insertCallBack,updateCallBack,cancelCallBack)</h3>
 <table>
 <tr>
 <td>dataitemJs (only knockoutjs)</td>
@@ -737,6 +857,14 @@ It must put on the main template.
 </tr>
 
 <tr>
+<td>data-jcreateaction</td>
+<td>
+Must put it on a link. It tell the plugin that the link show a  create  popup.
+It must put on the main template.
+</td>
+</tr>
+
+<tr>
 <td>data-jmodifyaction</td>
 <td>
 Must put it on a link. It tell the plugin that the link show a  edit  popup.
@@ -748,7 +876,7 @@ It must put on the main template.
 <td>data-jcustomaction</td>
 <td>
 Must put it on a button/link. It call the "tcustomCallBack" callback.
-It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+It must put on the main template. 
 </td>
 </tr>
 
@@ -756,7 +884,23 @@ It must put on the modify template (tmodifyPanel/tmodifyConteiner).
 <td>data-jdeleteaction</td>
 <td>
 Must put it on a button/link. It call the "tdeleteCallBack" callback.
-It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>data-jinsertaction</td>
+<td>
+Must put it on a button/link. It call the "tinsertCallBack" callback.
+It must put on the create template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>data-jcancelaction</td>
+<td>
+Must put it on a button/link. It call the "tcancelCallBack" callback.
+It must put on the modify template (tcreatePanel/tcreateConteiner). 
 </td>
 </tr>
 

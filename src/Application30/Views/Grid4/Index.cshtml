@@ -14,22 +14,24 @@
   @Html.ActionLink("Query with pagingWithSize(10)/linq enabled/komapper/2", "page06", "Grid4")<br /> 
   @Html.ActionLink("Query with knockout mvc helper jquery validation/1", "page07", "Grid4")<br /> 
   @Html.ActionLink("Query with knockout mvc helper jquery validation/2", "page08", "Grid4")<br />
+  @Html.ActionLink("Query with full CRUD knockout grig", "page09", "Grid4")<br />
 </div>
 
 <br /><br />
 
 <div align="justify">
-The plugin has some new properties/methods: tcustomCallBack, tdeleteCallBack, tupdateCallBack, 
-tcancelCallBack, koWhereViewModel(), koWhereObjectAnd(), koWhereObjectOr(), koWhereString(), applyTempKo().
-There are also some new html attributes: data-jcustomaction, data-jdeleteaction, data-jupdateaction,
-data-jcancelaction, data-jdetailtemplate, data-jdetailaction, data-jmodifyaction
- ... etc.
+You can create a CRUD knockoutjs grid using the MVVM pattern (this works with linq enabled and linq not enabled).
+The plugin has some properties/methods: tformViewModel, tcreateViewModel, tcustomCallBack, tdeleteCallBack, 
+tinsertCallBack,tupdateCallBack, tcancelCallBack, koWhereViewModel(), koWhereObjectAnd(), koWhereObjectOr(),
+koWhereString(), applyTempKo(), showGridKo(). There are also some html attributes: data-jcustomaction, data-jdeleteaction, 
+data-jcreateaction, data-jmodifyaction, data-jinsertaction, data-jupdateaction, data-jcancelaction, 
+data-jdetailtemplate, data-jdetailaction ... etc. 
 <br /><br />
 Knockout can be used into two separate places. 1) First in the search form. 2) Second in the layout template 
-(main template, popup detail, popup edit/modify). In the first place, I need to specify a callback function
-that creates the viewmodel object (of the search form) through the "tformViewModel" properties. Then I will
-use the methods koWhereObjectAnd(), koWhereObjectOr() , koWhereString() and koWhereViewModel() to create the 
-param that I will put into the where clause "where(expression, param)". In the second place I need to call 
+(main template, popup detail, popup create, popup edit/modify). In the first place, I need to specify a callback 
+function that creates the viewmodel object (of the search form) through the "tformViewModel" properties. Then I
+will use the methods koWhereObjectAnd(), koWhereObjectOr() , koWhereString() and koWhereViewModel() to create 
+the param that I will put into the where clause "where(expression, param)". In the second place I need to call 
 the "applyTempKo(callBackMapKnock,callBackTemplate)" method on the query projection. This tell the plugin 
 that convert the result set in an observable array and then apply a knockout template. If I use a callback 
 function "callBackMapKnock" in the where clause, I can create a custom viewmodel with properties and methods.
@@ -66,24 +68,31 @@ If I use a callback function "callBackTemplate" in the where clause, I can speci
 </table>
 
 <div align="justify">
-In addition to the main template, there are two popup templates (detail/edit). The detail popup template
-will be showed when you press a link where there is a "data-jdetailaction" attribute and it work for 
-all type of template. The edit popup template will be showed when you press a link where there is a 
-"data-jmodifyaction" attribute  and it work only with knockout. In this popup you can put some edit 
-field. On the main template I can put two link with the "data-jcustomaction", "data-jdeleteaction" attribute. When 
-the link is pressed it call the callback function "tcustomCallBack", "tdeleteCallBack" (it work only with knockout).
+In addition to the main template, there are three popup templates (detail/create/edit). The detail popup 
+template will be showed when you press a link where there is a "data-jdetailaction" attribute and it work 
+for all type of template. The create popup template will be showed when you press a link where there is a 
+"data-jcreateaction" attribute  and it work only with knockout. In this popup you can put some edit field.
+In this case you need to specify a callback function  "tcreateViewModel" that create an empty viewmodel.
+The edit popup template will be showed when you press a link where there is a "data-jmodifyaction" attribute 
+and it work only with knockout. In this popup you can put some edit field. On the main template I can put
+two link with the "data-jcustomaction", "data-jdeleteaction" attribute. When the link is pressed it call 
+the callback function "tcustomCallBack", "tdeleteCallBack" (it work only with knockout).
 </div>
 
 <br /><br />
 
 <div align="justify">
-When you open a edit/modify popup, the code will do a backup of the viewmodel value (string, number, 
-boolean). So when you change the value of a field and close the popup without "save" it will restore 
-the original value. This works if you use the "tcancelCallBack" attribute (that close the popup automaticaly).
-There is also a property "enableBackup" that disable this function. If you use the "tupdateCallBack" attribute
-you must call $(...).gridTemplate("closeDialogFeilure")/$(...).gridTemplate("closeDialogSuccess") in the 
-ajax callback. So if there are some error from the server the popup will not close automaticaly. If you close
-with $(...).gridTemplate("closeDialogFeilure") will be restored data. If you close with $(...).gridTemplate("closeDialogSuccess") will not be restored data. It work fine only for no complex type (string, number, boolean). For complex type you should disable this function.
+When you open a edit/modify popup, the code will do a backup of the viewmodel value (string, number, boolean).
+So when you change the value of a field and close the popup without "save" it will restore the original value. 
+This works if you use the "tcancelCallBack" attribute (that close the popup automaticaly). There is also a 
+property "enableBackup" that disable this function. If you use the "tupdateCallBack" callback you must call 
+$(...).gridTemplate("closeModifyDialogFeilure")/$(...).gridTemplate("closeModifyDialogSuccess") in the ajax 
+callback. So if there are some error from the server the popup will not close automaticaly. If you close with
+$(...).gridTemplate("closeModifyDialogFeilure") will be restored data. If you close with $(...).gridTemplate(
+"closeModifyDialogSuccess") will not be restored data. It work fine only for no complex type (string, number, boolean). 
+For complex type you should disable this function. There are also $(...).gridTemplate("closeCreateDialogFeilure")
+/$(...).gridTemplate("closeCreateDialogSuccess") that work with create popup, but in this case there are not a 
+backup of data.
 </div>
 
 <br /><br />
