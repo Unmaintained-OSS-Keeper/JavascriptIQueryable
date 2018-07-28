@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{12839E03-100C-4E4A-9FF2-A6E644C56150}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Commons</RootNamespace>
+    <AssemblyName>Commons</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Services" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DomainException.cs" />
+    <Compile Include="Entity1\Category.cs" />
+    <Compile Include="Entity1\Customer.cs" />
+    <Compile Include="Entity1\CustomerDemographic.cs" />
+    <Compile Include="Entity1\Employee.cs" />
+    <Compile Include="Entity1\Order.cs" />
+    <Compile Include="Entity1\OrderDetail.cs" />
+    <Compile Include="Entity1\Product.cs" />
+    <Compile Include="Entity1\Region.cs" />
+    <Compile Include="Entity1\Shipper.cs" />
+    <Compile Include="Entity1\Supplier.cs" />
+    <Compile Include="Entity1\Territory.cs" />
+    <Compile Include="Entity1\zModel1.cs" />
+    <Compile Include="Entity2\Category.cs" />
+    <Compile Include="Entity2\Customer.cs" />
+    <Compile Include="Entity2\CustomerDemographic.cs" />
+    <Compile Include="Entity2\Employee.cs" />
+    <Compile Include="Entity2\Order.cs" />
+    <Compile Include="Entity2\OrderDetail.cs" />
+    <Compile Include="Entity2\Product.cs" />
+    <Compile Include="Entity2\Region.cs" />
+    <Compile Include="Entity2\Shipper.cs" />
+    <Compile Include="Entity2\Supplier.cs" />
+    <Compile Include="Entity2\Territory.cs" />
+    <Compile Include="InterfaceR\IRepositoryCategory.cs" />
+    <Compile Include="InterfaceR\IRepositoryCustomer.cs" />
+    <Compile Include="InterfaceR\IRepositoryCustomerDemographic.cs" />
+    <Compile Include="InterfaceR\IRepositoryEmployee.cs" />
+    <Compile Include="InterfaceR\IRepositoryOrder.cs" />
+    <Compile Include="InterfaceR\IRepositoryOrderDetail.cs" />
+    <Compile Include="InterfaceR\IRepositoryProduct.cs" />
+    <Compile Include="InterfaceR\IRepositoryRegion.cs" />
+    <Compile Include="InterfaceR\IRepositoryShipper.cs" />
+    <Compile Include="InterfaceR\IRepositorySupplier.cs" />
+    <Compile Include="InterfaceR\IRepositoryTerritory.cs" />
+    <Compile Include="InterfaceS\IServiceCategory.cs" />
+    <Compile Include="InterfaceS\IServiceCustomer.cs" />
+    <Compile Include="InterfaceS\IServiceCustomerDemographic.cs" />
+    <Compile Include="InterfaceS\IServiceEmployee.cs" />
+    <Compile Include="InterfaceS\IServiceOrder.cs" />
+    <Compile Include="InterfaceS\IServiceOrderDetail.cs" />
+    <Compile Include="InterfaceS\IServiceProduct.cs" />
+    <Compile Include="InterfaceS\IServiceRegion.cs" />
+    <Compile Include="InterfaceS\IServiceShipper.cs" />
+    <Compile Include="InterfaceS\IServiceSupplier.cs" />
+    <Compile Include="InterfaceS\IServiceTerritory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\zStemaCore\zStemaCore.csproj">
+      <Project>{13B5A004-0844-4C29-9EB4-018DDAAE156B}</Project>
+      <Name>zStemaCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

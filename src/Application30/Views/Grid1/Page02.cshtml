@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/GridController1/zPage02.js")" type="text/javascript"></script>
+}
+
+<h2>Index - Page02</h2>
+
+<p>
+<pre>
+context.from("/Grid1/GetDataJson").where(r.value,r.param).orderBy(
+         "CustomerID").pagingWithSize(10).applyTempClient(); 
+</pre>
+</p>
+
+<div>
+   <input id="gbutton1" type="button" value="Search" />&nbsp;
+   <input id="gbutton2" type="button" value="MoveF" />&nbsp;
+   <input id="gbutton3" type="button" value="MoveP" />&nbsp;
+   <input id="gbutton4" type="button" value="MoveN" />&nbsp;
+   <input id="gbutton5" type="button" value="MoveL" />&nbsp;
+   <input id="refresh" type="button" value="Refresh" />&nbsp;
+   <a id="rbutton1" href="#">Germany</a>&nbsp;
+</div>
+
+<br /><br />
+
+
+<div id="gpane1" style="display:none;height:100px">
+  <div style="vertical-align:top">
+    <table style="vertical-align:top">    
+    <tr>
+      <td>City: </td>
+      <td><input id="text1" type="text" /></td>
+    </tr>  
+    <tr>
+      <td>Country: </td>
+      <td><input id="text2" type="text" /></td>
+    </tr> 
+    </table>
+    <br /><br />
+    <input id="gbutton6" type="button" value="Find" />
+  </div>
+</div>
+
+<div id="gpane2" style="display:none;height:300px">
+  <div>
+    <table id="jtable1">
+    <thead>
+    <tr>
+      <td> &nbsp; </td>
+      <td data-sort="CustomerID"> CustomerID </td>
+      <td data-sort="CompanyName"> CompanyName </td>
+      <td data-sort="ContactName"> ContactName </td>
+      <td data-sort="ContactTitle"> ContactTitle </td>
+      <td data-sort="Address"> Address </td>
+      <td data-sort="City"> City </td>
+      <td data-sort="Country"> Country </td>
+    </tr>
+    </thead>
+    <tbody id="jlist1"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="gdialog" style="display:none;height:100px">
+  <div>
+    <table id="jtable2">
+    <thead>
+    <tr>
+      <td> CustomerID </td>
+      <td> CompanyName </td>
+      <td> City </td>
+      <td> Country </td>
+    </tr>
+    </thead>
+    <tbody id="jlist2"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="gpane3" class="pagingbase-ui-loading1" style="display:none">
+  <div class="pagingbase-ui-loading2">
+    <h1>Loading ...</h1>
+  </div>
+</div>
+
+<br /><br />
+
+<script id="jtableTemplate" type="text/x-jquery-tmpl">
+<tr class="pagingbase-ui-selected-ou">
+  <td><a href="#" data-jdetailtemplate="jdetailTemplate1" 
+          data-jdetailaction>Show detail</a></td>
+  <td> ${CustomerID} </td>
+  <td> ${CompanyName} </td>
+  <td> ${ContactName} </td>
+  <td> ${ContactTitle} </td>
+  <td> ${Address} </td>
+  <td> ${City} </td>
+  <td> ${Country} </td>
+</tr>
+</script>
+
+<script id="jdetailTemplate1" type="text/x-jquery-tmpl">
+<tr>
+  <td> ${CustomerID} </td>
+  <td> ${CompanyName} </td>
+  <td> ${City} </td>
+  <td> ${Country} </td>
+</tr>
+</script>
+
+<script id="jdetailTemplate2" type="text/x-jquery-tmpl">
+<tr>
+  <td> ${CustomerID} </td>
+  <td> ${CompanyName} </td>
+  <td> ${City} </td>
+  <td> ${Country} </td>
+</tr>
+</script>

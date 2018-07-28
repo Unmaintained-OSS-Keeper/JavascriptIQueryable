@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+<title>Pagina1</title>
+<meta name="viewport" content="initial-scale=2, maximum-scale=4">
+<link href="../../JQueryMobile/jquery.mobile-1.0rc2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../JQueryMobile/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="../../Scripts/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-2.0.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.mapping.js"></script> 
+<script type="text/javascript" src="../../Scripts/json2.js"></script>
+<script type="text/javascript" src="../../Scripts/Mobile/zPage01.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid1.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid3.js"></script>
+<script type="text/javascript" src="../../JQueryMobile/jquery.mobile-1.0rc2.js"></script>
+</head>
+<body>
+
+<!-- page -->
+<div id="page1" data-role="page">
+	<div data-role="header" data-position="fixed">
+    <a href="#">a</a>
+		<h1>Page Title-1</h1>
+    <a href="#">b</a> 
+    <div data-role="navbar">
+     <ul>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+      </ul>
+   </div>
+	</div>
+	<div data-role="content">	
+		<p>Page content-1 goes here (@DateTime.Now).</p>	   
+    <a href="#page2" data-transition="fade">Page2</a><br /> 
+    <a href="#page3" data-transition="fade">Page3</a><br /> 
+    <a href="Page01a" data-transition="fade">Page4</a><br /> 
+    <a href="Page01b" data-transition="fade">Page5</a><br /> 
+    <a href="#page6" data-rel="dialog" data-transition="fade">Page6</a><br /> 
+    <a href="#page7" data-rel="dialog" data-transition="fade">Page7</a><br /> 
+
+    <div>
+      <a href="#" data-role="button">Link-based button</a>
+      <input type="button" value="button-1" data-inline="true">
+      <input type="button" value="button-2" data-inline="true">
+      <div data-role="controlgroup" data-type="vertical" >
+        <a href="#" data-role="button" data-icon="home" data-iconpos="right">Yes</a>
+        <a href="#" data-role="button" data-icon="home" data-iconpos="left">No</a>
+        <a href="#" data-role="button">Cancel</a>
+      </div>
+      <div data-role="controlgroup" data-type="horizontal">
+        <a href="#" data-role="button" data-icon="home" data-iconpos="right">Yes</a>
+        <a href="#" data-role="button" data-icon="home" data-iconpos="left">No</a>
+        <a href="#" data-role="button">Cancel</a>
+      </div>
+    </div>
+
+    <div>
+      <h3>Checkboxes and Radio Buttons</h3>
+      <form id="myform" action="formprocessor.php" method="post">
+        <div data-role="fieldcontain">
+          <fieldset data-role="controlgroup">
+            @*<legend>Filter Restaurants By:</legend>*@
+            <input type="checkbox" name="checkbox-french" id="checkbox-french1">
+            <label for="checkbox-french1">French</label>
+            <input type="checkbox" name="checkbox-italian" id="checkbox-italian1">
+            <label for="checkbox-italian1">Italian</label>
+            <input type="checkbox" name="checkbox-greek" id="checkbox-greek1">
+            <label for="checkbox-greek1">Greek</label>
+          </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+          <fieldset data-role="controlgroup">
+            @*<legend>Filter Restaurants By:</legend>*@
+            <input type="checkbox" name="checkbox-french" id="checkbox-french2">
+            <label for="checkbox-french2">French</label>
+            <input type="checkbox" name="checkbox-italian" id="checkbox-italian2">
+            <label for="checkbox-italian2">Italian</label>
+            <input type="checkbox" name="checkbox-greek" id="checkbox-greek2">
+            <label for="checkbox-greek2">Greek</label>
+          </fieldset>
+        </div>
+      </form>
+    </div>
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>     
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page2" data-role="page">
+	<div data-role="header">
+		<h1>Page Title-2</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-2 goes here (@DateTime.Now).</p>
+    <a data-rel="back" data-direction="reverse">Back</a><br /> 		
+	</div>
+  <div>
+    <ul data-role="listview">
+	    <li>
+        <div class="ui-grid-b">
+          <div class="ui-block-a"><a href="Link01">Link-1</a></div>
+          <div class="ui-block-b">Block-11</div>
+          <div class="ui-block-c">Block-12</div>
+        </div>
+      </li>
+	    <li>
+        <div class="ui-grid-b">
+          <div class="ui-block-a"><a href="Link02">Link-2</a></div>
+          <div class="ui-block-b">Block-21</div>
+          <div class="ui-block-c">Block-22</div>
+        </div>
+      </li>
+      <li>
+        <div class="ui-grid-b">
+          <div class="ui-block-a"><a href="Link03">Link-3</a></div>
+          <div class="ui-block-b">Block-31</div>
+          <div class="ui-block-c">Block-32</div>
+        </div>
+      </li>
+    </ul>
+    <br /><br />
+  </div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page3" data-role="page">
+	<div data-role="header">
+		<h1>Page Title-3</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-3 goes here (@DateTime.Now).</p>		
+    <a data-rel="back" data-direction="reverse">Back</a><br /> 			
+	</div>
+  <div>
+    <ul data-role="listview">
+	    <li>
+        <div>Link-1</div>
+        <ul data-role="listview">          
+	        <li><a href="link1.html">Link-10</a></li>
+	        <li><a href="link2.html">Link-20</a></li>
+	        <li><a href="link3.html">Link-30</a></li>
+        </ul>
+      </li>
+	    <li>
+        <div>Link-2</div>
+        <ul data-role="listview">
+	        <li><a href="link1.html">Link-40</a></li>
+	        <li><a href="link2.html">Link-50</a></li>
+	        <li><a href="link3.html">Link-60</a></li>
+        </ul>
+      </li>
+	    <li>
+        <div>Link-3</div>
+        <ul data-role="listview">
+	        <li><a href="link1.html">Link-70</a></li>
+	        <li><a href="link2.html">Link-80</a></li>
+	        <li><a href="link3.html">Link-90</a></li>
+        </ul>
+      </li>
+    </ul>
+    <br /><br />
+  </div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page6" data-role="page">
+	<div data-role="header">
+		<h1>Page Title-6</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-6 goes here (@DateTime.Now).</p>	
+    <p>
+      qwe2
+    </p>
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page7" data-role="page">
+	<div data-role="header">
+		<h1>Page Title-7</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-7 goes here (@DateTime.Now).</p>	
+    <p>
+      qwe2
+    </p>
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+</body>
+</html>

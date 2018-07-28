@@ -1,0 +1,12 @@
+
+beta0.82
+--------
+
+jbackcurrpage(true/false): This property must be set on a link with "data-rel=back" and work with the
+"jbackcurrpage" attribute. the property tell to the plugin that when you press a back button, it must 
+refresh the datasource. It will be used the url stored into the datasource. It will not be created a 
+new datasource (as in forward direction).
+
+jrefreshonback(true/false): This property must be set on a link with "data-rel=back", this tell to the 
+plugin that when you press a back button, it must not send a query. In this way the querys will be sent 
+only in forward direction (not in back direction). 

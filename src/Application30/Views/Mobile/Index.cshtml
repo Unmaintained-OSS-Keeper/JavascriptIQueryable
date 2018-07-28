@@ -1,0 +1,377 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{   
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#accordion").accordion(); 
+      });    
+    </script>
+}
+
+<h2>Index - Mobile</h2>
+
+<div align="center">
+  @Html.ActionLink("ex-01", "page01", "Mobile")&nbsp;
+  @Html.ActionLink("ex-02", "page02", "Mobile")&nbsp;
+  @Html.ActionLink("ex-03", "page03", "Mobile")&nbsp;  
+  @Html.ActionLink("ex-04", "page04", "Mobile")&nbsp; 
+  @Html.ActionLink("ex-05", "page05", "Mobile")&nbsp;   
+  @Html.ActionLink("ex-06", "page06", "Mobile")&nbsp; 
+  <br />
+  @Html.ActionLink("ex-07", "page07", "Mobile")&nbsp;
+  @Html.ActionLink("ex-08", "page08", "Mobile")&nbsp; 
+  @Html.ActionLink("ex-09", "page09", "Mobile")&nbsp; 
+  <br /><br />
+  @Html.ActionLink("style-01", "page10" , "Mobile")&nbsp;
+  @Html.ActionLink("style-02", "page11" , "Mobile")&nbsp;
+  @Html.ActionLink("style-03", "page12" , "Mobile")&nbsp;
+  @Html.ActionLink("style-04", "page13" , "Mobile")&nbsp;
+  @Html.ActionLink("style-05", "page14a", "Mobile")&nbsp;
+</div>
+
+<br /><br />
+
+<div>
+   <p align="justify">
+   The jquery mobile extension provides a plugin "mobileTemplate/zPageGrid3.js" that wrap the 
+   "PagingBase/zPageGrid1.js" object, so you can reuse the base functionalities. When you instantiates 
+   the plugin, it parse the DOM and it will create a datasorce for every page (an html div with the 
+   attribute data-role="page"), so you can create query and apply data-template. There are some attributes 
+   that you will put on the page div, so you can apply base functionalities in an unobtrusive mode.
+   The plugin registers the "pagechange" of jquery mobile, so when you change page it will start some 
+   datasorce functionalities. 
+   <br /><br />
+   There are 3 different operation modes that will be managed through "jautocompose" attribute.
+   <br /><br />
+   1) If "jautocompose" attribute is set to "true" the plugin will create automaticaly a request that will be send to the server.
+   Into the where clause will be used the params specified by the "jparam01/jparam05" attribute.
+   <br /><br />
+   2) If "jautocompose" attribute is set to "false" you must create a request in the event handler "jselectiong", then the plugin will send it to the server.
+   Into the event-handler you can use the methods like these: where(), oderby(), applyTempClient(), applyTempServer() applyTempKo().
+   <br /><br />
+   3) You may also use 1) 2) together. If "jautocompose" attribute is set to "true" the plugin will create automaticaly a request. Into the where clause will 
+   be used the params specified by the "jparam01/jparam05" attribute. If you declare also an event-handler function through "jselectiong" attribute, you can intercept
+   the call (before it will be send to the server) and apply additional clauses: oderby(), applyTempClient(), applyTempServer() applyTempKo().
+   In this way for example, I can manage the creation of a viewmodel through applyTempKo() method and apply the MVVM pattern.
+   <br /><br />
+   If you use an event-handler "jselecting" you must not use the from() method. The url will be set through "jresturl" attribute. When the plugin will 
+   receive a response from the server, it will show the data through a template. For a client/server side template that do not use knockout you must set
+   these attributes on a div page: "jenableko='false'", "jtypetemplate='value'", "jnametemplate='value'", "jcontainer='value'". For a knockout template 
+   you must set these attributes on a div page: "jenableko='true'", "jtypetemplate='client'", "jcontainer='value'". The "jnametemplate='value'" will not
+   be set. The tempate name is inside the template definition.
+   <br /><br />
+   Through the "jsavecurritem='true'" you can transfer data between page (frompage and topage). You must put the "jsavecurritem='true'" on a page 
+   navigation link , in this way when you click on a navigation link, before jquery mobile "changepage" is raised, the data current item will be saved. 
+   So when you arrive to the new page you can get the data of the frompage. It will be used if in the div page there is "jparam01='*City'" or if 
+   you request a template and as url attribute  you have put "jresturl='none'". In this second way, you can create a detail page, that show data 
+   that was retrived from the server  through the frompage (previous page).
+   <br /><br />
+   By default the query process start when you arrive to a new page automatically. If you set "jautorun='false'" the query process does not start when
+   you arrive to a new page automatically. To start the query you must have a link with the "jselectaction='true'". In this way you can have a page 
+   with search form and result div in the same page. 
+   <br /><br />
+   There is also support for mvc3 jquery validation. There are 5 type of html helper: Html.KoTextBoxFor(),Html.KoTextBoxStrFor(),Html.KoTextBoxIntFor()
+   Html.KoTextBoxDecFor() and Html.KoTextBoxBolFor().
+   <br /><br />
+   If you create the page elements dynamically (for example a listview) jquery mobile may not apply the page style. To apply jquery mobile styles you
+   have three way to follow. 1) You must call, in the databound event, the $('.ui-page-active' ).page( 'destroy' ).page() method. This tell to the 
+   jquery mobile plugin that it must recreate the page styles.  2) Use the "jrecreatestyle" attribute, this tell the plugin that it must recreate the 
+   page style. 3) Use the custom binding "jqmRefreshList" (if you use a listview). (see examples style-01/style-05).
+   <br /><br />
+   When you navigate through pages in forward direction, the plugin create a new url every time and send a new query to the MVC action method. It will 
+   be used the datalink to the previous page. If you press the back button, the page is already in the DOM, then you must set the "jbackcurrpage=true" 
+   attribute on the link with "data-rel=back". In this way the plugin will not send a new query to the MVC action method. If you would like to refresh 
+   the data (when you press the back button), you can set the "jrefreshonback=true" attribute on the link with "data-rel=back". Important: in back 
+   direction the datalink between pages it will not work.
+   </p>
+</div>
+
+<hr width="80%" /><br />
+
+<div>
+   <div id="accordion">
+     <h3><a href="#">example-01</a></h3>
+     <div>
+       This is an empty multipage application.
+     </div>
+     <h3><a href="#">example-02</a></h3>
+     <div>
+       In this example there are 3 page. The first fetch all data with paging enabled. The second
+       fetch only data where country='germany'. The third fetch only data where country='Sweden'.
+     </div>
+     <h3><a href="#">example-03</a></h3>
+     <div>
+       In this example there are 3 page. The first is a form-serch page. The second fetch 
+       data from the search conditions (on page definition you can see "data-jparam01='#text1'", "data-jparam02='#text2'"
+       this tell the framework which are the text field to use for the search).The third is a detail page of the selected item (it not go on db).
+       On this page you can see "data-jresturl='none'", this tell to the framework does not sends a rest call,
+       it take the current item. The current item is selected/saved when you put "data-jsavecurritem='true'" on 
+       the template link. Navigation button have "data-jnavbaraction='<i>action</i>'" that tell the framework which command apply.
+     </div>
+     <h3><a href="#">example-04</a></h3>
+     <div>
+       In this example there are 3 page. The first is a form-serch page. The second fetch 
+       data from the search conditions (on page definition you can see "data-jparam01='#text1'", "data-jparam02='#text2'"
+       this tell the framework which are the text field to use for the search). The third is a detail page of the selected item (it go on db  ).
+       On this page you can see "data-jresturl='value'", this tell to the framework to send a rest call,
+       it take the current item and then create a param link. On page definition you can see data-jparam01="*City" .
+       The current item is selected/saved when you apply "data-jsavecurritem='true'" on the template link.
+       Navigation button have "data-jnavbaraction='<i>action</i>'" that tell the framework which command apply.
+     </div>  
+     <h3><a href="#">example-05</a></h3>
+     <div>
+       Same as example-04 but with "jautorun=false" and it is a single page. In this case the data are not retrived when
+       the page is loaded, but when I click the button link "Find", on this link there is the "data-jselectaction='true'" attribute.
+     </div>
+     <h3><a href="#">example-06</a></h3>
+     <div>
+       Same as example-04 but with "jautorun=true". In the code behind there is an event 'selecting1' where is specified a query specified.     
+     </div>
+     <h3><a href="#">example-07</a></h3>
+     <div>
+       Same as example-04. In the code behind there is an event 'selecting1' where is specified a query.  
+       In this example knockout is enabled, "data-jenableko='true'. There is a modify form.  
+     </div>
+     <h3><a href="#">example-08</a></h3>
+     <div>
+       Same as example-04. In the code behind there is an event 'selecting1' where is specified a query.  
+       In this example knockout is enabled, "data-jenableko='true'". There is a modify form with custom htmlhelper.  
+     </div>
+     <h3><a href="#">example-09</a></h3>
+     <div>
+       Same as example-04. In the code behind there is an event 'selecting1' where is specified a query.  
+       In this example knockout is enabled, "data-jenableko='true'". There are two modify form with custom htmlhelper. 
+     </div>
+   </div>    
+</div>
+
+<br /><br />
+
+<div>
+<table>
+<tr>
+<td width="200">attribute</td>
+<td>description</td>
+</tr>
+
+<tr>
+<td>jbackcurrpage</td>
+<td>
+<div align="justify">
+(true/false) This property must be set on a link with "data-rel=back" and work with the "jbackcurrpage"
+attribute. the property tell to the plugin that when you press a back button, it must refresh the
+datasource. It will be used the url stored into the datasource. It will not be created a new datasource
+(as in forward direction).
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jrefreshonback</td>
+<td>
+<div align="justify">
+(true/false) This property must be set on a link with "data-rel=back", this tell to the plugin that
+when you press a back button, it must not send a query. In this way the querys will be sent only
+in forward direction (not in back direction).
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jrecreatestyle</td>
+<td>
+<div align="justify">
+Specify if recreatestyle is enabled.
+If "jrecreatestyle" attribute is set to "true" the plugin will recreate the page style.
+It will be called the "$('.ui-page-active').page('destroy').page()" method.
+Alternatively you can use a knockout.js custom binding "jqmRefreshList" (if you use a listview).
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jhidebeforeajaxcall</td>
+<td>
+<div align="justify">
+Specify if the container panel must be hidden before an ajax call.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jautocompose</td>
+<td>
+<div align="justify">
+Specify if autocompose is enabled.
+If "jautocompose" attribute is set to "true" the plugin will create automaticaly a request that will be send to the server.
+If "jautocompose" attribute is set to "false" you must create a request in the event handler "jselectiong", then the plugin will send it to the server.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jresturl</td>
+<td>
+<div align="justify">
+Specify the url.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jpagesize</td>
+<td>
+<div align="justify">
+Specify the pagesize. Optional, if not specified pagesize=9999 and paging is not enabled.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jenableko</td>
+<td>
+<div align="justify">
+Specify if knockout is enabled (true/false). If you specify "jenableko='false'" you must set "jtypetemplate='value'", 
+"jnametemplate='value'", "jcontainer='value'". If you specify "jenableko='true'" you must set "jtypetemplate='client'", 
+"jcontainer='value'", the "jnametemplate='value'" will not be set, the tempate name is inside the template definition.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jtypetemplate</td>
+<td>
+<div align="justify">
+Specify the template type (client jquery template/ server partialview). For knockout 
+template you must set: "jenableko='true'" and "jtypetemplate='client'".
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jnametemplate</td>
+<td>
+<div align="justify">
+Specify the template name. Used for client/server side template. For knockout template
+you must not use this attribute, the tempate name is inside the template definition.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jcontainer</td>
+<td>
+<div align="justify">
+This is the container of the template
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jparam01/jparam05</td>
+<td>
+<div align="justify">
+Specify searchs param. There are 3 type of param. 1) value: data-jparam01="germany", absolute value.
+2) text: data-jparam01="#filed1" you reference an input tag of name "filed1". 3) data: 
+data-jparam01="*country", you reference the field "country" of the previous page. In this case in 
+the previous page you must have a link with this  attribute data-jsavecurritem="true", this tell the 
+plugin to transfer data from origin to destination page. In this way you create a data link between 
+frompage and topage. 
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jorderby</td>
+<td>
+<div align="justify">
+Specify an order by clause.
+ </div>
+</td>
+</tr>
+
+<tr>
+<td>jsavecurritem="true"</td>
+<td>
+<div align="justify">
+It must put on a button/link template. It tell the framework that must pass the current
+dataitem to the next page. It saves the current item and then pass it  through "changePage"
+event of jquery mobile.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jautorun="false"</td>
+<td>
+<div align="justify">
+Default behavior is that a query/search begin when you go on a new page. 
+On the page definitions tell the framework do not start query/search automaticaly when you
+go on a new page. The search start when you press a button/link where there is an attribute
+data-jselectaction="true".
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jselectaction="true"</td>
+<td>
+<div align="justify">
+It must put on a button/link searchform. The plugin register it and when you press the button/link a new 
+query/search start. This overrides the default behavior where a new query/search start
+when you go on a new page. 
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jnavbaraction='<i>action</i>'</td>
+<td>
+<div align="justify">
+The param action can be "refresh,pageF,pageP,pageN,pageL". It tells the plugin that
+this is a navigation button of the current datasource. 
+</div>
+</td>
+</tr>
+
+<tr>
+<td>initialize</td>
+<td>
+<div align="justify">
+Specify initialize event. Raised when the datasource was created.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jfselecting</td>
+<td>
+<div align="justify">
+Specify selecting event. Raised before a request will be send to rhe server.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jfdatabound</td>
+<td>
+<div align="justify">
+Specify databound event. 
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jfisloading</td>
+<td>
+<div align="justify">
+Specify isloading event.
+</div>
+</td>
+</tr>
+
+</table>
+</div>

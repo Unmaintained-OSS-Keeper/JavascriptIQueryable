@@ -1,0 +1,20 @@
+﻿@model object[]
+         
+@{ IEnumerable<Commons.Customer> list = Model.Cast<Commons.Customer>(); }
+         
+<p><b>ViewTemplate4</b></p>
+
+<table>
+@foreach (var item in list)
+{
+    <tr>
+        <td>
+            <span class="identity">@Html.DisplayFor(modelItem => item.CustomerID)</span>
+            @Html.DisplayFor(modelItem => item.ContactTitle)      
+            @Html.DisplayFor(modelItem => item.Address)    
+            @Html.DisplayFor(modelItem => item.City)      
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+    </tr>
+}
+</table>

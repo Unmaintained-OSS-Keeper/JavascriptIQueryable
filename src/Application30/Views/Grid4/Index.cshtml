@@ -1,0 +1,211 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index - Knockout</h2>
+
+<div align="center">
+  @Html.ActionLink("Query with pagingWithSize(10)/nolinq", "page01", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled*", "page02", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled*", "page03", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/nolinq/callbackaction", "page04", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/nolinq/komapper/1", "page05", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/nolinq/komapper/2", "page06", "Grid4")<br /> 
+  @Html.ActionLink("Query with knockout mvc helper jquery validation/1", "page07", "Grid4")<br /> 
+  @Html.ActionLink("Query with knockout mvc helper jquery validation/2", "page08", "Grid4")<br />
+  @Html.ActionLink("Query with full CRUD knockout grig", "page09", "Grid4")<br />
+</div>
+
+<br /><br />
+
+<div align="justify">
+You can create a CRUD knockoutjs grid using the MVVM pattern (this works with linq enabled and linq not enabled).
+The plugin has some properties/methods: tformViewModel, tcreateViewModel, tcustomCallBack, tdeleteCallBack, 
+tinsertCallBack,tupdateCallBack, tcancelCallBack, koWhereViewModel(), koWhereObjectAnd(), koWhereObjectOr(),
+koWhereString(), applyTempKo(), showGridKo(). There are also some html attributes: data-jcustomaction, data-jdeleteaction, 
+data-jcreateaction, data-jmodifyaction, data-jinsertaction, data-jupdateaction, data-jcancelaction, 
+data-jdetailtemplate, data-jdetailaction ... etc. 
+<br /><br />
+Knockout can be used into two separate places. 1) First in the search form. 2) Second in the layout template 
+(main template, popup detail, popup create, popup edit/modify). In the first place, I need to specify a callback 
+function that creates the viewmodel object (of the search form) through the "tformViewModel" properties. Then I
+will use the methods koWhereObjectAnd(), koWhereObjectOr() , koWhereString() and koWhereViewModel() to create 
+the param that I will put into the where clause "where(expression, param)". In the second place I need to call 
+the "applyTempKo(callBackMapKnock,callBackTemplate)" method on the query projection. This tell the plugin 
+that convert the result set in an observable array and then apply a knockout template. If I use a callback 
+function "callBackMapKnock" in the where clause, I can create a custom viewmodel with properties and methods.
+If I use a callback function "callBackTemplate" in the where clause, I can specify a custom template logic.
+</div>
+
+<table align="center">
+<tr>
+<td>
+<div align="left">
+  <br /><b>Important: If you use knockout as form search viewmodel, you must
+       apply a "viewmodel" class to the form search.</b><br />
+  <div align="left">   
+    <pre>
+       &ltdiv&gt
+        &lttable class="<b>viewmodel</b>"&gt    
+        &lttr&gt
+          &lttd&gtCity: &lt/td&gt
+          &lttd&gt&ltinput id="text1" data-bind="value: campo1" /&gt&lt/td&gt
+        &lt/tr&gt  
+        &lttr&gt
+          &lttd&gtCountry: &lt/td&gt
+          &lttd&gt&ltinput id="text2" data-bind="value: campo2" /&gt&lt/td&gt
+        &lt/tr&gt 
+        &lt/table&gt
+        &ltbr /&gt&ltbr /&gt
+        &ltinput id="gbutton6" type="button" value="Find" /&gt
+      &lt/div&gt
+    </pre>
+  </div>
+</div>
+</td>
+</tr>
+</table>
+
+<div align="justify">
+In addition to the main template, there are three popup templates (detail/create/edit). The detail popup 
+template will be showed when you press a link where there is a "data-jdetailaction" attribute and it work 
+for all type of template. The create popup template will be showed when you press a link where there is a 
+"data-jcreateaction" attribute  and it work only with knockout. In this popup you can put some edit field.
+In this case you need to specify a callback function  "tcreateViewModel" that create an empty viewmodel.
+The edit popup template will be showed when you press a link where there is a "data-jmodifyaction" attribute 
+and it work only with knockout. In this popup you can put some edit field. On the main template I can put
+two link with the "data-jcustomaction", "data-jdeleteaction" attribute. When the link is pressed it call 
+the callback function "tcustomCallBack", "tdeleteCallBack" (it work only with knockout).
+</div>
+
+<br /><br />
+
+<div align="justify">
+When you open a edit/modify popup, the code will do a backup of the viewmodel value (string, number, boolean).
+So when you change the value of a field and close the popup without "save" it will restore the original value. 
+This works if you use the "tcancelCallBack" attribute (that close the popup automaticaly). There is also a 
+property "enableBackup" that disable this function. If you use the "tupdateCallBack" callback you must call 
+$(...).gridTemplate("closeModifyDialogFeilure")/$(...).gridTemplate("closeModifyDialogSuccess") in the ajax 
+callback. So if there are some error from the server the popup will not close automaticaly. If you close with
+$(...).gridTemplate("closeModifyDialogFeilure") will be restored data. If you close with $(...).gridTemplate(
+"closeModifyDialogSuccess") will not be restored data. It work fine only for no complex type (string, number, boolean). 
+For complex type you should disable this function. There are also $(...).gridTemplate("closeCreateDialogFeilure")
+/$(...).gridTemplate("closeCreateDialogSuccess") that work with create popup, but in this case there are not a 
+backup of data.
+</div>
+
+<br /><br />
+
+<div align="justify">
+There is also support for mvc3 jquery validation. To enable it, you must set property "knockoutValidation"
+of the "PagingBase" object, the you must create a template like this:
+
+<pre>
+&ltscript id="jmodifyTemplate" type="text/x-jquery-tmpl"&gt
+<text>using (Html.BeginForm()) {</text>
+&ltdiv&gt  
+  &ltp&gt
+    <text>&ltb&gtCustomerID: &lt/b&gt Html.KoTextBoxFor( .. ) &ltbr&gt</text>
+    <text>Html.ValidationMessageFor( .. )</text>
+  &lt/p&gt
+  &ltp&gt
+    <text>&ltb&gtCustomerID: &lt/b&gt Html.KoTextBoxFor( .. ) &ltbr&gt</text>
+    <text>Html.ValidationMessageFor( .. )</text>
+  &lt/p&gt
+&lt/div&gt
+<text>}</text>
+&lt/script&gt
+</pre>
+
+As you can see, there are a custom html helper. By this helper you can create the input field with
+the "data-bind=value x" attribute. There are 5 type of html helper:<br /><br />
+
+Html.KoTextBoxFor(), Create a base input field with default binding (By default the value it is 
+set in a string format). If you want a  typed value on the viewmodel you must use the helper below. 
+Inside the javascript file, there are custom knockout binding.
+
+<br /><br />
+Html.KoTextBoxStrFor(), Create an input field that use Knockout custom binding string:
+<pre>
+ko.bindingHandlers.valueStr = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                underlyingObservable(jQuery.trim(value));
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+</pre>
+<br />
+Html.KoTextBoxIntFor(), Create an input field that use Knockout custom binding integer
+<pre>
+ko.bindingHandlers.valueInt = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                if (!isNaN(value)) {
+                    underlyingObservable(parseInt(value));
+                }
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+</pre>
+<br />
+Html.KoTextBoxDecFor(), Create an input field that use Knockout custom binding decimal
+<pre>
+ko.bindingHandlers.valueDec = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                if (!isNaN(value)) {
+                    underlyingObservable(parseFloat(value));
+                }
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+</pre>
+<br />
+5) Html.KoTextBoxBolFor(), Create an input field that use Knockout custom binding boolean
+<pre>
+ko.bindingHandlers.valueBol = { 
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                underlyingObservable(Boolean(value));
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+</pre>
+<br />
+In this way the values ​​will be automatically typed.
+</div>
+
+<br /><br />

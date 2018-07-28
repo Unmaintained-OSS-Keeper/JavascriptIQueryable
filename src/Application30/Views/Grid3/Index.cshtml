@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index - No linq enabled</h2>
+
+<div align="center">
+  <b>In this section you will find examples where query linq are disabled. In 
+       this sections will be used client and server side template.</b>
+</div>
+
+<br /><br />
+
+<div align="center">
+  @Html.ActionLink("Query with pagingWithSize(10)/server template", "page01", "Grid3")<br />
+  @Html.ActionLink("Query with pagingWithSize(10)/client template", "page02", "Grid3")<br />
+  @Html.ActionLink("PagingBase without plugin/1", "page03", "Grid3")<br />  
+  @Html.ActionLink("PagingBase without plugin/2", "page04", "Grid3")<br />    
+</div>

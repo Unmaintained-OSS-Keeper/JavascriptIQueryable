@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/GridController1/zPage04.js")" type="text/javascript"></script>
+}
+
+<h2>Index - Page04</h2>
+
+<p>
+<pre>
+ context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
+pagingWithSize(10).applyTempClient("jtableTemplate1").continueWith(continue1);
+
+ context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
+pagingWithSize(10).applyTempClient("jtableTemplate2").continueWith(continue1); 
+
+context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
+     pagingWithSize(10).select("new(CustomerID,City,Country,Orders)").
+                    applyTempClient("jtableTemplate3");    
+</pre>
+</p>
+
+<div>
+   <input id="gbutton1" type="button" value="Search" />&nbsp;
+   <input id="gbutton2" type="button" value="MoveF"  />&nbsp;
+   <input id="gbutton3" type="button" value="MoveP"  />&nbsp;
+   <input id="gbutton4" type="button" value="MoveN"  />&nbsp;
+   <input id="gbutton5" type="button" value="MoveL"  />&nbsp;
+</div>
+
+<br /><br />
+
+<div id="gpane1" style="display:none">
+  <div>
+    <table> 
+    <tr>
+      <td colspan"2">
+        <select id="text1">
+          <option value="1">jtableTemplate1</option>
+          <option value="2">jtableTemplate2</option>
+          <option value="3">jtableTemplate3</option>
+        </select>
+      </td>
+    </tr>  
+    <tr>
+      <td>Country: </td>
+      <td><input id="text2" type="text" /></td>
+    </tr> 
+    </table>
+    <br /><br />
+    <input id="gbutton6" type="button" value="Find" />
+  </div>
+</div>
+
+<div id="gpane2" style="display:none">
+  <div id="jpane"></div>
+</div>
+
+<br /><br />
+
+<script id="jtableTemplate1" type="text/x-jquery-tmpl">
+<div><b>jtableTemplate1</b></div>
+<table> 
+  <tbody>
+    <tr>
+      <td> 
+        <span class="identity">CustomerID:</span> ${CustomerID} <br>
+        CompanyName: ${CompanyName} <br>
+        City: ${City} - Country: ${Country} <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</script>
+
+<script id="jtableTemplate2" type="text/x-jquery-tmpl">
+<div><b>jtableTemplate2</b></div>
+<table> 
+  <tbody>
+    <tr>
+      <td> 
+        <span class="identity">CustomerID:</span> ${CustomerID} <br>
+        ContactName: ${ContactName} <br>
+        City: ${City} - Country: ${Country} <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</script>
+
+<script id="jtableTemplate3" type="text/x-jquery-tmpl">
+<div><b>jtableTemplate3</b></div>
+<div> 
+<span class="identity">CustomerID:</span> ${CustomerID} <br>
+City: ${City} - Country: ${Country} <br>
+  {{each Orders}}
+    <table>
+      <tr>
+        <td width="60">${$value.OrderID}</td>
+        <td width="100">${$value.OrderDate}</td>
+        <td width="250">${$value.ShipAddress}</td>
+        <td width="250">${$value.ShipCity}</td>
+      </tr>
+    </table>	
+  {{/each}}
+  <br><br>
+</div>
+</script>

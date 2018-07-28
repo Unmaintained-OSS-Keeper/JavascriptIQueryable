@@ -1,0 +1,1125 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div align="center">
+To test this project you need to use the Northwind database. Change the connection string in the web.config.<br />
+At this time the search is broken for for special charatters å , ä , ü.
+</div>
+
+<br /><br />
+
+<div align="justify"> 
+Javascript to IQueryable is a framework that allows to write a simple query in javascript client side and then execute 
+it server side with EntityFramework or a linq provider that implement IQueryable. On the server is used "Dynamic Expressions
+and Queries in LINQ by Microsoft" to compose dynamically your query. So on the MVC controller you can put a generic entry 
+point. If you require a client-side template is used jQuery template plugin. If you require a server-side template is used 
+a MVC partial view. Server side there is also some MVC filter attribute that provide some security feature. On the server 
+if you use a view that has no navigation property you should not be allowed to navigate through all tables. In the release 
+3.0 I' added the support for jquery mobile. In the release 4.0 I' added the support for knockout. In the release 5.0 I' 
+added the support for jquery validation to knockout.
+<br /><br />
+In the reaease beta0.84 I added the support for query of type (integer,double,decimal,date,boolean). Client side (if linq is 
+enabled) you must use the methods: koWhereObjectStrAnd, koWhereObjectIntAnd, koWhereObjectDblAnd, koWhereObjectDecAnd, koWhereObjectDatAnd,
+koWhereObjectBolAnd, koWhereObjectStrOr, koWhereObjectIntOr, koWhereObjectDblOr, koWhereObjectDecOr, koWhereObjectDatOr, koWhereObjectBolOr,
+addWhereClauseStr(pvalue1, pvalue2, pvalue3), addWhereClauseInt(pvalue1, pvalue2, pvalue3), addWhereClauseDbl(pvalue1, pvalue2, pvalue3), 
+addWhereClauseDec(pvalue1, pvalue2, pvalue3), addWhereClauseDat(pvalue1, pvalue2, pvalue3), addWhereClauseBol(pvalue1, pvalue2, pvalue3). 
+By default the parameter sended to the server will be of type String. you must use the above methods to change the type. Server side (if 
+linq is not enabled) you must use the the following methods to register the querystring mapping: AddWhereMapping(string field, string op, string param),
+AddWhereMappingStr(string field, string op, string param), AddWhereMappingInt(string field, string op, string param), AddWhereMappingDbl(string field, string op, string param), 
+AddWhereMappingDec(string field, string op, string param), AddWhereMappingDat(string field, string op, string param), AddWhereMappingBol(string field, string op, string param), 
+AddWhereMappingEq(string field, string param), AddWhereMappingStrEq(string field, string param), AddWhereMappingIntEq(string field, string param), AddWhereMappingDblEq(string field, string param),
+AddWhereMappingDecEq(string field, string param), AddWhereMappingDatEq(string field, string param), AddWhereMappingBolEq(string field, string param), AddWhereMappingNq(string field, string param), 
+AddWhereMappingStrNq(string field, string param), AddWhereMappingIntNq(string field, string param), AddWhereMappingDblNq(string field, string param), AddWhereMappingDecNq(string field, string param),
+AddWhereMappingDatNq(string field, string param), AddWhereMappingBolNq(string field, string param).
+<br /><br />
+You must use the following properties to set the format of the decimal point and datetime type values (ko.iqueryable.decimalPoint = "point" / 
+ko.iqueryable.dateFormat = "date"). Point may be set to "." , ",". Date may be set to "mda", "dma", "amd". By default it will be set to "." 
+and "mda". Internally the datetime format it will be in millisecond. You can also use the plugin property "tconvertJsonDate" to convert 
+automatically the datetime that it will be returned from the server. If you set tconvertJsonDate="true" every datetime field it will be 
+converted in the corresponding string format. There are also some knockout.js custom binding to manage decimal and datetime value. For input 
+field (valueStr, valueInt,valueDec, valueDat, valueBol) . For text field (textDec, textDat). See examples in Application30-beta0.85x project
+for more details (extras files). 
+</div>
+
+<h3>Plugin (zPageGrid2.js) properties/methods</h3>
+<table>
+<tr>
+<td>tconvertJsonDate</td>
+<td>
+Convert automatically the date when it will be returned from the server. Default value "false". If you set tconvertJsonDate="true" every datetime field it will be converted in the corresponding string format.
+</td>
+</tr>
+
+<tr>
+<td>ttype</td>
+<td>
+Type of the search form "popup/hide".
+</td>
+</tr>
+
+<tr>
+<td>tpane1</td>
+<td>
+Div name of the "search-form" panel (default value 'gpane1').
+</td>
+</tr>
+
+<tr>
+<td>tpane2</td>
+<td>
+Div name of the "result" panel (default value 'gpane2'). 
+</td>
+</tr>
+
+<tr>
+<td>tpane3</td>
+<td>
+Div name of the "isloading" panel (default value 'gpane3'). 
+</td>
+</tr>
+
+<tr>
+<td>tsearch1</td>
+<td>
+The name of the button that show the search/form (default value 'gbutton1').
+</td>
+</tr>
+
+<tr>
+<td>tsearch2</td>
+<td>
+The name of the button that start the search/call (default value 'gbutton6'). 
+</td>
+</tr>
+
+<tr>
+<td>tpageF</td>
+<td>
+The name of the "first" button (default value 'gbutton2').
+</td>
+</tr>
+
+<tr>
+<td>tpageP</td>
+<td>
+The name of the "prev" button (default value 'gbutton3').
+</td>
+</tr>
+
+<tr>
+<td>tpageN</td>
+<td>
+The name of the "next" button (default value 'gbutton4'). 
+</td>
+</tr>
+
+<tr>
+<td>tpageL</td>
+<td>
+The name of the "last" button (default value 'gbutton5'). 
+</td>
+</tr>
+
+<tr>
+<td>tdomain</td>
+<td>
+The url of the base domain if you use a cross-domain request.
+</td>
+</tr>
+
+<tr>
+<td>tcontainer</td>
+<td>
+Id of the client/server template container.
+</td>
+</tr>
+
+<tr>
+<td>ttemplate</td>
+<td>
+Default client template name.
+</td>
+</tr>
+
+<tr>
+<td>tdetailPanel</td>
+<td>
+Id of the popup "detail" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>tdetailContainer</td>
+<td>
+Id of the popup "detail" template container.
+</td>
+</tr>
+
+<tr>
+<td>tdlgdetail</td>
+<td>
+Properties of the popup "detail".
+</td>
+</tr>
+
+<tr>
+<td>tcreatePanel (only knockoutjs)</td>
+<td>
+Id of the popup "create" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>tcreateContainer (only knockoutjs)</td>
+<td>
+Id of the popup "create" template container.
+</td>
+</tr>
+
+<tr>
+<td>tdlgcreate (only knockoutjs)</td>
+<td>
+Properties of the popup "create".
+</td>
+</tr>
+
+<tr>
+<td>tmodifyPanel (only knockoutjs)</td>
+<td>
+Id of the popup "modify" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>tmodifyContainer (only knockoutjs)</td>
+<td>
+Id of the popup "modify" template container.
+</td>
+</tr>
+
+<tr>
+<td>tdlgmodify (only knockoutjs)</td>
+<td>
+Properties of the popup "modify".
+</td>
+</tr>
+
+<tr>
+<td>tformViewModel (only knockoutjs)</td>
+<td>
+A function that create the search viewmodel object.
+</td>
+</tr>
+
+<tr>
+<td>tcreateViewModel (only knockoutjs)</td>
+<td>
+A function that create the create viewmodel object.
+</td>
+</tr>
+
+<tr>
+<td>tenableBackup (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable backup funtionality. In a popup modify dialog if you change a value
+of a field and then close the popup without press "update", original values will be replaced.
+</td>
+</tr>
+
+<tr>
+<td>tknockoutValidation (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable support for mvc3 jquery validation.
+</td>
+</tr>
+
+<tr>
+<td>tcustomCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcustomaction" attribute. It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>tdeleteCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jdeleteaction" attribute. It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>tinsertCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jinsertaction" attribute. It must put on the modify template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>tcancelCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcancelaction" attribute. It must put on the modify template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>tupdateCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jupdateaction" attribute. It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>tcancelCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcancelaction" attribute. It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>turlpath</td>
+<td>
+Default url rest path that is used by an ajax request.
+</td>
+</tr>
+
+<tr>
+<td>tlinqEnabled</td>
+<td>
+Enable/disable linq query.
+</td>
+</tr>
+
+<tr>
+<td>tcacheEnabled.</td>
+<td>
+Enable/disable cache and prefetch.
+</td>
+</tr>
+
+<tr>
+<td>tpage</td>
+<td>
+Default page number.
+</td>
+</tr>
+
+<tr>
+<td>getObjectInstance()</td>
+<td>
+Get an instance of the plugin ( $(...).gridTemplate("getObjectInstance") )
+</td>
+</tr>
+
+<tr>
+<td>getSource()</td>
+<td>
+Get the current data source( $(...).gridTemplate("getSource") )
+</td>
+</tr>
+
+<tr>
+<td>closeCreateDialogSuccess()</td>
+<td>
+Close the create popup. 
+( $(...).gridTemplate("closeCreateDialogSuccess") )
+</td>
+</tr>
+
+<tr>
+<td>closeCreateDialogFeilure()</td>
+<td>
+Close the create popup. 
+ ( $(...).gridTemplate("closeCreateDialogFeilure") )
+</td>
+</tr>
+
+<tr>
+<td>closeModifyDialogSuccess()</td>
+<td>
+Close the edit/modify popup. When you open a edit/modify popup, the code do a backup 
+of the viewmodel value (string, number, boolean). So when you change the value of a 
+field and close the popup without "save" it will restore the original value.
+
+( $(...).gridTemplate("closeModifyDialogSuccess") )
+</td>
+</tr>
+
+<tr>
+<td>closeModifyDialogFeilure()</td>
+<td>
+Close the edit/modify popup applay the backup/restore behaviour. When you open a
+edit/modify popup, the code do a backup of the viewmodel value (string, number, 
+boolean). So when you change the value of a field and close the popup without "save"
+ it will restore the original value.
+ ( $(...).gridTemplate("closeModifyDialogFeilure") )
+</td>
+</tr>
+
+<tr>
+<td>Event: "databound"</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>Event: "isloading"</td>
+<td>
+
+<tr>
+<td>Event: "popupdetail"</td>
+<td>
+
+<tr>
+<td>Event: "popupcreate"</td>
+<td>
+
+<tr>
+<td>Event: "popupmodify"</td>
+<td>
+</table>
+
+<br /><br />
+
+<h3>PagingBase (zPageGrid1.js) properties/methods</h3>
+<table>
+<tr>
+<td>convertJsonDate</td>
+<td>
+Convert automatically the date when it will be returned from the server. Default value "false". If you set tconvertJsonDate="true" every datetime field it will be converted in the corresponding string format.
+</td>
+</tr>
+
+<tr>
+<td>mainpane</td>
+<td>
+Div name of the "result" panel (same value as plugin 'tpane2'). 
+</td>
+</tr>
+
+<tr>
+<td>container</td>
+<td>
+Id of the client/server template container.
+</td>
+</tr>
+
+<tr>
+<td>template</td>
+<td>
+Default client template name.
+</td>
+</tr>
+
+<tr>
+<td>domain</td>
+<td>
+The url of the base domain if you use a cross-domain request.
+</td>
+</tr>
+
+<tr>
+<td>urlpath</td>
+<td>
+Default url rest path that is used by an ajax request.
+</td>
+</tr>
+
+<tr>
+<td>cacheEnabled</td>
+<td>
+Enable/disable cache and prefetch.
+</td>
+</tr>
+
+<tr>
+<td>linqEnabled</td>
+<td>
+Enable/disable linq query.
+</td>
+</tr>
+
+<tr>
+<td>detailPanel</td>
+<td>
+Id of the popup "detail" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>detailContainer</td>
+<td>
+Id of the popup "detail" template container.
+</td>
+</tr>
+
+<tr>
+<td>dlgdetail</td>
+<td>
+Properties of the popup "detail".
+</td>
+</tr>
+
+<tr>
+<td>createPanel (only knockoutjs)</td>
+<td>
+Id of the popup "create" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>createContainer (only knockoutjs)</td>
+<td>
+Id of the popup "create" template container.
+</td>
+</tr>
+
+<tr>
+<td>dlgcreate (only knockoutjs)</td>
+<td>
+Properties of the popup "create".
+</td>
+</tr>
+
+<tr>
+<td>modifyPanel (only knockoutjs)</td>
+<td>
+Id of the popup "modify" 'div'.
+</td>
+</tr>
+
+<tr>
+<td>modifyContainer (only knockoutjs)</td>
+<td>
+Id of the popup "modify" template container.
+</td>
+</tr>
+
+<tr>
+<td>dlgmodify (only knockoutjs)</td>
+<td>
+Properties of the popup "modify".
+</td>
+</tr>
+
+<tr>
+<td>formviewmodel (only knockoutjs)</td>
+<td>
+A function that create the search viewmodel object.
+</td>
+</tr>
+
+<tr>
+<td>createViewModel (only knockoutjs)</td>
+<td>
+A function that create the create viewmodel object.
+</td>
+</tr>
+
+<tr>
+<td>customCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcustomaction" attribute. It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>deleteCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jdeleteaction" attribute. It must put on the main template.
+</td>
+</tr>
+
+<tr>
+<td>insertCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jinsertaction" attribute. It must put on the create template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>cancelCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcancelaction" attribute. It must put on the create template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>updateCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jupdateaction" attribute. It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>cancelCallBack (only knockoutjs)</td>
+<td>
+The function callback of the "data-jcancelaction" attribute. It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>enableBackup (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable backup funtionality. In a popup modify dialog if you change a value
+of a field and then close the popup without press "update", original values will be replaced.
+</td>
+</tr>
+
+<tr>
+<td>knockoutValidation (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable support for mvc3 jquery validation.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel". Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectStrAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type String. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectIntAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Integer. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDblAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Double. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDecAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Decimal. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDatAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Date. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectBolAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Boolean. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel". Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectStrOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type String. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectIntOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Integer. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDblOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Double. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDecOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Decinal. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDatOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Date. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectBolOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Boolean. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereString() (only knockoutjs)</td>
+<td>
+Create a "where" clause of the current viewmodel "formviewmodel". Used if linq is not enabled. For complex clause you must create it manually. 
+It will return a querystring.
+</td>
+</tr>
+
+<tr>
+<td>koWhereViewModel() (only knockoutjs)</td>
+<td>
+Return the form search viewmodel object. 
+</td>
+</tr>
+
+<tr>
+<td>beginWhere()</td>
+<td>
+If linq is enabled: begin a where clause.
+</td>
+</tr>
+
+<tr>
+<td>addWhereClause()</td>
+<td>
+If linq is enabled: add a where clause ( ex. addWhereClause("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseStr()</td>
+<td>
+If linq is enabled: add a where clause of type String ( ex. addWhereClauseStr("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseInt()</td>
+<td>
+If linq is enabled: add a where clause of type Integer ( ex. addWhereClauseInt("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseDbl()</td>
+<td>
+If linq is enabled: add a where clause of type Double ( ex. addWhereClauseDbl("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseDec()</td>
+<td>
+If linq is enabled: add a where clause of type Decimal ( ex. addWhereClauseDec("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseDat()</td>
+<td>
+If linq is enabled: add a where clause of type Date ( ex. addWhereClauseDat("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseBol()</td>
+<td>
+If linq is enabled: add a where clause of type Boolean ( ex. addWhereClauseBol("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>endWhere()</td>
+<td>
+If linq is enabled: close and return a where clause. It will be passed in the "where(expression, param)".
+</td>
+</tr>
+
+<tr>
+<td>source</td>
+<td>
+The value of the current datasource (if client-template: is an json array/if server-template is a htmltext/if knockout: is an observable array).
+</td>
+</tr>
+
+<tr>
+<td>getCurrentTemplate()</td>
+<td>
+Return the current client side template name.
+</td>
+</tr>
+
+<tr>
+<td>clearSearch()</td>
+<td>
+Reset the object for a new search.
+</td>
+</tr>
+
+<tr>
+<td>hasWaitingRequest()</td>
+<td>
+Return 'true' if there are waiting request.
+</td>
+</tr>
+
+<tr>
+<td>loadData()</td>
+<td>
+Start a request, create a message and send it to the server. 
+</td>
+</tr>
+
+<tr>
+<td>refresh()</td>
+<td>
+Refresh the current page number.
+</td>
+</tr>
+
+<tr>
+<td>goPage(page)</td>
+<td>
+Go to page number.
+</td>
+</tr>
+
+<tr>
+<td>pageF()</td>
+<td>
+Go to first page.
+</td>
+</tr>
+
+<tr>
+<td>pageP()</td>
+<td>
+Go to prev page.
+</td>
+</tr>
+
+<tr>
+<td>pageN()</td>
+<td>
+Go to next page.
+</td>
+</tr>
+
+<tr>
+<td>pageL()</td>
+<td>
+Go to last page.
+</td>
+</tr>
+
+<tr>
+<td>from(resturl, group)</td>
+<td>
+Used to create a query, specify the source data as a rest url. 
+</td>
+</tr>
+
+<tr>
+<td>pagingWithSize(value)</td>
+<td>
+Set the paging  size result. This method tell the plugin that you want a paging result set.
+</td>
+</tr>
+
+<tr>
+<td>where(expression, param, ptype)</td>
+<td>
+Set the where clause. 
+If linq enabled expression and param are required (values returned from "endWhere()", "koWhereObjectAnd()", "koWhereObjectOr()"). 
+The argument ptype is an optional array, if specified set the type/value of the param array ( where(r.value,r.param,r.ptype) ).
+If linq is not enabled you must set only expression as string ("manual string" or "koWhereString()"). 
+</td>
+</tr>
+
+<tr>
+<td>orderBy(expression)</td>
+<td>
+Set the orderby clause (ex. "orderBy('Country asc, City desc')"). Param is optional.
+</td>
+</tr>
+
+<tr>
+<td>select(expression)</td>
+<td>
+Set the select clause (ex. "select('new(CustomerID, Country)')"). Param is optional.
+</td>
+</tr>
+
+<tr>
+<td>take(value)</td>
+<td>
+Specifiy the take value. If you use this method the paging function will be disabled. This is the opposite of pagingWithSize(value).
+</td>
+</tr>
+
+<tr>
+<td>skip(value)</td>
+<td>
+Specifiy the skip value. If you use this method the paging function will be disabled. This is the opposite of pagingWithSize(value).
+</td>
+</tr>
+
+<tr>
+<td>applyTempClient(value)</td>
+<td>
+Apply a client side templete (jquery template).
+If you do not specify the param, will be used the default template "template".
+If you specify a "string" will be a template-name. If you specify a "function" will be a call back function,
+inside of which, there is the logic that applies the template.
+</td>
+</tr>
+
+<tr>
+<td>applyTempServer(value)</td>
+<td>
+Apply a server side templete (mvc partialview).
+If you do not specify the param, will be used the default mvc action view.
+If you specify a "string" will be a template-name. If you specify a "function" will be a call back function,
+inside of which, there is the logic that applies the template.
+</td>
+</tr>
+
+<tr>
+<td>applyTempKo(callBackMapKnock,callBackTemplate)</td>
+<td>
+Request a knockout-template. Params are optionals.
+Param "callBackMapKnock" is the callback function that trasform the array returned from the
+server to observable, applying a custom logic (by default will be converted to observable).
+Param "callBackTemplate" is the callback function inside of which, there is the logic that
+applies the template.
+</td>
+</tr>
+
+<tr>
+<td>showGridKo(data,callBackMapKnock,callBackTemplate)</td>
+<td>
+Request a knockout-template. data is an array of json data. callBackMapKnock,callBackTemplate
+params are optionals. Param "callBackMapKnock" is the callback function that trasform the array
+returned from the server to observable, applying a custom logic (by default will be converted 
+to observable). Param "callBackTemplate" is the callback function inside of which, there is 
+the logic that applies the template. This is useful if you works with in memory data, you can
+filter it using linq.js - LINQ for JavaScript.
+</td>
+</tr>
+
+<tr>
+<td>continueWith(callBackfunc)</td>
+<td>
+Set the callback function that will be called the first time.
+</td>
+</tr>
+
+<tr>
+<td>exec()</td>
+<td>
+Call the "loadData()" and return "this".
+</td>
+</tr>
+
+<tr>
+<td>Event: "databound"</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>Event: "isloading"</td>
+<td>
+
+<tr>
+<td>Event: "popupdetail"</td>
+<td>
+
+<tr>
+<td>Event: "popupcreate"</td>
+<td>
+
+<tr>
+<td>Event: "popupmodify"</td>
+<td>
+
+</td>
+</tr>
+</table>
+
+<br /><br />
+
+<h3>Callback arguments (customCallBack,deleteCallBack,insertCallBack,updateCallBack,cancelCallBack)</h3>
+<table>
+<tr>
+<td>element (only knockoutjs)</td>
+<td>
+The html element.
+</td>
+</tr>
+
+<tr>
+<td>context (only knockoutjs)</td>
+<td>
+The PagingBase object.
+</td>
+</tr>
+
+<tr>
+<td>dataitemJs (only knockoutjs)</td>
+<td>
+The viemodel object (javascript).
+</td>
+</tr>
+
+<tr>
+<td>dataitemKo (only knockoutjs)</td>
+<td>
+The viemodel object (observable).
+</td>
+</tr>
+
+<tr>
+<td>removeCurrent() (only knockoutjs)</td>
+<td>
+Remove current object from the observable array.
+</td>
+</tr>
+
+<tr>
+<td>currentIndex() (only knockoutjs)</td>
+<td>
+The index of the current object.
+</td>
+</tr>
+
+<tr>
+<td>getArrayJs() (only knockoutjs)</td>
+<td>
+Return an array in "javascript" format.
+</td>
+</tr>
+
+<tr>
+<td>getArrayKo() (only knockoutjs)</td>
+<td>
+Return an array in "observable" format.
+</td>
+</tr>
+</table>
+
+<br /><br />
+
+<h3>HTML "data-" attribute</h3>
+<table>
+<tr>
+<td>data-jdetailtemplate</td>
+<td>
+Must put it on a link. Name of the popup detail template.
+It must put on the main template.
+</td>
+</tr>
+
+<tr>
+<td>data-jdetailaction</td>
+<td>
+Must put it on a link. It tell the plugin that the link show a detail popup.
+It must put on the main template.
+</td>
+</tr>
+
+<tr>
+<td>data-jcreateaction</td>
+<td>
+Must put it on a link. It tell the plugin that the link show a  create  popup.
+It must put on the main template.
+</td>
+</tr>
+
+<tr>
+<td>data-jmodifyaction</td>
+<td>
+Must put it on a link. It tell the plugin that the link show a  edit  popup.
+It must put on the main template.
+</td>
+</tr>
+
+<tr>
+<td>data-jcustomaction</td>
+<td>
+Must put it on a button/link. It call the "tcustomCallBack" callback.
+It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>data-jdeleteaction</td>
+<td>
+Must put it on a button/link. It call the "tdeleteCallBack" callback.
+It must put on the main template. 
+</td>
+</tr>
+
+<tr>
+<td>data-jinsertaction</td>
+<td>
+Must put it on a button/link. It call the "tinsertCallBack" callback.
+It must put on the create template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>data-jcancelaction</td>
+<td>
+Must put it on a button/link. It call the "tcancelCallBack" callback.
+It must put on the modify template (tcreatePanel/tcreateConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>data-jupdateaction</td>
+<td>
+Must put it on a button/link. It call the "tupdateCallBack" callback.
+It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+</td>
+</tr>
+
+<tr>
+<td>data-jcancelaction</td>
+<td>
+Must put it on a button/link. It call the "tcancelCallBack" callback.
+It must put on the modify template (tmodifyPanel/tmodifyConteiner). 
+</td>
+</tr>
+</table>

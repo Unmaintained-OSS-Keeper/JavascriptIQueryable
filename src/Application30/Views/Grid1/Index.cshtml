@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index - Client template</h2>
+
+<div align="center">
+  In this section you will find examples that use client template (jquery template).<br />
+  At this time the search is broken for for special charatters å , ä , ü.<br />
+  <h4>In this sections will be used client side template.</h4>
+</div>
+
+<br /><br />
+
+<div align="center">
+  @Html.ActionLink("Query with skip(3).take(6)*", "page01", "Grid1")<br />
+  @Html.ActionLink("Query with pagingWithSize(10)*", "page02", "Grid1")<br />
+  @Html.ActionLink("Query with pagingWithSize/template", "page03", "Grid1")<br />  
+  @Html.ActionLink("Query with pagingWithSize/template", "page04", "Grid1")<br />    
+  @Html.ActionLink("Query with custom template", "page05", "Grid1")<br />  
+</div>

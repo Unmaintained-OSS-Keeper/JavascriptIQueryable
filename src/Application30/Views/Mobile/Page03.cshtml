@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+<title>Pagina3</title>
+<meta content="width=device-width,minimum-scale=1,maximum-scale=3" name="viewport">.
+<link href="../../JQueryMobile/jquery.mobile-1.0rc2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../JQueryMobile/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="../../Scripts/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-2.0.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.mapping.js"></script>
+<script type="text/javascript" src="../../Scripts/json2.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid1.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid3.js"></script>
+<script type="text/javascript" src="../../Scripts/Mobile/zPage03.js"></script>
+<script type="text/javascript" src="../../JQueryMobile/jquery.mobile-1.0rc2.js"></script>
+</head>
+<body>
+
+<!-- page -->
+<div id="page1" data-role="page">
+	<div data-role="header">
+		<h1>Page Title 1a</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-1 goes here (@DateTime.Now).</p>
+    <div>
+    <table>    
+    <tr>
+      <td>City: </td>
+      <td><input id="text1" type="text" /></td>
+    </tr>  
+    <tr>
+      <td>Country: </td>
+      <td><input id="text2" type="text" /></td>
+    </tr> 
+    </table>
+    <br /><br />
+    <a href="#page2" data-transition="fade">Find</a>
+    <br /><br />
+    </div>	
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page2" data-role="page" data-jresturl="GetData1" data-jpagesize="10" data-jtypetemplate="client" data-jnametemplate="template2" data-jcontainer="c2" 
+  data-jparam01="#text1" data-jparam02="#text2" data-jparam03="#text3" data-jfselecting="selecting2" data-jfdatabound="databound2" data-jtouchaction="true">
+	<div data-role="header">
+		<h1>Page Title-2</h1>
+    <div data-role="controlgroup" data-type="horizontal">
+      <a id="buttonR" data-role="button" data-jnavbaraction="refresh">Refresh</a>
+      <a id="buttonF" data-role="button" data-jnavbaraction="pageF">MoveF</a>
+      <a id="buttonP" data-role="button" data-jnavbaraction="pageP">MoveP</a>
+      <a id="buttonN" data-role="button" data-jnavbaraction="pageN">MoveN</a>
+      <a id="buttonL" data-role="button" data-jnavbaraction="pageL">MoveL</a>
+    </div>    
+	</div>
+	<div data-role="content">	
+		<p>Page content-2 goes here (@DateTime.Now).</p>
+    <a data-rel="back" data-jbackcurrpage="true" data-direction="reverse">Back</a><br /> 		
+    <div>
+    <table id="jtable2">
+    <thead>
+    <tr>
+      <td> &nbsp; </td>
+      <td data-sort="CustomerID"> CustomerID </td>
+      <td data-sort="ContactName"> ContactName </td>
+      <td data-sort="ContactTitle"> ContactTitle </td>
+      <td data-sort="City"> City </td>
+      <td data-sort="Country"> Country </td>
+    </tr>
+    </thead>
+    <tbody id="c2"></tbody>
+    </table>
+    </div>	
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page3" data-role="page" data-jresturl="none" data-jtypetemplate="client"
+              data-jnametemplate="template3" data-jcontainer="c3">
+	<div data-role="header">
+		<h1>Page Title-3</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-3 goes here (@DateTime.Now).</p>		
+    <a data-rel="back" data-jbackcurrpage="true" data-direction="reverse">Back</a><br /> 		
+    <div>
+    <table id="jtable3">
+    <thead>
+    <tr>
+      <td> &nbsp; </td>
+      <td data-sort="CustomerID"> CustomerID </td>
+      <td data-sort="CompanyName"> CompanyName </td>
+      <td data-sort="ContactTitle"> ContactTitle </td>
+      <td data-sort="City"> City </td>
+      <td data-sort="Country"> Country </td>
+    </tr>
+    </thead>
+    <tbody id="c3"></tbody>
+    </table>
+    </div>	
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<script id="template2" type="text/x-jquery-tmpl">
+<tr>
+  <td><a href="#page3" data-jsavecurritem="true">${CustomerID}/2</a></td>
+  <td> ${CustomerID} </td>
+  <td> ${ContactName} </td>
+  <td> ${ContactTitle} </td>
+  <td> ${City} </td>
+  <td> ${Country} </td>
+</tr>
+</script>
+
+<script id="template3" type="text/x-jquery-tmpl">
+<tr>
+  <td>${CustomerID}/3 </td>
+  <td> ${CustomerID} </td>
+  <td> ${CompanyName} </td>
+  <td> ${ContactTitle} </td>
+  <td> ${City} </td>
+  <td> ${Country} </td>
+</tr>
+</script>
+
+</body>
+</html>
