@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@section header{
+    <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/GridController1/zPage02.js")" type="text/javascript"></script>
+}
+
+<h2>Index - Page02</h2>
+
+<p>
+<pre>
+context.from("/Grid1/GetDataJson").where(where,param).orderBy(
+     "CustomerID").pagingWithSize(10).applyTempClient();
+</pre>
+</p>
+
+<div>
+   <input id="gbutton1" type="button" value="Search" />&nbsp;
+   <input id="gbutton2" type="button" value="MoveF"  />&nbsp;
+   <input id="gbutton3" type="button" value="MoveP"  />&nbsp;
+   <input id="gbutton4" type="button" value="MoveN"  />&nbsp;
+   <input id="gbutton5" type="button" value="MoveL"  />&nbsp;
+</div>
+
+<br /><br />
+
+<div id="gpane1" style="display:none">
+  <div>
+    <table> 
+    <tr>
+      <td>City: </td>
+      <td><input id="text1" type="text" /></td>
+    </tr>  
+    <tr>
+      <td>Country: </td>
+      <td><input id="text2" type="text" /></td>
+    </tr> 
+    </table>
+    <br /><br />
+    <input id="gbutton6" type="button" value="Find" />
+  </div>
+</div>
+
+<div id="gpane2" style="display:none">
+  <div>
+    <table id="jtable">
+    <thead>
+    <tr>
+      <td data-sort="CustomerID"> CustomerID </td>
+      <td data-sort="CompanyName"> CompanyName </td>
+      <td data-sort="ContactName"> ContactName </td>
+      <td data-sort="ContactTitle"> ContactTitle </td>
+      <td data-sort="Address"> Address </td>
+      <td data-sort="City"> City </td>
+      <td data-sort="Country"> Country </td>
+    </tr>
+    </thead>
+    <tbody id="jlist"></tbody>
+    </table>
+  </div>
+</div>
+
+<br /><br />
+
+<script id="jtableTemplate" type="text/x-jquery-tmpl">
+<tr>
+  <td> ${CustomerID} </td>
+  <td> ${CompanyName} </td>
+  <td> ${ContactName} </td>
+  <td> ${ContactTitle} </td>
+  <td> ${Address} </td>
+  <td> ${City} </td>
+  <td> ${Country} </td>
+</tr>
+</script>
