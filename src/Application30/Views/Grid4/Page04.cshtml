@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/GridController4/zPage04.js")" type="text/javascript"></script>
+}
+
+<h2>Index - Page04</h2>
+
+<p>
+<pre>
+context.from("/Grid4/GetDataJson1").pagingWithSize(10).where(swhere).
+             orderBy("Country,City desc ").applyTempKo();
+</pre>
+</p>
+<p>
+Knockout is used in this example, in the search form and in the templates. 
+Linq is not enabled.
+</p>
+
+<div>
+   <input id="gbutton1" type="button" value="Search" />&nbsp;
+   <input id="gbutton2" type="button" value="MoveF"  />&nbsp;
+   <input id="gbutton3" type="button" value="MoveP"  />&nbsp;
+   <input id="gbutton4" type="button" value="MoveN"  />&nbsp;
+   <input id="gbutton5" type="button" value="MoveL"  />&nbsp;
+</div>
+
+<br /><br />
+
+<div id="gpane1" style="display:none">
+  <div>
+    <table class="viewmodel">    
+    <tr>
+      <td>City: </td>
+      <td><input id="text1" data-bind="value: campo1" /></td>
+    </tr>  
+    <tr>
+      <td>Country: </td>
+      <td><input id="text2" data-bind="value: campo2" /></td>
+    </tr> 
+    </table>
+    <br /><br />
+    <input id="gbutton6" type="button" value="Find" />
+  </div>
+</div>
+
+<div id="gpane2" style="display:none">
+  <table id="jtable">
+  <tr>
+    <td colspan="4"> &nbsp; </td>
+    <td data-sort="CustomerID"> CustomerID </td>
+    <td data-sort="CompanyName"> CompanyName </td>
+    <td data-sort="ContactTitle"> ContactTitle </td>
+    <td data-sort="Address"> Address </td>
+    <td data-sort="City"> City </td>
+    <td data-sort="Country"> Country </td>
+  </tr>
+  <tbody id="jlist" data-bind="template: {name: 'temp1', foreach: $data}"></tbody>
+  </table>   
+</div>
+
+<div id="gdialog1" style="display:none;height:100px">
+  <div id="jlist1" data-bind="template:'jdetailTemplate'"></div>
+</div>
+
+<div id="gdialog2" style="display:none;height:100px">
+  <div id="jlist2" data-bind="template:'jmodifyTemplate'"></div>
+  <div>
+    <a href="#" data-jupdateaction>Update</a>&nbsp;
+    <a href="#" data-jcancelaction>Cancel</a>&nbsp;
+  </div>
+</div>
+
+<script id="temp1" type="text/html">
+  <tr class="pagingbase-ui-selected-ou"> 
+    <td><a href="#" data-jcustomaction>Custom</a></td>
+    <td><a href="#" data-jdeleteaction>Delete</a></td>
+    <td><a href="#" data-jdetailtemplate="jdetailTemplate" 
+              data-jdetailaction>Detail</a></td>
+    <td><a href="#" data-jmodifytemplate="jmodifyTemplate" 
+              data-jmodifyaction>Modify</a></td>
+    <td> ${CustomerID} </td>
+    <td> ${CompanyName} </td>
+    <td> ${ContactTitle} </td>
+    <td> ${Address} </td>
+    <td> ${City} </td>
+    <td> ${Country} </td>
+  <tr>
+</script>
+
+<script id="jdetailTemplate" type="text/x-jquery-tmpl">
+  <b>CustomerID: </b><span data-bind="text: CustomerID" /></span><br>
+  <b>CompanyName: </b><span data-bind="text: CompanyName" /></span><br>
+  <b>City: </b><span data-bind="text: City" /></span><br>
+  <b>Country: </b><span data-bind="text: Country" /></span><br>
+</script>
+
+<script id="jmodifyTemplate" type="text/x-jquery-tmpl">
+  <p><b>CustomerID: </b><input data-bind="value: CustomerID" /></p>
+  <p><b>CompanyName: </b><input data-bind="value: CompanyName" /></p>
+  <p><b>City: </b><input data-bind="value: City" /></p>
+  <p><b>Country: </b><input data-bind="value: Country" /></p>
+</tr>
+</script>

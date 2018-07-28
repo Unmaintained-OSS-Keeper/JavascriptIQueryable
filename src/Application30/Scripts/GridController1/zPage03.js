@@ -22,8 +22,10 @@ function searchfrm(context) {
     var index = 0;
     var where = "";
     var text1 = $("#text1").val();
+    text1 = jQuery.trim(text1);
     var text2 = $("#text2").val();
-    var param = new Array(1);   
+    text2 = jQuery.trim(text2);
+    var param = new Array();   
     
    if (text2 != "") {
         if (where != "")

@@ -1,0 +1,8 @@
+Knockout can be used in two separate places. First in the search form. Second in the layout template.
+In the first place, we need to specify the callback function that creates the viewmodel 
+object through the "tformViewModel" properties. Then I will use the methods koWhereObjectAnd(), koWhereObjectOr() ,
+koWhereString() and koWhereViewModel() to create the param that I will put into the where clause 
+"where(expression, param)". In the second place I will specify "applyTempKo(callBackMapKnock,callBackTemplate)"
+on the query projection. This tell the plugin that convert the result set in an observable array.
+And then, apply a knockout template. If I use a callback function "callBackMapKnock" in the where clause,
+ I can create a custom viewmodel with properties and methods.

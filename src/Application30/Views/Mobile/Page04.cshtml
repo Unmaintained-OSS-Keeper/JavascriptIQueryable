@@ -7,6 +7,8 @@
 <link href="../../JQueryMobile/jquery.mobile-1.0rc2.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../JQueryMobile/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="../../Scripts/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-2.0.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.mapping.js"></script>
 <script type="text/javascript" src="../../Scripts/json2.js"></script>
 <script type="text/javascript" src="../../Scripts/zPageGrid1.js"></script>
 <script type="text/javascript" src="../../Scripts/zPageGrid3.js"></script>
@@ -84,7 +86,7 @@
 
 <!-- page -->
 <div id="page3" data-role="page" data-jresturl="GetData1" data-jtypetemplate="client"
-      data-jnametemplate="template3" data-jcontainer="c3" data-jparam01="*City">
+       data-jnametemplate="template3" data-jcontainer="c3" data-jparam01="*City">
 	<div data-role="header">
 		<h1>Page Title-3</h1>  
 	</div>
@@ -126,7 +128,7 @@
 
 <script id="template3" type="text/x-jquery-tmpl">
 <tr>
-  <td><a href="#page3" data-jsavecurritem="true">${CustomerID}/3</a></td>
+  <td>${CustomerID}/3 </td>
   <td> ${CustomerID} </td>
   <td> ${CompanyName} </td>
   <td> ${ContactTitle} </td>

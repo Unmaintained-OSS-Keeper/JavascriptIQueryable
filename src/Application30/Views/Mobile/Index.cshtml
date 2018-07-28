@@ -3,10 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section header{
-    <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/Mobile/zIndex.js")" type="text/javascript"></script>
+@section header{   
     <script type="text/javascript">
       $(document).ready(function () {
         $("#accordion").accordion(); 
@@ -50,20 +47,20 @@
      <div>
        In this example there are 3 page. The first is a form-serch page. The second fetch 
        data from the search conditions (on page definition you can see "data-jparam01='#text1'", "data-jparam02='#text2'"
-       this tell the framework which are the test field to use for the search).The third is a detail page of the selected item (it not go on db).
-       On this page you cab see "data-jresturl='none'", this tell to the framework do not sends a rest call,
-       it take the current item. The current item is selected when you apply "data-jsavecurritem='true'" on 
-       the template link. Navigation button have "data-jnavbaraction='refresh'" that tell the framework which command apply.
+       this tell the framework which are the text field to use for the search).The third is a detail page of the selected item (it not go on db).
+       On this page you can see "data-jresturl='none'", this tell to the framework do not sends a rest call,
+       it take the current item. The current item is selected/saved when you put "data-jsavecurritem='true'" on 
+       the template link. Navigation button have "data-jnavbaraction='<i>action</i>'" that tell the framework which command apply.
      </div>
      <h3><a href="#">example-04</a></h3>
      <div>
        In this example there are 3 page. The first is a form-serch page. The second fetch 
        data from the search conditions (on page definition you can see "data-jparam01='#text1'", "data-jparam02='#text2'"
-       this tell the framework which are the test field to use for the search). The third is a detail page of the selected item (it go on db  ).
-       On this page you cab see "data-jresturl='value'", this tell to the framework sends a rest call,
-       it take the current item and then create a link. On page definition you can see data-jparam01="*City" .
-       The current item is selected when you apply "data-jsavecurritem='true'" on the template link.
-       Navigation button have "data-jnavbaraction='refresh'" that tell the framework which command apply.
+       this tell the framework which are the text field to use for the search). The third is a detail page of the selected item (it go on db  ).
+       On this page you can see "data-jresturl='value'", this tell to the framework to send a rest call,
+       it take the current item and then create a param link. On page definition you can see data-jparam01="*City" .
+       The current item is selected/saved when you apply "data-jsavecurritem='true'" on the template link.
+       Navigation button have "data-jnavbaraction='<i>action</i>'" that tell the framework which command apply.
      </div>  
      <h3><a href="#">example-05</a></h3>
      <div>
@@ -72,54 +69,10 @@
      </div>
      <h3><a href="#">example-06</a></h3>
      <div>
-       Same as example-02 but with "jautorun=false" and a single page. In this case the 
-       data are not retrived when the page is loaded, but when I click the link  "<a data-jselectaction='true'>Find</a>"
+       Same as example-02 but with "jautorun=false" and it is a single page. In this case the data are not retrived when
+       the page is loaded, but when I click the button link "Find", on this link there is the "data-jselectaction='true'" attribute.
      </div>
-   </div>  
-   <br /><br />     
-   <input id="gbutton1" type="button" value="Search" />&nbsp;
-   <input id="gbutton2" type="button" value="MoveF"  />&nbsp;
-   <input id="gbutton3" type="button" value="MoveP"  />&nbsp;
-   <input id="gbutton4" type="button" value="MoveN"  />&nbsp;
-   <input id="gbutton5" type="button" value="MoveL"  />&nbsp;
-</div>
-
-<br /><br />
-
-<div id="gpane1" style="display:none">
-  <div>
-    <table> 
-    <tr>
-      <td>City: </td>
-      <td><input id="text1" type="text" /></td>
-    </tr>  
-    <tr>
-      <td>Country: </td>
-      <td><input id="text2" type="text" /></td>
-    </tr> 
-    </table>
-    <br /><br />
-    <input id="gbutton6" type="button" value="Find" />
-  </div>
-</div>
-
-<div id="gpane2" style="display:none">
-  <div>
-    <table id="jtable">
-    <thead>
-    <tr>
-      <td data-sort="CustomerID"> CustomerID </td>
-      <td data-sort="CompanyName"> CompanyName </td>
-      <td data-sort="ContactName"> ContactName </td>
-      <td data-sort="ContactTitle"> ContactTitle </td>
-      <td data-sort="Address"> Address </td>
-      <td data-sort="City"> City </td>
-      <td data-sort="Country"> Country </td>
-    </tr>
-    </thead>
-    <tbody id="jlist"></tbody>
-    </table>
-  </div>
+   </div>    
 </div>
 
 <br /><br />
@@ -153,7 +106,7 @@ Specify the url.
 <td>data-jpagesize</td>
 <td>
 <div align="justify">
-Specify the pagesize. Optionale if not specified pagesize=9999 and paging is not enabled.
+Specify the pagesize. Optional, if not specified pagesize=9999 and paging is not enabled.
 </div>
 </td>
 </tr>
@@ -200,6 +153,50 @@ Specify search's param. There are 3 type of param. 1) value: data-jparam01="germ
 </tr>
 
 <tr>
+<td>data-jsavecurritem="true"</td>
+<td>
+<div align="justify">
+It must put on a button/link template. It tell the framework that must pass the current
+dataitem to the next page. It saves the current item and then pass it  through "changePage"
+event of jquery mobile.
+</div>
+</td>
+</tr>
+
+<tr>
+<td>data-jautorun="false"</td>
+<td>
+<div align="justify">
+Default behavior is that a query/search begin when you go on a new page. 
+On the page definitions tell the framework do not start query/search automaticaly when you
+go on a new page. The search start when you press a button/link where there is an attribute
+data-jselectaction="true".
+</div>
+</td>
+</tr>
+
+<tr>
+<td>data-jselectaction="true"</td>
+<td>
+<div align="justify">
+It must put on a button/link searchform. The plugin register it and when you press the button/link a new 
+query/search start. This overrides the default behavior where a new query/search start
+when you go on a new page. 
+</div>
+</td>
+</tr>
+
+<tr>
+<td>data-jnavbaraction='<i>action</i>'</td>
+<td>
+<div align="justify">
+The param action can be "refresh,pageF,pageP,pageN,pageL". It tells the plugin that
+this is a navigation button of the current datasource. 
+</div>
+</td>
+</tr>
+
+<tr>
 <td>data-jfselecting</td>
 <td>
 <div align="justify">
@@ -226,47 +223,5 @@ Specify isloading event.
 </td>
 </tr>
 
-<tr>
-<td>data-jsavecurritem="true"</td>
-<td>
-<div align="justify">
-On a link's template tell the framework that pass dataitem to the next page.
-</div>
-</td>
-</tr>
-
-<tr>
-<td>data-jautorun="false"</td>
-<td>
-<div align="justify">
-On the page definitions tell the framework do not start search automaticaly. The search
-start when you press a link where there is an attribute data-jselectaction="true".
-</div>
-</td>
-</tr>
-
-<tr>
-<td>data-jselectaction="true"</td>
-<td>
-<div align="justify">
-On a link's search form tell the framework that start the search.
-</div>
-</td>
-</tr>
-
 </table>
 </div>
-
-<br /><br />
-
-<script id="jtableTemplate" type="text/x-jquery-tmpl">
-<tr>
-  <td> ${CustomerID} </td>
-  <td> ${CompanyName} </td>
-  <td> ${ContactName} </td>
-  <td> ${ContactTitle} </td>
-  <td> ${Address} </td>
-  <td> ${City} </td>
-  <td> ${Country} </td>
-</tr>
-</script>

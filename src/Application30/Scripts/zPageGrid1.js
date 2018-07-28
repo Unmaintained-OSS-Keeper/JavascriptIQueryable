@@ -1,5 +1,11 @@
 ﻿
-/// <reference path="jquery-1.5.1.min.js" />
+/// <reference path="jquery-1.5.1.js" />
+/// <reference path="knockout-2.0.0.js" />
+
+//
+// javascript-to-IQueryable-preview-4.0
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
+//
 
 Function.prototype.inherits = function (superclass) {
     this.prototype = new superclass();
@@ -13,6 +19,7 @@ function PagingBase() {
     var cache = new Array(maxcache);
     var that = this;
 
+    this.panetemp = "";
     this.container = "";
     this.template = "";
     this.urlpath = "";
@@ -21,16 +28,28 @@ function PagingBase() {
     this.detailPanel = "";
     this.detailContainer = "";
     this.dlgdetail = { modal: true, width: 600 };
+    this.modifyPanel = "";
+    this.modifyContainer = "";
+    this.dlgmodify = { modal: true, width: 600 };
+    this.formviewmodel = undefined;
+    this.customCallBack = undefined;
+    this.deleteCallBack = undefined;
+    this.updateCallBack = undefined;
+    this.cancelCallBack = undefined;
+    this.enableBackup = true;
     this.source = {};
 
-    this._colorder;
+    this._colorder;   
     this._owhere = {};
     this._swhere = "";
     this._sorder = "";
-    this._typeview = "client"; 
-    this.templatename = ""; 
-    this._callBackTemplate = null; 
+    this._typeview = "client";
+    this._bkdata = undefined;
+    this._koenabled = false;
+    this._templatename = ""; 
+    this._callBackTemplate = null;
     this._callBackContinue = null;
+    this._callBackMapKnock = null;
     this._enablepaging = false;
     this._waitaction = false;
     this._waitschedule = false;
@@ -55,7 +74,7 @@ function PagingBase() {
     // ---------------------------------------------------------------
 
     this.initPagingBase = function () {
-        this._detailDialogConfigure();      
+        this._dialogConfigure();      
     }
 
     this._setColumnOrder = function (col) {
@@ -66,6 +85,10 @@ function PagingBase() {
         else ord = "desc";
         $(this).data("colorder", ord);
         scol = col + " " + ord
+        if (this.linqEnabled === false) {
+            this._sorder = scol;
+            return;
+        }
         this._message.order.value = scol;
         this._message.order.param = null;
     }
@@ -136,8 +159,62 @@ function PagingBase() {
 
     // ---------------------------------------------------------------
 
+    this.koWhereObjectAnd = function () {
+        if (!this.formviewmodel)
+            return;
+        var vm = this.koWhereViewModel();
+        this.beginWhere("and");
+        for (name in vm) {
+            var value = vm[name];
+            value = jQuery.trim(value);
+            if (value) {
+                this.addWhereClause(name, "=", value);
+            }
+        }
+        return this.endWhere();
+    }
+
+    this.koWhereObjectOr = function () {
+        if (!this.formviewmodel)
+            return;
+        var vm = this.koWhereViewModel();
+        this.beginWhere("or");
+        for (name in vm) {
+            var value = vm[name];
+            value = jQuery.trim(value);
+            if (value) {
+                this.addWhereClause(name, "=", value);
+            }
+        }
+        return this.endWhere();
+    }
+
+    this.koWhereString = function () {
+        if (!this.formviewmodel)
+            return;
+        var vm = this.koWhereViewModel();
+        var clause = "";
+        for (name in vm) {
+            var value = vm[name];
+            value = jQuery.trim(value);
+            if (value) {
+                if (clause != "")
+                   clause = clause + "&" + name + "=" + value;
+                else clause = clause + name + "=" + value;
+            }
+        }
+        return clause;
+    }
+
+    this.koWhereViewModel = function () {
+        if (!this.formviewmodel)
+            return;
+        var vm = ko.toJS(this.formviewmodel);
+        return vm;
+    }
+
     this.beginWhere = function (op) {
-        this._owhere = this._createWhere(op);
+        this._owhere = this._createWhere(op); 
         this._owhere.beginWhere();
     }
 
@@ -147,15 +224,23 @@ function PagingBase() {
 
     this.endWhere = function () {
         return this._owhere.endWhere();
-    }  
+    }
+
+    this.getCurrentTemplate = function () {
+        return this._templatename;
+    }
 
     this.clearSearch = function () {
-        this._colorder;
+        this._bkdata = undefined;
+        this._colorder = undefined;
         this._owhere = {};
         this._swhere = "";
         this._typeview = "client";
+        this._bkdata = undefined;
+        this._koenabled = false;
         this._callBackTemplate = null;
         this._callBackContinue = null;
+        this._callBackMapKnock = null;
         this._enablepaging = false;
         this._waitaction = false;
         this._waitschedule = false;
@@ -166,7 +251,7 @@ function PagingBase() {
         this._records = -1;
         this._pagesize = 9999;
         this._page = 1;
-        this.templatename = this.template;
+        this._templatename = this.template;
         this._callBackTemplate = this._renderTemplateClient;
         this._message = this._createMessage();
     }   
@@ -291,7 +376,10 @@ function PagingBase() {
             var entry = this._findCache(page);
             if (entry) {
                 this.source = entry;
-                this._renderTemplateClient(entry);
+                if (this._koenabled == false)
+                    this._renderTemplateClient(entry);
+                else 
+                    this._renderTemplateKonock(entry);
                 this._raiseDatabound(this, entry);
                 if (enableprefetch === true)
                     this._prefetch1();
@@ -319,7 +407,7 @@ function PagingBase() {
                 valret = valret + "&orderby=" + this._sorder;
         }
         if (this._typeview == "server") {
-            surl = surl + "?view=" + this.templatename;
+            surl = surl + "?view=" + this._templatename;
         }
         if (surl.indexOf(tkn1) != -1) {
             valret = "&" + valret;
@@ -338,6 +426,7 @@ function PagingBase() {
     this._sendAjaxRequest = function (surl, enableprefetch) {
         this._waitaction = true;
         this._raiseIsloading(true, this.page);
+        var arrsource = [];
         $.ajax(
         {
             url: surl, type: "GET", dataType: "json",
@@ -347,19 +436,20 @@ function PagingBase() {
                 that._waitaction = false;
             },
             success: function (result, state) {
+                that._debugFetch1(that._page);
+                arrsource = that._tryObservable(result.rows);
                 if (that._isCacheEnabled() === true) {
                     if (result.records != that._records)
                         that._resetCache();
                     if (    result.total < maxcache    )
-                        that._addCache1(result);
+                        that._addCache1(arrsource);
                 }
-                that._debugFetch1(that._page);  
-                that.source = result.rows;
+                that.source = arrsource;
                 that._addIndex(that.source);
                 that._records = (result.records);
                 that._pagemax = ( result.total );
-                that._callBackTemplate(result.rows);
-                that._raiseDatabound(that, result.rows);
+                that._callBackTemplate(arrsource);
+                that._raiseDatabound(that, arrsource);
                 if (that._flagfirst === true)
                     that._renderContinueWith();
                 that._flagfirst = false;
@@ -372,27 +462,39 @@ function PagingBase() {
     }
 
     this._addIndex = function (array) {
-        if (typeof array == 'string')
+        if (   typeof array == 'string'   )
+            return array;
+        if (ko.isObservable(array) == true)
             return array;
         for (var i = 0; i < array.length; i++) {
             array[i]._index = i;
         };
     }
 
-    this._renderTemplateClient = function (sdata) {
+    this._renderTemplateKonock = function (sdata) {
+        var ele = $("#" + this.container).get(0);
+        ko.cleanNode(ele);
         $("#" + this.container).empty();
-        var html = this._applayTemplate(sdata);
+        ko.applyBindings(sdata, ele);
+    }
+
+    this._renderTemplateClient = function (sdata) { 
+        $("#" + this.container).empty();
+        var html = this._applayTemplate1(sdata);
         html.appendTo("#" + this.container);
     }
 
     this._renderTemplateServer = function (sdata) {
-        $("#" + this.container).empty();
-        $("#" + this.container).html(sdata);
+        $("#" + this.container).empty().html(sdata);
     }
 
-    this._applayTemplate = function (sdata) {
-        var html = "";
-        html = $("#" + this.templatename).tmpl(sdata);
+    this._applayTemplate1 = function (sdata) {
+        var html = $("#" + this._templatename).tmpl(sdata);
+        return html;
+    }
+
+    this._applayTemplate2 = function (sdata) {
+        var html = $("#" + this._templatename).tmpl(sdata);
         return html;
     }
 
@@ -417,17 +519,47 @@ function PagingBase() {
         this._callBackContinue(view);
     }
 
-    this._detailDialogConfigure = function () {
-        var dlgcurritem = undefined;
-        $("*[data-jdetailaction]").live("click", function (event) {
-            dlgcurritem = this;
-            that._detailAction(this);
-        });
+    this._dialogConfigure = function () {
+        var dlgcurritem1 = undefined; var dlgcurritem2 = undefined;
+        if (this.panetemp) {
+            var conf1 = $("#" + this.panetemp);
+            $("*[data-jcustomaction]", conf1).live("click", function (event) {
+                event.stopPropagation();
+                that._customAction(this);
+            });
+            $("*[data-jdeleteaction]", conf1).live("click", function (event) {
+                event.stopPropagation();
+                that._deleteAction(this);
+            });
+            $("*[data-jdetailaction]", conf1).live("click", function (event) {
+                event.stopPropagation();
+                dlgcurritem1 = this;
+                that._detailAction(this);
+            });
+            $("*[data-jmodifyaction]", conf1).live("click", function (event) {
+                event.stopPropagation();
+                dlgcurritem2 = this;
+                that._modifyAction(this);
+            });
+        }
+        if (this.modifyPanel) {
+            var conf2 = $("#" + this.modifyPanel);
+            $("*[data-jupdateaction]", conf2).live("click", function (event) {
+                event.stopPropagation();
+                that._updateAction(this);
+                $("#" + that.modifyPanel).dialog("close");
+            });
+            $("*[data-jcancelaction]", conf2).live("click", function (event) {
+                event.stopPropagation();
+              //that._cancelAction(this);
+                $("#" + that.modifyPanel).dialog("close");
+            });
+        }
         if (this.detailPanel) {
-            $("#" + this.detailPanel).live("dialogopen" , function () {
-                if (!dlgcurritem)
+            $("#" + this.detailPanel).live("dialogopen", function () {
+                if (!dlgcurritem1)
                     return;
-                var parent = $(dlgcurritem).parents(".pagingbase-ui-selected-ou");
+                var parent = $(dlgcurritem1).parents(".pagingbase-ui-selected-ou");
                 if (parent.length > 0) {
                     parent.eq(0).removeClass("pagingbase-ui-selected-ou");
                     parent.eq(0).addClass("pagingbase-ui-selected-in");
@@ -436,22 +568,51 @@ function PagingBase() {
         }
         if (this.detailPanel) {
             $("#" + this.detailPanel).live("dialogclose", function () {
-                if (!dlgcurritem)
+                if (!dlgcurritem1)
                     return;
-                var parent = $(dlgcurritem).parents(".pagingbase-ui-selected-in");
+                var parent = $(dlgcurritem1).parents(".pagingbase-ui-selected-in");
                 if (parent.length > 0) {
                     parent.eq(0).removeClass("pagingbase-ui-selected-in");
                     parent.eq(0).addClass("pagingbase-ui-selected-ou");
                 }
             });
         }
+        if (this.modifyPanel) {
+            $("#" + this.modifyPanel).live("dialogopen", function () {
+                if (!dlgcurritem2)
+                    return;
+                var parent = $(dlgcurritem2).parents(".pagingbase-ui-selected-ou");
+                if (parent.length > 0) {
+                    parent.eq(0).removeClass("pagingbase-ui-selected-ou");
+                    parent.eq(0).addClass("pagingbase-ui-selected-in");
+                } 
+            });
+        }
+        if (this.modifyPanel) {
+            $("#" + this.modifyPanel).live("dialogclose", function () {
+                if (!dlgcurritem2)
+                    return;
+                var parent = $(dlgcurritem2).parents(".pagingbase-ui-selected-in");
+                if (parent.length > 0) {
+                    parent.eq(0).removeClass("pagingbase-ui-selected-in");
+                    parent.eq(0).addClass("pagingbase-ui-selected-ou");
+                }
+                that._cancelAction(dlgcurritem2); 
+            });
+        }
     }
+
+    this._closeModifyPopup = function (type) {
+        if (    type === "update"    )
+            this._bkdata = undefined;
+        $("#" + this.modifyPanel).dialog("close");
+    } 
 
     this._detailAction = function (sender) {
         var elem = $(sender);
-        var field = elem.data();    
+        var field = elem.data();
         var jdetailtemplate = "";
-        var jdetailcallback = undefined;     
+        var jdetailcallback = undefined;
         if (field && field.jdetailtemplate) {
             jdetailtemplate = field.jdetailtemplate;
         }
@@ -467,11 +628,174 @@ function PagingBase() {
             }
             return;
         }
-        $("#" + this.detailContainer).empty();
-        var html = $("#" + jdetailtemplate).tmpl(dataitem);
-        html.appendTo("#" + this.detailContainer);
-        $("#" + this.detailPanel).dialog(that.dlgdetail);
-    }   
+        if (this._koenabled == false) {
+            $("#" + this.detailContainer).empty();
+            var html = $("#" + jdetailtemplate).tmpl(dataitem);   
+            html.appendTo("#" + this.detailContainer);
+            $("#" + this.detailPanel).dialog(that.dlgdetail);
+        }
+        if (this._koenabled == true) {
+            var ele = $("#" + this.detailContainer).get(0);
+            ko.cleanNode(elem);
+            $("#" + this.detailContainer).empty();
+            ko.applyBindings(dataitem, ele);
+            $("#" + this.detailPanel).dialog(that.dlgdetail);
+        }
+    }
+
+    this._modifyAction = function (sender) {
+        var elem = $(sender);
+        var field = elem.data();
+        var jmodifytemplate = "";
+        var jmodifycallback = undefined;
+        if (field && field.jmodifytemplate) {
+            jmodifytemplate = field.jmodifytemplate;
+        }
+        if (field && field.jmodifycallback) {
+            jmodifycallback = field.jmodifycallback;
+        }
+        var item = $.tmplItem(elem);
+        var dataitem = item.data;
+        if (!jmodifytemplate) {
+            if (jmodifycallback) {
+                (eval(field.jmodifycallback))(dataitem);
+                return;
+            }
+            return;
+        }
+        if (this._koenabled == false) {
+            $("#" + this.modifyContainer).empty();
+            var html = $("#" + jmodifytemplate).tmpl(dataitem);
+            html.appendTo("#" + this.modifyContainer);
+            $("#" + this.modifyPanel).dialog(that.dlgmodify);
+        }
+        if (this._koenabled == true) {
+            var ele = $("#" + this.modifyContainer).get(0);
+            ko.cleanNode(elem);
+            $("#" + this.modifyContainer).empty();
+            ko.applyBindings(dataitem, ele);
+            $("#" + this.modifyPanel).dialog(that.dlgmodify);
+            this._backupDataItem(dataitem);
+        }
+    }
+
+    this._customAction = function (sender) {
+        if (this._koenabled == false) {
+            alert("customAction allowed if knockout")
+            return;
+        }
+        this._bkdata = undefined;
+        var param = this._createActionParam(sender);
+        this.customCallBack(param);
+    } 
+
+    this._deleteAction = function (sender) {
+        if (this._koenabled == false) {
+            alert("deleteAction allowed if knockout")
+            return;
+        }
+        this._bkdata = undefined;
+        var param = this._createActionParam(sender);
+        this.deleteCallBack(param);
+    } 
+
+    this._updateAction = function (sender) {
+        if (this._koenabled == false) {
+            alert("updateAction allowed if knockout")
+            return;
+        }
+        this._bkdata = undefined;
+        var elem = this._getModifyContainer();
+        var param = this._createActionParam(elem);
+        this.updateCallBack(param);
+    }
+
+    this._cancelAction = function (sender) {
+        if (this._koenabled == false) {
+            alert("cancelAction allowed if knockout")
+            return;
+        }
+        var elem = this._getModifyContainer();
+        var param = this._createActionParam(elem);
+        this._restoreDataItem(param.dataitemKo);
+        this.cancelCallBack();
+        this._bkdata = undefined;
+    }
+
+    this._restoreDataItem = function (dataitemKo) {
+        if (this._koenabled == false || this.enableBackup == false)
+            return;
+        if (              this._bkdata == undefined               )
+            return;
+        var dataitemJs = this._bkdata;
+        for (name in dataitemJs) {
+            var cmd = "";
+            if (typeof dataitemJs[name] == "string" ) {
+                cmd = "dataitemKo." + name + "('" + dataitemJs[name] + "')";
+            }
+            if (typeof dataitemJs[name] == "number" ) {
+                cmd = "dataitemKo." + name + "("  + dataitemJs[name] +  ")";
+            }
+            if (typeof dataitemJs[name] == "boolean") {
+                cmd = "dataitemKo." + name + "("  + dataItemJs[name] +  ")";
+            }
+            if (cmd != "") eval(cmd);
+        }
+    }
+
+    this._backupDataItem = function (dataitemKo) {
+        if (this._koenabled == false || this.enableBackup == false) 
+            return;
+        this._bkdata = {};
+        var dataitemJs = ko.toJS(dataitemKo);
+        for (name in dataitemJs) {
+            if (dataitemJs.hasOwnProperty(name) == false)
+                continue;
+            if (typeof dataitemJs[name] == "string" ) {
+                this._bkdata[name] = dataitemJs[name];
+            }
+            if (typeof dataitemJs[name] == "number" ) {
+                this._bkdata[name] = dataitemJs[name];
+            }
+            if (typeof dataitemJs[name] == "boolean") {
+                this._bkdata[name] = dataitemJs[name];
+            }
+        }
+        return this._bkdata;
+    }
+
+    this._createActionParam = function (elem) {
+        var dataitemKo =  ko.dataFor(elem);
+        var dataitemJs = ko.toJS(dataitemKo);
+        var param = {
+            context: that,
+            dataitemJs: dataitemJs,
+            dataitemKo: dataitemKo,
+            removeCurrent: function () {
+                return this.context.source.remove(dataitemKo);
+            },
+            currentIndex: function () {
+                return this.context.source.indexOf(dataitemKo);
+            },           
+            getArrayJs: function () {
+                return ko.toJS(this.context.source);
+            },
+            getArrayKo: function () {
+                return this.context.source;
+            }         
+        };
+        return param;
+    }
+
+    this._getDetailContainer = function () {
+        var elem = $("#" + this.detailContainer).get(0);
+        return elem;
+    }     
+
+    this._getModifyContainer = function () {
+        var elem = $("#" + this.modifyContainer).get(0);
+        return elem;
+    }                                      
 
     // ---------------------------------------------------------------
 
@@ -524,13 +848,15 @@ function PagingBase() {
             },
             success: function (result, state) {
                 that._debugFetch2(page);
+                var arrsource = [];
+                arrsource = that._tryObservable(result.rows);
                 //if (result.records != that._records)
                 //    that._resetCache();
                 //if (    result.total < maxcache    )
                 //    that._addCache2(page, result);
                 //that._records = (result.records);
                 //that._pagemax = ( result.total );
-                that._addCache2(page, result);
+                that._addCache2(page, arrsource);
                 that._prefetch2();
             }
         });
@@ -560,13 +886,15 @@ function PagingBase() {
             },
             success: function (result, state) {
                 that._debugFetch2(page);
+                var arrsource = [];
+                arrsource = that._tryObservable(result.rows);
                 //if (result.records != that._records)
                 //    that._resetCache();
                 //if (    result.total < maxcache    )
                 //    that._addCache2(page, result);
                 //that._records = (result.records);
                 //that._pagemax = ( result.total );
-                that._addCache2(page, result);
+                that._addCache2(page, arrsource);
                 that._prefetch3();
             }
         });
@@ -596,13 +924,15 @@ function PagingBase() {
             },
             success: function (result, state) {
                 that._debugFetch2(page);
+                var arrsource = [];
+                arrsource = that._tryObservable(result.rows);
                 //if (result.records != that._records)
                 //    that._resetCache();
                 //if (    result.total < maxcache    )
                 //    that._addCache2(page, result);
                 //that._records = (result.records);
                 //that._pagemax = ( result.total );
-                that._addCache2(page, result);
+                that._addCache2(page, arrsource);
                 that._goNextAction();
             }
         });
@@ -707,27 +1037,41 @@ function PagingBase() {
             this._setSkip(value);
         }
         return this;
-    }
+    }   
 
     this.applyTempClient = function (value) {
-        this.templatename = this.template;
+        this._templatename = this.template;
         this._callBackTemplate = this._renderTemplateClient;
         if (   typeof value == 'string'   )
-            this.templatename = value;
+            this._templatename = value;
         if (  typeof value == 'function'  )
             this._callBackTemplate = value;
         this._typeview = "client";
+        this._koenabled = false;
         return this;
     }
 
     this.applyTempServer = function (value) {
-        this.templatename = "";
+        this._templatename = "";
         this._callBackTemplate = this._renderTemplateServer;
         if (   typeof value == 'string'   )
-            this.templatename = value;
+            this._templatename = value;
         if (  typeof value == 'function'  )
             this._callBackTemplate = value;
         this._typeview = "server";
+        this._koenabled = false;
+        return this;
+    }
+
+    this.applyTempKo = function (value1,value2) {
+        this._templatename = "";
+        this._callBackTemplate = this._renderTemplateKonock;   
+        if (   typeof value1 == 'function'   )
+            this._callBackMapKnock = value1;
+        if (   typeof value2 == 'function'   )
+            this._callBackTemplate = value2;
+        this._typeview = "client";
+        this._koenabled = true;
         return this;
     }
 
@@ -762,16 +1106,29 @@ function PagingBase() {
     }
 
     this._addCache1 = function (result) {
-        cache[this._page] = result.rows;
+        cache[this._page] = result;
     }
 
     this._addCache2 = function (index, result) {
-        cache[index] = result.rows;
+        cache[index] = result;
     }
+
+    this._tryObservable = function (result) {
+        var viewmodel = result;
+        if (this._koenabled == false) {
+            return viewmodel;
+        }
+        if (this._callBackMapKnock) {
+            viewmodel = this._callBackMapKnock(result);
+            return viewmodel;
+        }
+        viewmodel = ko.mapping.fromJS(result);
+        return viewmodel;
+    }  
 
     this._resetCache = function () {
         cache = new Array(maxcache);
-    }  
+    }
 
     // ---------------------------------------------------------------
 

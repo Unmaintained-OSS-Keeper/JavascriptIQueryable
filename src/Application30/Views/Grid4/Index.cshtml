@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index - Knockout</h2>
+
+<div align="center">
+  @Html.ActionLink("Query with pagingWithSize(10)/nolinq", "page01", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled", "page02", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled", "page03", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled/callbackaction", "page04", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled/komapper", "page05", "Grid4")<br /> 
+  @Html.ActionLink("Query with pagingWithSize(10)/linq enabled/komapper", "page06", "Grid4")<br /> 
+</div>
+
+<br /><br />
+
+<div align="justify">
+The plugin has some new properties/methods: tcustomCallBack, tdeleteCallBack, tupdateCallBack, 
+tcancelCallBack, koWhereViewModel(), koWhereObjectAnd(), koWhereObjectOr(), koWhereString(), applyTempKo().
+There are also some new html attributes: data-jcustomaction, data-jdeleteaction, data-jupdateaction,
+data-jcancelaction, data-jdetailtemplate, data-jdetailaction, data-jmodifytemplate, data-jmodifyaction
+ ... etc.
+<br /><br />
+Knockout can be used into two separate places. 1) First in the search form. 2) Second in the layout template 
+(main template, popup detail, popup edit/modify). In the first place, I need to specify a callback function
+that creates the viewmodel object (of the search form) through the "tformViewModel" properties. Then I will
+use the methods koWhereObjectAnd(), koWhereObjectOr() , koWhereString() and koWhereViewModel() to create the 
+param that I will put into the where clause "where(expression, param)". In the second place I need to call 
+the "applyTempKo(callBackMapKnock,callBackTemplate)" method on the query projection. This tell the plugin 
+that convert the result set in an observable array and then apply a knockout template. If I use a callback 
+function "callBackMapKnock" in the where clause, I can create a custom viewmodel with properties and methods.
+If I use a callback function "callBackTemplate" in the where clause, I can specify a custom template logic.
+</div>
+
+<table align="center">
+<tr>
+<td>
+<div align="left">
+  <br /><b>Important: If you use knockout as form search viewmodel, you must
+       apply a "viewmodel" class to the form search.</b><br />
+  <div align="left">   
+    <pre>
+       &ltdiv&gt
+        &lttable class="<b>viewmodel</b>"&gt    
+        &lttr&gt
+          &lttd&gtCity: &lt/td&gt
+          &lttd&gt&ltinput id="text1" data-bind="value: campo1" /&gt&lt/td&gt
+        &lt/tr&gt  
+        &lttr&gt
+          &lttd&gtCountry: &lt/td&gt
+          &lttd&gt&ltinput id="text2" data-bind="value: campo2" /&gt&lt/td&gt
+        &lt/tr&gt 
+        &lt/table&gt
+        &ltbr /&gt&ltbr /&gt
+        &ltinput id="gbutton6" type="button" value="Find" /&gt
+      &lt/div&gt
+    </pre>
+  </div>
+</div>
+</td>
+</tr>
+</table>
+
+<div align="justify">
+In addition to the main template, I have two popup templates (detail/edit). The detail popup template
+will be showed when you press a link where there is a "data-jdetailaction" attribute and it work for 
+all type of template. The edit popup template will be showed when you press a link where there is a 
+"data-jmodifyaction" attribute  and it work only with knockout. In this popup you can put some edit 
+field. There may also be two link with the "data-jupdateaction","data-jcancelaction" attribute. When 
+the link is pressed it close the popup and call the callback function "tupdateCallBack","tcancelCallBack"
+(it work only with knockout). On the main template I can put two link with the "data-jcustomaction",
+"data-jdeleteaction" attribute. When the link is pressed it call the callback function "tupdateCallBack",
+"tcancelCallBack" (it work only with knockout).
+</div>
+
+<br /><br />
+
+<div align="justify">
+When you open a edit/modify popup, the code will do a backup of the viewmodel value (string, number, 
+boolean). So when you change the value of a field and close the popup without "save" it will restore 
+the original value. This works if you use the "tupdateCallBack", "tcancelCallBack" attribute (that close
+the popup automaticaly). If you use custom button then you must close the popup with the
+$(...).gridTemplate("closeModifyPopupUpdate"), $(...).gridTemplate("closeModifyPopupCancel") plugin method.
+</div>
+
+<br /><br />

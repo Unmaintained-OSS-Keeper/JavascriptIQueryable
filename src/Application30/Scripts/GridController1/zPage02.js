@@ -9,7 +9,7 @@ $(document).ready(function () {
         tdetailPanel: "gdialog",
         tdetailContainer: "jlist2",
         ttemplate: "jtableTemplate",      
-        tcacheEnabled: true,        
+        tcacheEnabled: false,        
         ttype: "2"
     };
     $("#gpane2").gridTemplate(settings, searchfrm1, searchfrm2);
@@ -30,7 +30,7 @@ function searchfrm1(context) {
     var text2 = $("#text2").val();
 
     //var index = 0;    
-    //var param = new Array(2);      
+    //var param = new Array();      
     //var where = "";
     //if (text1!= "") {
     //    if (where != "")

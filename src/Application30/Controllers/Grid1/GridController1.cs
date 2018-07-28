@@ -54,6 +54,12 @@ namespace Application30.Controllers
             return View();
         }
 
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page05()
+        {
+            return View();
+        }
+
         // ---------------------------------
 
         [FilterLinqData()]

@@ -54,11 +54,28 @@ namespace Application30.Controllers
             return View();
         }
 
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page05()
+        {
+            return View();
+        }
+
         // ---------------------------------
 
         [FilterLinqView()]
         [OutputCache(Duration = 0, VaryByParam = "*")]
         public ActionResult GetDataJson(RequestLinq linq)
+        {
+            linq.SetSecurity(true, true, true);
+            var query = Repository.GetRepository<Customer>().Query();
+            object data = this.TryApplyView(linq, query.JQuery(linq));
+            return Json(data, JsonRequestBehavior.AllowGet);
+            //Thread.Sleep(1000);
+        }
+
+        [FilterLinqView()]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult View5(RequestLinq linq)
         {
             linq.SetSecurity(true, true, true);
             var query = Repository.GetRepository<Customer>().Query();

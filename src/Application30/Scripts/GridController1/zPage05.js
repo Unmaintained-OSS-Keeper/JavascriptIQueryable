@@ -4,21 +4,26 @@
 $(document).ready(function () {
     var settings = {
         tpane2: 'gpane2',
-        tcontainer: "jlist",
-        ttemplate: "jtableTemplate",
+        tpane3: 'gpane3',
+        tdetailPanel: "gdialog",
+        tdetailContainer: "jdialog",
         tcacheEnabled: false,        
-        ttype: "1",
+        ttype: "2"
     };
-    $("#gpane2").gridTemplate(settings, searchfrm).
-         bind('databound', function (event) {
-           //alert("databound");
-         }
-    );
+    $("#gpane2").gridTemplate(settings, searchfrm1);
+
+    $("#gpane2").bind('isloading', function (event) {
+        //alert("isloading");
+    });
+
+    $("#gpane2").bind('databound', function (event) {
+        //alert("databound");
+    });  
 });
 
-function searchfrm(context) {
+function searchfrm1(context) {
     context.clearSearch();
-      
+
     var text1 = $("#text1").val();
     var text2 = $("#text2").val();
 
@@ -47,8 +52,14 @@ function searchfrm(context) {
     if (text2 != "") {
         context.addWhereClause("Country", "=", text2);
     }
-    var r = context.endWhere();   
+    var r = context.endWhere();
 
-    context.from("/Grid1/GetDataJson").where(r.value,r.param).orderBy(
-              "CustomerID").skip(3).take(6).applyTempClient(); 
+    context.from("/Grid1/GetDataJson").where(r.value, r.param).orderBy("CustomerID").
+                    pagingWithSize(10).applyTempClient(renderTemplate);  
+}
+
+function renderTemplate(source) {
+    $("#jlist1").empty();
+    var html = $("#jtableTemplate").tmpl(source);
+    html.appendTo("#jlist1");
 }

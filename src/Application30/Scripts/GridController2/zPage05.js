@@ -3,9 +3,9 @@
 $(document).ready(function () {
     var settings = {
         tpane2: 'gpane2',
-        tcontainer: "jlist",     
-        ttemplate: "jtableTemplate", 
-        ttype: "1",
+        tcontainer: "jlist",  
+        ttemplate: "jtableTemplate",   
+        ttype: "2",
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
          bind('databound', function (event) {
@@ -40,6 +40,10 @@ function searchfrm(context) {
         index++;
     }    
 
-    context.from("/Grid2/GetDataJson").where(where,param).orderBy(
-        "CustomerID").skip(3).take(6).applyTempServer("View1"); 
+    context.from("/Grid2/View5").where(where,param).orderBy("CustomerID").
+              pagingWithSize(10).applyTempServer(renderTemplate);     
+}
+
+function renderTemplate(texthtml) {
+    $("#jlist").empty().html(texthtml);
 }

@@ -1,12 +1,18 @@
 ﻿
 /// <reference path="jquery-1.5.1.js" />
+/// <reference path="knockout-2.0.0.js" />
+
+//
+// javascript-to-IQueryable-preview-4.0
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
+//
 
 (function ($, undefined) {
     $.fn.mobileTemplate = function (options) {
 
         var that = this;
 
-        var backflag = false;
+        var backflag = false;  
 
         var requestcurr = {};
 
@@ -17,7 +23,7 @@
         };
 
         var omethods1 = {
-            initialize: function (args) {
+            initialize: function (args) { 
                 var st = settings;
                 //            
                 $(document).bind("pageinit", function (event) {
@@ -27,18 +33,21 @@
                     omethods1.pageChange(event, data);
                 });
                 $("*[data-jsavecurritem]").live("click", function (event) {
+                    event.stopPropagation();
                     omethods1.saveCurritem(this);
                 });
                 $("*[data-jnavbaraction]").live("click", function (event) {
+                    event.stopPropagation();
                     omethods1.navbarAction(this);
                 });
-                $("*[data-jtouchaction]").live("swipeleft" , function (event) {
+                $("*[data-jtouchaction]").live("swipeleft", function (event) {
                     omethods1.swipeAction(this, "L");
                 });
                 $("*[data-jtouchaction]").live("swiperight", function (event) {
                     omethods1.swipeAction(this, "R");
                 });
                 $("*[data-jselectaction]").live("click", function (event) {
+                    event.stopPropagation();
                     omethods1.execRestCall();
                 });
                 $("*[data-rel='back']").live("click", function (event) {
@@ -94,7 +103,7 @@
                     autorun = field.jautorun;
                 }
                 if (field && field.jresturl) {
-                    ds.urlpath = field.jresturl;
+                    ds.urlpath = field.jresturl; 
                 }
                 if (field && field.jtypetemplate) {
                     ds._typeview = field.jtypetemplate;
@@ -103,7 +112,7 @@
                     ds.container = field.jcontainer;
                 }
                 if (field && field.jnametemplate) {
-                    ds.templatename = field.jnametemplate;
+                    ds._templatename = field.jnametemplate;
                 }
                 if (field && field.jfselecting) {
                     ds.xselecting = eval(field.jfselecting);
