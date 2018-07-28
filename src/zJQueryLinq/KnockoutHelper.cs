@@ -10,40 +10,54 @@ using System.IO;
 
 namespace JQueryLinq
 {
-    public static class KnockoutHelper {
-        public static MvcHtmlString KoTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel,
-                                           TProperty>> expression) where TModel : class
+    public static class KnockoutHelper {   
+        public static MvcHtmlString KoTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.None, 60, 60, null);
         }
-
-        public static MvcHtmlString KoTextBoxStrFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel,
-                                           TProperty>> expression) where TModel : class
+        public static MvcHtmlString KoTextBoxStrFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Str, 60, 60, null);
         }
-
-        public static MvcHtmlString KoTextBoxIntFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel,
-                                           TProperty>> expression) where TModel : class
+        public static MvcHtmlString KoTextBoxIntFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Int, 60, 60, null);
         }
-
-        public static MvcHtmlString KoTextBoxDecFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel,
-                                           TProperty>> expression) where TModel : class
+        public static MvcHtmlString KoTextBoxDecFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Dec, 60, 60, null);
         }
-
-        public static MvcHtmlString KoTextBoxBolFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel,
-                                           TProperty>> expression) where TModel : class
+        public static MvcHtmlString KoTextBoxBolFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Bol, 60, 60, null);
         }
 
-        public static MvcHtmlString KoTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel,
-                           TProperty>> expression, KnockoutTypeBinding type, int size, int maxlength, 
-                                   Dictionary<string, object> htmlattr) where TModel : class
+
+
+        public static MvcHtmlString KoTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.None, size, size, null);
+        }
+        public static MvcHtmlString KoTextBoxStrFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Str, size, size, null);
+        }
+        public static MvcHtmlString KoTextBoxIntFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Int, size, size, null);
+        }
+        public static MvcHtmlString KoTextBoxDecFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Dec, size, size, null);
+        }
+        public static MvcHtmlString KoTextBoxBolFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Bol, size, size, null);
+        } 
+
+
+
+        public static MvcHtmlString KoTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, KnockoutTypeBinding type, int size, int maxlength, Dictionary<string, object> htmlattr) where TModel : class
         {
             MvcHtmlString valret;
             Dictionary<string, object> param = null;
@@ -51,10 +65,11 @@ namespace JQueryLinq
             param = GetParam(field, type, size, maxlength, htmlattr);
             valret = htmlHelper.TextBoxFor<TModel, TProperty>(expression, param);
             return valret;
-        }
+        }       
 
-        private static Dictionary<string, object> GetParam(string field, KnockoutTypeBinding type,
-                          int size, int maxlength, Dictionary<string, object> htmlattr)
+
+
+        private static Dictionary<string, object> GetParam(string field, KnockoutTypeBinding type, int size, int maxlength, Dictionary<string, object> htmlattr)
         {
             Dictionary<string, object> param = new Dictionary<string, object>();
             if (type == KnockoutTypeBinding.None)

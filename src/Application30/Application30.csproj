@@ -179,13 +179,16 @@
     <Content Include="Scripts\jquery-1.5.1.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.js" />
     <Content Include="Scripts\knockout.mapping.js" />
+    <Content Include="Scripts\Mobile\zPage09.js" />
+    <Content Include="Scripts\Mobile\zPage08.js" />
+    <Content Include="Scripts\Mobile\zPage07.js" />
     <Content Include="Scripts\Mobile\zIndex.js" />
     <Content Include="Scripts\Mobile\zPage01.js" />
     <Content Include="Scripts\Mobile\zPage02.js" />
     <Content Include="Scripts\Mobile\zPage03.js" />
     <Content Include="Scripts\Mobile\zPage04.js" />
-    <Content Include="Scripts\Mobile\zPage05.js" />
     <Content Include="Scripts\Mobile\zPage06.js" />
+    <Content Include="Scripts\Mobile\zPage05.js" />
     <Content Include="Scripts\zPageGrid2.js" />
     <Content Include="Scripts\Home\zView1.js" />
     <Content Include="Scripts\zPageGrid1.js" />
@@ -301,10 +304,10 @@
     <Content Include="Views\Mobile\Page04.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Mobile\Page05.cshtml" />
+    <Content Include="Views\Mobile\Page06.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Mobile\Page06.cshtml" />
+    <Content Include="Views\Mobile\Page05.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Grid4\Index.cshtml" />
@@ -341,6 +344,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Grid4\Page08.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page07.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page08.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page09.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page91.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page92.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

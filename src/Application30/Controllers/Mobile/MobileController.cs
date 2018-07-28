@@ -10,6 +10,7 @@ using Commons;
 using JQueryLinq;
 using StemaAspMvc;
 using StemaCore;
+using Application1;
 
 namespace Application30.Controllers
 {
@@ -102,6 +103,68 @@ namespace Application30.Controllers
         public ActionResult Page08()
         {
             return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page09()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public JsonResult UpdateViewModel1(CustomerViewModel1 entity)
+        {
+            var message = "Update1 error: " + entity.CustomerID;
+            if (ModelState.IsValid == true)
+            {
+                if (entity.City == "pippo")
+                    throw new Exception("pippo");
+                message = "Update1 ok: " + entity.CustomerID;
+            }
+            return Json(message);
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public JsonResult DeleteViewModel1(CustomerViewModel1 entity)
+        {
+            var message = "Delete1 error: " + entity.CustomerID;
+            if (ModelState.IsValid == true)
+            {
+                if (entity.City == "pippo")
+                    throw new Exception("pippo");
+                message = "Delete1 ok: " + entity.CustomerID;
+            }
+            return Json(message);
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public JsonResult UpdateViewModel2(CustomerViewModel2 entity)
+        {
+            var message = "Update1 error: " + entity.CustomerID;
+            if (ModelState.IsValid == true)
+            {
+                if (entity.City == "pippo")
+                    throw new Exception("pippo");
+                message = "Update1 ok: " + entity.CustomerID;
+            }
+            return Json(message);
+        }
+
+        [HttpPost]
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public JsonResult DeleteViewModel2(CustomerViewModel2 entity)
+        {
+            var message = "Delete1 error: " + entity.CustomerID;
+            if (ModelState.IsValid == true)
+            {
+                if (entity.City == "pippo")
+                    throw new Exception("pippo");
+                message = "Delete1 ok: " + entity.CustomerID;
+            }
+            return Json(message);
         }
 
         // ------------------------------------------------

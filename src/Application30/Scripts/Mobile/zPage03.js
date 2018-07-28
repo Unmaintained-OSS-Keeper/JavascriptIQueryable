@@ -30,10 +30,10 @@ $(document).bind("pagehide", function (event, data) {
     //event.preventDefault();
 });
 
-function selecting1(context) {
+function selecting2(context) {
 
 }
 
-function databound1(context) {
+function databound2(context) {
 
 }

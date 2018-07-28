@@ -1,0 +1,19 @@
+﻿@using JQueryLinq
+@model Application1.CustomerViewModel2
+
+@using (Html.BeginForm()) {
+  <div>
+    <p>Modify-1</p>
+    <p><span data-bind="text: fullData"></span></p>
+    <p><b>CustomerID: </b>@Html.KoTextBoxStrFor(model => model.CustomerID)</p>
+    <p><b>CompanyName: </b>@Html.KoTextBoxStrFor(model => model.CompanyName)</p>
+    <p><b>ContactName: </b>@Html.KoTextBoxStrFor(model => model.ContactName)</p>
+    <p><b>City: </b>@Html.KoTextBoxStrFor(model => model.City)</p>
+    <p><b>Country: </b>@Html.KoTextBoxStrFor(model => model.Country)</p>
+    <p><b>Value1: </b>@Html.KoTextBoxIntFor(model => model.Value1)</p>
+    <p><b>Value2: </b>@Html.KoTextBoxIntFor(model => model.Value2)</p>
+    <p><b>Total: </b><span data-bind="text: Total" /></p>
+    <button data-bind="click: updateItem">Update</button>&nbsp;
+    <button data-bind="click: deleteItem">Delete</button>&nbsp;
+  </div>
+}        
