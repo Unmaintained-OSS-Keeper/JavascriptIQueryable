@@ -51,7 +51,7 @@ function searchfrm(context) {
 
     var r = context.koWhereObjectAnd();
 
-    context.from("/Grid4/GetDataJson2").skip(0).take(8).where(r.value, r.param).
+    context.from("/Grid4/GetDataJson2").skip(0).take(8).where(r.value,r.param).
                orderBy("Country,City desc").applyTempKo(mapKnock);
 };
 

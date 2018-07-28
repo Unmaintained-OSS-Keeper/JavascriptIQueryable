@@ -170,13 +170,13 @@ namespace JQueryLinq
             return query.Provider.CreateQuery(result);
         }
 
-        public static IQueryable  Where(this IQueryable query, PredicateExpr predicate)
+        public static IQueryable Where(this IQueryable query, PredicateExpr predicate)
         {
             if (string.IsNullOrEmpty(predicate.value))
                 return query;
 
             LambdaExpression lambda = DynamicExpression.ParseLambda(query.ElementType,
-                        typeof(bool), predicate.value, predicate.param);
+                        typeof(bool), predicate.value, predicate.GetParam());
 
             MethodCallExpression result = Expression.Call(typeof(Queryable), "Where", new[] 
                  { query.ElementType }, query.Expression, Expression.Quote(lambda));

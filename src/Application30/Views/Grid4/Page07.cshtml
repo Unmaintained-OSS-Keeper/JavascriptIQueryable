@@ -16,8 +16,8 @@
 
 <p>
 <pre>
-context.from("/Grid4/GetDataJson1").pagingWithSize(10).where(swhere).
-             orderBy("Country,City desc ").applyTempKo();
+context.from("/Grid4/GetDataJson1").pagingWithSize(10).where(r.value, r.param).
+                   orderBy("Country,City desc ").applyTempKo();
 </pre>
 </p>
 <p>

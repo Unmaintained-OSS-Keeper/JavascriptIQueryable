@@ -61,6 +61,67 @@ namespace JQueryLinq
             clause.Field = field.Trim();
             clause.Op = " " + op + " ";
             clause.Param = param.Trim();
+            clause.Ptype = "str";
+            where.Add(param, clause);
+        }
+
+        public void AddWhereMappingStr(string field, string op, string param)
+        {
+            WhereClause clause = new WhereClause();
+            clause.Field = field.Trim();
+            clause.Op = " " + op + " ";
+            clause.Param = param.Trim();
+            clause.Ptype = "str";
+            where.Add(param, clause);
+        }
+
+        public void AddWhereMappingInt(string field, string op, string param)
+        {
+            WhereClause clause = new WhereClause();
+            clause.Field = field.Trim();
+            clause.Op = " " + op + " ";
+            clause.Param = param.Trim();
+            clause.Ptype = "int";
+            where.Add(param, clause);
+        }
+
+        public void AddWhereMappingDbl(string field, string op, string param)
+        {
+            WhereClause clause = new WhereClause();
+            clause.Field = field.Trim();
+            clause.Op = " " + op + " ";
+            clause.Param = param.Trim();
+            clause.Ptype = "dbl";
+            where.Add(param, clause);
+        }
+
+        public void AddWhereMappingDec(string field, string op, string param)
+        {
+            WhereClause clause = new WhereClause();
+            clause.Field = field.Trim();
+            clause.Op = " " + op + " ";
+            clause.Param = param.Trim();
+            clause.Ptype = "dec";
+            where.Add(param, clause);
+        }
+
+        public void AddWhereMappingDat(string field, string op, string param)
+        {
+            WhereClause clause = new WhereClause();
+            clause.Field = field.Trim();
+            clause.Op = " " + op + " ";
+            clause.Param = param.Trim();
+            clause.Ptype = "dat";
+            where.Add(param, clause);
+        }
+
+        public void AddWhereMappingBol(string field, string op, string param)
+        {
+            WhereClause clause = new WhereClause();
+            clause.Field = field.Trim();
+            clause.Op = " " + op + " ";
+            clause.Param = param.Trim();
+            clause.Ptype = "bol";
             where.Add(param, clause);
         }
 
@@ -69,9 +130,69 @@ namespace JQueryLinq
             AddWhereMapping(field, "=", param);
         }
 
+        public void AddWhereMappingStrEq(string field, string param)
+        {
+            AddWhereMappingStr(field, "=", param);
+        }
+
+        public void AddWhereMappingIntEq(string field, string param)
+        {
+            AddWhereMappingInt(field, "=", param);
+        }
+
+        public void AddWhereMappingDblEq(string field, string param)
+        {
+            AddWhereMappingDbl(field, "=", param);
+        }
+
+        public void AddWhereMappingDecEq(string field, string param)
+        {
+            AddWhereMappingDec(field, "=", param);
+        }
+
+        public void AddWhereMappingDatEq(string field, string param)
+        {
+            AddWhereMappingDat(field, "=", param);
+        }
+
+        public void AddWhereMappingBolEq(string field, string param)
+        {
+            AddWhereMappingBol(field, "=", param);
+        }
+
         public void AddWhereMappingNq(string field, string param)
         {
             AddWhereMapping(field, "<>", param);
+        }
+
+        public void AddWhereMappingStrNq(string field, string param)
+        {
+            AddWhereMappingStr(field, "<>", param);
+        }
+
+        public void AddWhereMappingIntNq(string field, string param)
+        {
+            AddWhereMappingInt(field, "<>", param);
+        }
+
+        public void AddWhereMappingDblNq(string field, string param)
+        {
+            AddWhereMappingDbl(field, "<>", param);
+        }
+
+        public void AddWhereMappingDecNq(string field, string param)
+        {
+            AddWhereMappingDec(field, "<>", param);
+        }
+
+        public void AddWhereMappingDatNq(string field, string param)
+        {
+            AddWhereMappingDat(field, "<>", param);
+        }
+
+        public void AddWhereMappingBolNq(string field, string param)
+        {
+            AddWhereMappingBol(field, "<>", param);
         }
 
         // ---------------------------------------------------------------------
@@ -160,6 +281,7 @@ namespace JQueryLinq
         public PredicateExpr GetWhere()
         {
             List<string> param = new List<string>();
+            List<string> ptype = new List<string>();
             string swhere = "", oper = ""; int index = 0;
             PredicateExpr predicate = new PredicateExpr();          
             foreach(KeyValuePair<string, WhereClause> row1 in where)
@@ -169,11 +291,13 @@ namespace JQueryLinq
                     continue;
                 if (index > 0) oper = " " + Operator.ToString() + " ";
                 swhere = swhere + oper + row2.Field + row2.Op + "@" + index.ToString();
-                param.Add(qstring[row1.Key].Trim());
+                param.Add( qstring[row1.Key].Trim()  );
+                ptype.Add(row2.Ptype.ToLower().Trim());
                 index = index + 1;
             }
             predicate.value =  swhere.Trim();
             predicate.param = param.ToArray();
+            predicate.ptype = ptype.ToArray();
             return predicate;
         }
 

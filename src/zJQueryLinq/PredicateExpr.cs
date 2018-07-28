@@ -18,6 +18,8 @@ namespace JQueryLinq
         public string value { get; set; }
         [DataMember]
         public string[] param { get; set; }
+        [DataMember]
+        public string[] ptype { get; set; }
 
         public static PredicateExpr Create(string jsonData)
         {
@@ -32,6 +34,33 @@ namespace JQueryLinq
             {
                 return null;
             }
+        }
+
+        public object[] GetParam()
+        {
+            if (param == null)
+                return null;
+            if (ptype == null)
+                return param;
+            if (param.Length != ptype.Length)
+                throw new Exception("Bad message/contract type");
+            object[] ret = new object[param.Length];
+            for (int i = 0; i < param.Length; i++)
+            {               
+                if (ptype[i] == "str")
+                    ret[i] = param[i];
+                if (ptype[i] == "int")
+                    ret[i] = Convert.ToInt32(param[i]);
+                if (ptype[i] == "dbl")
+                    ret[i] = Convert.ToDouble(param[i]);
+                if (ptype[i] == "dec")
+                    ret[i] = Convert.ToDecimal(param[i]);
+                if (ptype[i] == "dat")
+                    ret[i] = Convert.ToDateTime(param[i]);
+                if (ptype[i] == "bol")
+                    ret[i] = Convert.ToBoolean(param[i]);
+            }
+            return ret;
         }
 
         public void SkipBlak()

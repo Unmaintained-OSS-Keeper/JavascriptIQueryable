@@ -13,6 +13,13 @@ $(document).ready(function () {
            //alert("databound");
          }
     );
+    //
+    var context = $("#gpane2").gridTemplate("getObjectInstance");
+    $("#rbutton1").click(function (e) {
+        var swhere = "campo2=germany";
+        context.refresh(swhere);
+        return false;
+    });
 });
 
 function searchfrm(context) {

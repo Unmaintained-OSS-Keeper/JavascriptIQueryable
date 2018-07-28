@@ -28,9 +28,6 @@ $(document).ready(function () {
         tupdateCallBack: function (obj) {
             updatefrm(obj);
         },
-      //tcancelCallBack: function (obj) {
-      //    cancelfrm(obj);
-      //},
         tcacheEnabled: false,
         tdetailPanel: "gdialog1",
         tdetailContainer: "jlist1",
@@ -61,6 +58,24 @@ $(document).ready(function () {
       bind('databound', function (event) {
           //alert("databound");
       });
+    //
+    var context = $("#gpane2").gridTemplate("getObjectInstance");
+    $("#rbutton1").click(function (e) {
+        var r = {};
+        context.beginWhere("and");
+        context.addWhereClause("Country", "=", "spain");
+        r = context.endWhere();
+        context.refresh(r.value, r.param);
+        return false;
+    });
+    $("#rbutton2").click(function (e) {
+        var r = {};
+        context.beginWhere("and");
+        context.addWhereClause("Country", "=", "italy");
+        r = context.endWhere();
+        context.refresh(r.value, r.param);
+        return false;
+    });
 });
 
 function searchfrm(context) {
@@ -169,8 +184,4 @@ function updatefrm(obj) {
 
 function customfrm(obj) {
     alert("custom:" + obj.dataitemJs.CustomerID);
-};
-
-function cancelfrm(obj) {
-    alert("cancel:" + obj.dataitemJs.CustomerID);
 };

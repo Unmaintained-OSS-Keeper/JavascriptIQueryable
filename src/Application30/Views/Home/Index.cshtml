@@ -10,7 +10,7 @@ At this time the search is broken for for special charatters å , ä , ü.
 
 <br /><br />
 
-<div align="justify">
+<div align="justify"> 
 Javascript to IQueryable is a framework that allows to write a simple query in javascript client side and then execute 
 it server side with EntityFramework or a linq provider that implement IQueryable. On the server is used "Dynamic Expressions
 and Queries in LINQ by Microsoft" to compose dynamically your query. So on the MVC controller you can put a generic entry 
@@ -19,6 +19,20 @@ a MVC partial view. Server side there is also some MVC filter attribute that pro
 if you use a view that has no navigation property you should not be allowed to navigate through all tables. In the release 
 3.0 I' added the support for jquery mobile. In the release 4.0 I' added the support for knockout. In the release 5.0 I' 
 added the support for jquery validation to knockout.
+<br /><br />
+In the reaease beta0.84 I added the support for query of type (integer,double,decimal,date,boolean). Client side (if linq is 
+enabled) you must use the methods: koWhereObjectStrAnd, koWhereObjectIntAnd, koWhereObjectDblAnd, koWhereObjectDecAnd, koWhereObjectDatAnd,
+koWhereObjectBolAnd, koWhereObjectStrOr, koWhereObjectIntOr, koWhereObjectDblOr, koWhereObjectDecOr, koWhereObjectDatOr, koWhereObjectBolOr,
+addWhereClauseStr(pvalue1, pvalue2, pvalue3), addWhereClauseInt(pvalue1, pvalue2, pvalue3), addWhereClauseDbl(pvalue1, pvalue2, pvalue3), 
+addWhereClauseDec(pvalue1, pvalue2, pvalue3), addWhereClauseDat(pvalue1, pvalue2, pvalue3), addWhereClauseBol(pvalue1, pvalue2, pvalue3). 
+By default the parameter sended to the server will be of type String. you must use the above methods to change the type. Server side (if 
+linq is not enabled) you must use the the following methods to register the querystring mapping: AddWhereMapping(string field, string op, string param),
+AddWhereMappingStr(string field, string op, string param), AddWhereMappingInt(string field, string op, string param), AddWhereMappingDbl(string field, string op, string param), 
+AddWhereMappingDec(string field, string op, string param), AddWhereMappingDat(string field, string op, string param), AddWhereMappingBol(string field, string op, string param), 
+AddWhereMappingEq(string field, string param), AddWhereMappingStrEq(string field, string param), AddWhereMappingIntEq(string field, string param), AddWhereMappingDblEq(string field, string param),
+AddWhereMappingDecEq(string field, string param), AddWhereMappingDatEq(string field, string param), AddWhereMappingBolEq(string field, string param), AddWhereMappingNq(string field, string param), 
+AddWhereMappingStrNq(string field, string param), AddWhereMappingIntNq(string field, string param), AddWhereMappingDblNq(string field, string param), AddWhereMappingDecNq(string field, string param),
+AddWhereMappingDatNq(string field, string param), AddWhereMappingBolNq(string field, string param).
 </div>
 
 <h3>Plugin (zPageGrid2.js) properties/methods</h3>
@@ -90,6 +104,13 @@ The name of the "next" button (default value 'gbutton4').
 <td>tpageL</td>
 <td>
 The name of the "last" button (default value 'gbutton5'). 
+</td>
+</tr>
+
+<tr>
+<td>tdomain</td>
+<td>
+The url of the base domain if you use a cross-domain request.
 </td>
 </tr>
 
@@ -371,6 +392,13 @@ Default client template name.
 </tr>
 
 <tr>
+<td>domain</td>
+<td>
+The url of the base domain if you use a cross-domain request.
+</td>
+</tr>
+
+<tr>
 <td>urlpath</td>
 <td>
 Default url rest path that is used by an ajax request.
@@ -534,10 +562,106 @@ The object returned will be passed to the "where(expression, param)" method. It 
 </tr>
 
 <tr>
+<td>koWhereObjectStrAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type String. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectIntAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Integer. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDblAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Double. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDecAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Decimal. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDatAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Date. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectBolAnd() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "AND" of the current viewmodel "formviewmodel" of type Boolean. Used if linq is enabled. For complex clause you must create it manually. 
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
 <td>koWhereObjectOr() (only knockoutjs)</td>
 <td>
 Create a "where" clause with "OR" of the current viewmodel "formviewmodel". Used if linq is enabled. For complex clause you must create it manually.
-The object returned will be passed to the "where(expression, param)" method. It will return an object.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectStrOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type String. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectIntOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Integer. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDblOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Double. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDecOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Decinal. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectDatOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Date. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
+</td>
+</tr>
+
+<tr>
+<td>koWhereObjectBolOr() (only knockoutjs)</td>
+<td>
+Create a "where" clause with "OR" of the current viewmodel "formviewmodel" of type Boolean. Used if linq is enabled. For complex clause you must create it manually.
+The object returned will be passed to the "where(expression, param, type)" method. It will return an object.
 </td>
 </tr>
 
@@ -567,6 +691,48 @@ If linq is enabled: begin a where clause.
 <td>addWhereClause()</td>
 <td>
 If linq is enabled: add a where clause ( ex. addWhereClause("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseStr()</td>
+<td>
+If linq is enabled: add a where clause of type String ( ex. addWhereClauseStr("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseInt()</td>
+<td>
+If linq is enabled: add a where clause of type Integer ( ex. addWhereClauseInt("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseDbl()</td>
+<td>
+If linq is enabled: add a where clause of type Double ( ex. addWhereClauseDbl("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseDec()</td>
+<td>
+If linq is enabled: add a where clause of type Decimal ( ex. addWhereClauseDec("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseDat()</td>
+<td>
+If linq is enabled: add a where clause of type Date ( ex. addWhereClauseDat("CustomerID","=","value") ).
+</td>
+</tr>
+
+<tr>
+<td>addWhereClauseBol()</td>
+<td>
+If linq is enabled: add a where clause of type Boolean ( ex. addWhereClauseBol("CustomerID","=","value") ).
 </td>
 </tr>
 
@@ -669,10 +835,11 @@ Set the paging  size result. This method tell the plugin that you want a paging 
 </tr>
 
 <tr>
-<td>where(expression, param)</td>
+<td>where(expression, param, ptype)</td>
 <td>
 Set the where clause. 
 If linq enabled expression and param are required (values returned from "endWhere()", "koWhereObjectAnd()", "koWhereObjectOr()"). 
+The argument ptype is an optional array, if specified set the type/value of the param array ( where(r.value,r.param,r.ptype) ).
 If linq is not enabled you must set only expression as string ("manual string" or "koWhereString()"). 
 </td>
 </tr>

@@ -16,10 +16,11 @@ namespace JQueryLinq
         private string _Field;
         private string _Op;
         private string _Param;
+        private string _Ptype;
 
         public WhereClause()
         {
-
+            _Ptype = "str";
         }
 
         public string Field
@@ -38,6 +39,12 @@ namespace JQueryLinq
         {
             get { return _Param; }
             set { _Param = value; }
+        }
+
+        public string Ptype
+        {
+            get { return _Ptype; }
+            set { _Ptype = value; }
         }
     }
 }

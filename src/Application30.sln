@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DALef4.0", "Data.DALef
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zJQueryLinq", "zJQueryLinq\zJQueryLinq.csproj", "{1DC20944-0BFB-4648-9729-050197061A24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppPhoneJQ", "AppPhoneJQ\AppPhoneJQ.csproj", "{3D7DD76B-51B4-4C25-912A-40B826A25C7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,12 @@ Global
 		{1DC20944-0BFB-4648-9729-050197061A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DC20944-0BFB-4648-9729-050197061A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DC20944-0BFB-4648-9729-050197061A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7DD76B-51B4-4C25-912A-40B826A25C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D7DD76B-51B4-4C25-912A-40B826A25C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D7DD76B-51B4-4C25-912A-40B826A25C7D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3D7DD76B-51B4-4C25-912A-40B826A25C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D7DD76B-51B4-4C25-912A-40B826A25C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7DD76B-51B4-4C25-912A-40B826A25C7D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

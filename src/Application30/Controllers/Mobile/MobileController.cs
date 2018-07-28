@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Text;
 using System.Web.Mvc;
 using System.Collections.ObjectModel;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Linq;
 using System.Web;
@@ -169,7 +171,8 @@ namespace Application30.Controllers
             {
                 if (entity.City == "pippo")
                     throw new Exception("pippo");
-                message = "Update1 ok: " + entity.CustomerID;
+                message = "Update1 ok: " + entity.CustomerID;                
+                ConsoleWrite(entity);
             }
             return Json(message);
         }
@@ -184,6 +187,7 @@ namespace Application30.Controllers
                 if (entity.City == "pippo")
                     throw new Exception("pippo");
                 message = "Delete1 ok: " + entity.CustomerID;
+                ConsoleWrite(entity);
             }
             return Json(message);
         }
@@ -222,23 +226,12 @@ namespace Application30.Controllers
         [FilterNoLinq(ReturnData = true, ReturnView = true, Views = "*")]
         public ActionResult GetData1(RequestRest rest)
         {
-            object result = null;
-            //Thread.Sleep( 1000 );
-            //
-            try
-            {
-                rest.Operator = WhereOperator.And;
-                rest.AddWhereMapping("City", "=", "param01");
-                rest.AddWhereMapping("Country", "=", "param02");
-                rest.DefaultOrderBy("CustomerID");
-                var query = Repository.GetRepository<Customer>().Query();
-                result = this.TryApplyView(rest, query.JQuery(rest));
-            }
-            catch (Exception ex)
-            { 
-            
-            }
-            //
+            rest.Operator = WhereOperator.And;
+            rest.AddWhereMapping("City", "=", "param01");
+            rest.AddWhereMapping("Country", "=", "param02");
+            rest.DefaultOrderBy("CustomerID");
+            var query = Repository.GetRepository<Customer>().Query();
+            var result = this.TryApplyView(rest, query.JQuery(rest));
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -246,21 +239,23 @@ namespace Application30.Controllers
         [OutputCache(Duration = 0, VaryByParam = "*")]
         public ActionResult GetData2(RequestLinq linq)
         {
-            object result = null;
-            //Thread.Sleep( 1000 );
-            //
-            try
-            {
-                linq.SetSecurity(true, true, true);
-                var query = Repository.GetRepository<Customer>().Query();
-                result = query.JQuery(linq);
-            }
-            catch (Exception ex)
-            {
-
-            }
-            //
+            linq.SetSecurity(true, true, true);
+            var query = Repository.GetRepository<Customer>().Query();
+            var result = query.JQuery(linq);
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        // ------------------------------------------------
+
+        private void ConsoleWrite(CustomerViewModel1 entity)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(entity.CustomerID);
+            sb.AppendLine(entity.CompanyName);
+            sb.AppendLine(entity.ContactName);
+            sb.AppendLine(entity.City);
+            sb.AppendLine(entity.Country);
+            Debug.Write(sb.ToString());
         }
     }
 }

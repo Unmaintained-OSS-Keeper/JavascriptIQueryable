@@ -37,6 +37,6 @@ function searchfrm(context) {
     }
     var r = context.endWhere();
 
-    context.from("/Grid4/GetDataJson2").pagingWithSize(10).where(r.value,r.param).
-                     orderBy("Country,City desc ").applyTempClient();
+    context.from("/Grid4/GetDataJson2").pagingWithSize(10).where(r.value,r.param,
+              r.ptype).orderBy("Country,City desc ").applyTempClient();
 };

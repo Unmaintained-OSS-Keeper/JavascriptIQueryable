@@ -61,13 +61,11 @@ namespace Application30.Controllers
         public ActionResult GetDataJson(RequestRest rest)
         {
             object result = null;
-            //
             rest.Operator = WhereOperator.And;
             rest.AddWhereMapping("City", "=", "campo1");
             rest.AddWhereMapping("Country", "=", "campo2");
             var query = Repository.GetRepository<Customer>().Query();
             result = this.TryApplyView(rest, query.JQuery(rest));
-            //
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

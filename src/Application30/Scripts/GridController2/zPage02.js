@@ -12,17 +12,24 @@ $(document).ready(function () {
            //alert("databound");
          }
     );
-
+    //
     $("#gpane2").bind('isloading', function (event) {
         //alert("isloading");
     });
-
     $("#gpane2").bind('databound', function (event) {
         //alert("databound");
     });  
-
     $("#refresh").click(function (e) {
         $("#gpane2").gridTemplate("refresh");
+    });    
+    var context = $("#gpane2").gridTemplate("getObjectInstance");
+    $("#rbutton1").click(function (e) {
+        var r = {};
+        context.beginWhere("and");
+        context.addWhereClause("Country", "=", "germany");
+        r = context.endWhere();
+        context.refresh(r.value, r.param);
+        return false;
     });
 });
 

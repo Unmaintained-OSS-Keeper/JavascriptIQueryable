@@ -42,13 +42,15 @@ function searchfrm(context) {
 
     context.beginWhere("and");
     if (text1!= "") {
-        context.addWhereClause( "City"  , "=", text1);
+        context.addWhereClauseStr( "City"  , "=", text1);
+        //context.addWhereClause( "City"  , "=", text1);
     }      
     if (text2 != "") {
-        context.addWhereClause("Country", "=", text2);
+        context.addWhereClauseStr("Country", "=", text2);
+        //context.addWhereClause("Country", "=", text2);
     }
     var r = context.endWhere();   
 
-    context.from("/Grid1/GetDataJson").where(r.value,r.param).orderBy(
-              "CustomerID").skip(3).take(6).applyTempClient(); 
+    context.from("/Grid1/GetDataJson").where(r.value,r.param,r.ptype).orderBy(
+                  "CustomerID").skip(3).take(6).applyTempClient(); 
 }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonpResult.cs" />
     <Compile Include="KnockoutTypeBinding.cs" />
     <Compile Include="KnockoutHelper.cs" />
     <Compile Include="ControllerExtension.cs" />

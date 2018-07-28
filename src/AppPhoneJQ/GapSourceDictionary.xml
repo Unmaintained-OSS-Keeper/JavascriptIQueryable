@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is auto-generated, do not edit! -jm -->
+<GapSourceDictionary>
+    <FilePath Value="www\index.html"/>
+    <FilePath Value="www\jquery.mobile-1.0.1.min.css"/>
+    <FilePath Value="www\master.css"/>
+    <FilePath Value="www\phonegap-1.4.1.js"/>
+    <FilePath Value="www\images\ajax-loader.png"/>
+    <FilePath Value="www\images\icons-18-black.png"/>
+    <FilePath Value="www\images\icons-18-white.png"/>
+    <FilePath Value="www\images\icons-36-black.png"/>
+    <FilePath Value="www\images\icons-36-white.png"/>
+    <FilePath Value="www\scripts\jquery-1.6.2.min.js"/>
+    <FilePath Value="www\scripts\jquery.mobile-1.0.1.min.js"/>
+    <FilePath Value="www\scripts\jquery.unobtrusive-ajax.min.js"/>
+    <FilePath Value="www\scripts\jquery.validate.min.js"/>
+    <FilePath Value="www\scripts\jquery.validate.unobtrusive.min.js"/>
+    <FilePath Value="www\scripts\json2.js"/>
+    <FilePath Value="www\scripts\knockout-2.0.0.js"/>
+    <FilePath Value="www\scripts\knockout.mapping.js"/>
+    <FilePath Value="www\scripts\zApplication1.js"/>
+    <FilePath Value="www\scripts\zPageGrid1.js"/>
+    <FilePath Value="www\scripts\zPageGrid3.js"/>
+</GapSourceDictionary>

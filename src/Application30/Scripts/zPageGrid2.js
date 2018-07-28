@@ -3,16 +3,16 @@
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-beta-0.83  
+// javascript-to-IQueryable-beta-0.84  
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/  
 //
 
 (function ($, undefined) {
-    $.fn.gridTemplate = function (options, fsearch2, fsearch1) {    
+    $.fn.gridTemplate = function (options, fsearch2, fsearch1) {
 
         var that = this;
 
-        var basegrid = new PagingBase();     
+        var basegrid = new PagingBase(); 
 
         var undefined;
 
@@ -28,9 +28,11 @@
             tpageN: 'gbutton4',
             tpageL: 'gbutton5',
             //
+            tdomain: "",
             tcontainer: "",
             ttemplate: "",
             turlpath: "",
+            tajaxdatatype: "json",
             tcacheEnabled: false,
             tlinqEnabled: true,
             tdetailPanel: "",
@@ -51,6 +53,9 @@
             tcancelCallBack: undefined,
             tformViewModel: undefined,
             tcreateViewModel: undefined,
+            tdeleteCallBackUrl: "",
+            tinsertCallBackUrl: "",
+            tupdateCallBackUrl: "", 
             tenableBackup: true,
             tpage: 1
         };
@@ -58,9 +63,11 @@
         var omethods = {
             initialize: function (args) {
                 var st = settings;
+                basegrid.domain = st.tdomain;
                 basegrid.mainpane = st.tpane2;
-                basegrid.container = st.tcontainer; 
+                basegrid.container = st.tcontainer;
                 basegrid.template = st.ttemplate;
+                basegrid.ajaxdatatype = st.tajaxdatatype;
                 basegrid.urlpath = st.turlpath;
                 basegrid.cacheEnabled = st.tcacheEnabled;
                 basegrid.linqEnabled = st.tlinqEnabled;
@@ -80,8 +87,11 @@
                 basegrid.updateCallBack = st.tupdateCallBack;
                 basegrid.cancelCallBack = st.tcancelCallBack;
                 basegrid.createViewModel = st.tcreateViewModel;
+                basegrid.deleteCallBackUrl = st.tdeleteCallBackUrl;
+                basegrid.insertCallBackUrl = st.tinsertCallBackUrl;
+                basegrid.updateCallBackUrl = st.tupdateCallBackUrl;
                 basegrid.enableBackup = st.tenableBackup;
-                basegrid.initPagingBase(); 
+                basegrid.initPagingBase();
                 //
                 if (settings.tformViewModel) {
                     var $formpanel = $("#" + st.tpane1 + " .viewmodel");
@@ -130,30 +140,30 @@
                         if (event.isloading == true)
                             $("#" + settings.tpane3).show();
                         else
-                            $("#" + settings.tpane3).hide();  
+                            $("#" + settings.tpane3).hide();
                     };
                 });
-                $(basegrid).bind('popupdetail', function (event) {  
+                $(basegrid).bind('popupdetail', function (event) {
                     $(that).trigger(event);
                 });
                 $(basegrid).bind('popupcreate', function (event) {
                     $(that).trigger(event);
                 });
                 $(basegrid).bind('popupmodify', function (event) {
-                    $(that).trigger(event); 
+                    $(that).trigger(event);
                 });
                 $(basegrid).bind('databound', function (event) {
-                    $(that).trigger(event); 
-                });              
+                    $(that).trigger(event);
+                });
                 //
-                omethods._setupPanel(1); 
+                omethods._setupPanel(1);
             },
 
             _confKnockoutForm: function (formpanel) {
                 ko.cleanNode(formpanel);
                 var form = settings.tformViewModel();
                 basegrid.formViewModel = form;
-                ko.applyBindings(form, formpanel); 
+                ko.applyBindings(form, formpanel);
             },
 
             _setupPanel: function (value) {
@@ -178,7 +188,7 @@
                 if (value == 3) {
                     if (st.ttype == "1") {
                         $("#" + st.tpane1).hide();
-                        $("#" + st.tpane2).show(); 
+                        $("#" + st.tpane2).show();
                     }
                     else $("#" + st.tpane1).dialog("close");
                 }
@@ -196,7 +206,7 @@
             getSource: function () {
                 var obj = $(this).data("__PagingBase__");
                 return obj.source;
-            },           
+            },
 
             closeCreateDialogFeilure: function () {
                 var obj = $(this).data("__PagingBase__");
