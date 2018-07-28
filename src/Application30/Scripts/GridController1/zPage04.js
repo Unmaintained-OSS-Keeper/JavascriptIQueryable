@@ -9,8 +9,8 @@ $(document).ready(function () {
         ttype: "2",
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
-         bind('databound', function (obj, evt) {
-            var plugin = obj.context;
+         bind('databound', function (event) {
+            var plugin = event.context;
             if (plugin.getCurrentTemplate() == "jtableTemplate1")
                 $(".identity").css("color","blue");
             if (plugin.getCurrentTemplate() == "jtableTemplate2")

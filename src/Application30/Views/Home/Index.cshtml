@@ -17,7 +17,8 @@ and Queries in LINQ by Microsoft" to compose dynamically your query. So on the M
 point. If you require a client-side template is used jQuery template plugin. If you require a server-side template is used 
 a MVC partial view. Server side there is also some MVC filter attribute that provide some security feature. On the server 
 if you use a view that has no navigation property you should not be allowed to navigate through all tables. In the release 
-3.0 I' added the support for jquery mobile. In the release 4.0 I' added the support for knockout.
+3.0 I' added the support for jquery mobile. In the release 4.0 I' added the support for knockout. In the release 5.0 I' 
+added the support for jquery validation to knockout.
 </div>
 
 <h3>Plugin (zPageGrid2.js) properties/methods</h3>
@@ -156,6 +157,21 @@ A function that create the search viewmodel object.
 </tr>
 
 <tr>
+<td>tenableBackup (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable backup funtionality. In a popup modify dialog if you change a value
+of a field and then close the popup without press "update", original values will be replaced.
+</td>
+</tr>
+
+<tr>
+<td>tknockoutValidation (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable support for mvc3 jquery validation.
+</td>
+</tr>
+
+<tr>
 <td>tcustomCallBack (only knockoutjs)</td>
 <td>
 The function callback of the "data-jcustomaction" attribute. It must put on the main template. 
@@ -226,33 +242,58 @@ Get the current data source( $(...).gridTemplate("getSource") )
 </tr>
 
 <tr>
-<td>closeModifyPopupUpdate()</td>
+<td>closeDialogSuccess()</td>
 <td>
-Close the edit/modify popup applay the backup/restore behaviour. When you open a
-edit/modify popup, the code do a backup of the viewmodel value (string, number, 
-boolean). So when you change the value of a field and close the popup without "save"
- it will restore the original value.
+Close the edit/modify popup. When you open a edit/modify popup, the code do a backup 
+of the viewmodel value (string, number, boolean). So when you change the value of a 
+field and close the popup without "save" it will restore the original value.
 
-( $(...).gridTemplate("closeModifyPopupUpdate") )
+( $(...).gridTemplate("closeDialogSuccess") )
 </td>
 </tr>
 
 <tr>
-<td>closeModifyPopupCancel()</td>
+<td>closeDialogFeilure()</td>
 <td>
 Close the edit/modify popup applay the backup/restore behaviour. When you open a
 edit/modify popup, the code do a backup of the viewmodel value (string, number, 
 boolean). So when you change the value of a field and close the popup without "save"
  it will restore the original value.
- ( $(...).gridTemplate("closeModifyPopupCancel") )
+ ( $(...).gridTemplate("closeDialogFeilure") )
 </td>
 </tr>
+
+<tr>
+<td>Event: "databound"</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>Event: "isloading"</td>
+<td>
+
+<tr>
+<td>Event: "popupdetail"</td>
+<td>
+
+<tr>
+<td>Event: "popupmodify"</td>
+<td>
 </table>
 
 <br /><br />
 
 <h3>PagingBase (zPageGrid1.js) properties/methods</h3>
 <table>
+<tr>
+<td>mainpane</td>
+<td>
+Div name of the "result" panel (same value as plugin 'tpane2'). 
+</td>
+</tr>
+
 <tr>
 <td>container</td>
 <td>
@@ -366,9 +407,17 @@ The function callback of the "data-jcancelaction" attribute. It must put on the 
 </tr>
 
 <tr>
-<td>source</td>
+<td>enableBackup (only knockoutjs)</td>
 <td>
-The value of the current datasource (if client-template: is an json array/if server-template is a htmltext/if knockout: is an observable array).
+Boolean value. Enable/Disable backup funtionality. In a popup modify dialog if you change a value
+of a field and then close the popup without press "update", original values will be replaced.
+</td>
+</tr>
+
+<tr>
+<td>knockoutValidation (only knockoutjs)</td>
+<td>
+Boolean value. Enable/Disable support for mvc3 jquery validation.
 </td>
 </tr>
 
@@ -421,6 +470,13 @@ If linq is enabled: add a where clause ( ex. addWhereClause("CustomerID","=","va
 <td>endWhere()</td>
 <td>
 If linq is enabled: close and return a where clause. It will be passed in the "where(expression, param)".
+</td>
+</tr>
+
+<tr>
+<td>source</td>
+<td>
+The value of the current datasource (if client-template: is an json array/if server-template is a htmltext/if knockout: is an observable array).
 </td>
 </tr>
 
@@ -601,6 +657,14 @@ Call the "loadData()" and return "this".
 <td>Event: "isloading"</td>
 <td>
 
+<tr>
+<td>Event: "popupdetail"</td>
+<td>
+
+<tr>
+<td>Event: "popupmodify"</td>
+<td>
+
 </td>
 </tr>
 </table>
@@ -657,14 +721,6 @@ Return an array in "observable" format.
 <h3>HTML "data-" attribute</h3>
 <table>
 <tr>
-<td>data-jdetailaction</td>
-<td>
-Must put it on a link. It tell the plugin that the link show a detail popup.
-It must put on the main template.
-</td>
-</tr>
-
-<tr>
 <td>data-jdetailtemplate</td>
 <td>
 Must put it on a link. Name of the popup detail template.
@@ -673,18 +729,17 @@ It must put on the main template.
 </tr>
 
 <tr>
-
-<td>data-jmodifyaction</td>
+<td>data-jdetailaction</td>
 <td>
-Must put it on a link. It tell the plugin that the link show a edit popup.
+Must put it on a link. It tell the plugin that the link show a detail popup.
 It must put on the main template.
 </td>
 </tr>
 
 <tr>
-<td>data-jmodifytemplate</td>
+<td>data-jmodifyaction</td>
 <td>
-Must put it on a link. Name of the popup modify template.
+Must put it on a link. It tell the plugin that the link show a  edit  popup.
 It must put on the main template.
 </td>
 </tr>

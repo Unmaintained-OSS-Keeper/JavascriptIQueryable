@@ -1,4 +1,7 @@
-﻿@{
+﻿@using JQueryLinq
+@model Application1.CustomerViewModel2
+
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,15 +9,15 @@
 @section header{
     <script src="@Url.Content("~/Scripts/zPageGrid1.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/zPageGrid2.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/GridController4/zPage04.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/GridController4/zPage08.js")" type="text/javascript"></script>
 }
 
-<h2>Index - Page04</h2>
+<h2>Index - Page09</h2>
 
 <p>
 <pre>
-context.from("/Grid4/GetDataJson1").pagingWithSize(10).where(swhere).
-             orderBy("Country,City desc ").applyTempKo();
+context.from("/Grid4/GetDataJson3").skip(0).take(8).where(r.value, r.param).
+           orderBy("Country,City desc").applyTempKo(mapKnock);
 </pre>
 </p>
 <p>
@@ -37,11 +40,11 @@ Linq is not enabled.
     <table class="viewmodel">    
     <tr>
       <td>City: </td>
-      <td><input id="text1" data-bind="value: campo1" /></td>
+      <td><input id="text1" data-bind="value: city" /></td>
     </tr>  
     <tr>
       <td>Country: </td>
-      <td><input id="text2" data-bind="value: campo2" /></td>
+      <td><input id="text2" data-bind="value: country" /></td>
     </tr> 
     </table>
     <br /><br />
@@ -55,10 +58,11 @@ Linq is not enabled.
     <td colspan="4"> &nbsp; </td>
     <td data-sort="CustomerID"> CustomerID </td>
     <td data-sort="CompanyName"> CompanyName </td>
-    <td data-sort="ContactTitle"> ContactTitle </td>
     <td data-sort="Address"> Address </td>
     <td data-sort="City"> City </td>
-    <td data-sort="Country"> Country </td>
+    <td data-sort="City"> Value1 </td>
+    <td data-sort="City"> Value2 </td>
+    <td data-sort="City"> Total </td>
   </tr>
   <tbody id="jlist" data-bind="template: {name: 'temp1', foreach: $data}"></tbody>
   </table>   
@@ -69,7 +73,7 @@ Linq is not enabled.
 </div>
 
 <div id="gdialog2" style="display:none;height:100px">
-  <div id="jlist2" data-bind="template:'jmodifyTemplate'"></div>
+  <div id="jlist2" data-bind="template:'jmodifyTemplate'"></div> 
   <div>
     <a href="#" data-jupdateaction>Update</a>&nbsp;
     <a href="#" data-jcancelaction>Cancel</a>&nbsp;
@@ -84,10 +88,11 @@ Linq is not enabled.
     <td><a href="#" data-jmodifyaction>Modify</a></td>
     <td> ${CustomerID} </td>
     <td> ${CompanyName} </td>
-    <td> ${ContactTitle} </td>
     <td> ${Address} </td>
     <td> ${City} </td>
-    <td> ${Country} </td>
+    <td> ${Value1} </td>
+    <td> ${Value2} </td>
+    <td> ${Total} </td>
   <tr>
 </script>
 
@@ -95,13 +100,33 @@ Linq is not enabled.
   <b>CustomerID: </b><span data-bind="text: CustomerID" /></span><br>
   <b>CompanyName: </b><span data-bind="text: CompanyName" /></span><br>
   <b>City: </b><span data-bind="text: City" /></span><br>
-  <b>Country: </b><span data-bind="text: Country" /></span><br>
+  <b>Value1: </b><span data-bind="text: Value1" /></span><br>
+  <b>Value2: </b><span data-bind="text: Value2" /></span><br>
+  <b>Total: </b><span data-bind="text: Total" /></span><br>
 </script>
 
 <script id="jmodifyTemplate" type="text/x-jquery-tmpl">
-  <p><b>CustomerID: </b><input data-bind="value: CustomerID" /></p>
-  <p><b>CompanyName: </b><input data-bind="value: CompanyName" /></p>
-  <p><b>City: </b><input data-bind="value: City" /></p>
-  <p><b>Country: </b><input data-bind="value: Country" /></p>
-</tr>
+@using (Html.BeginForm()) {
+<div> 
+  <p>
+    <b>CustomerID: </b>@Html.KoTextBoxStrFor(model => model.CustomerID)<br>
+    @Html.ValidationMessageFor(model => model.CustomerID)
+  </p>
+  <p>
+    <b>CompanyName: </b>@Html.KoTextBoxStrFor(model => model.CompanyName)<br>
+    @Html.ValidationMessageFor(model => model.CompanyName)
+  </p> 
+  <p>
+    <b>City: </b>@Html.KoTextBoxStrFor(model => model.City)
+    @Html.ValidationMessageFor(model => model.City)
+  </p>
+  <p>
+    <b>Value1: </b>@Html.KoTextBoxIntFor(model => model.Value1)
+  </p>
+  <p>
+    <b>Value2: </b>@Html.KoTextBoxIntFor(model => model.Value2)
+  </p>    
+  <h3><b>Total: </b><span data-bind="text: Total"></span></h3>
+</div>
+}
 </script>

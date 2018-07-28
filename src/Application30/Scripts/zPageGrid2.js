@@ -3,8 +3,8 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-4.0
-// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
+// javascript-to-IQueryable-preview-5.0
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
 (function ($, undefined) {
@@ -12,7 +12,7 @@
 
         var that = this;
 
-        var basegrid = new PagingBase();
+        var basegrid = new PagingBase(); 
 
         var undefined;
 
@@ -40,19 +40,21 @@
             tdlgparent: { modal: true, width: 600 },
             tdlgdetail: { modal: true, width: 600 },
             tdlgmodify: { modal: true, width: 600 },
+            tknockoutValidation: false,
             tcustomCallBack: undefined,
             tdeleteCallBack: undefined,
             tupdateCallBack: undefined,
             tcancelCallBack: undefined,
             tformViewModel: undefined,
+            tenableBackup: true,
             tpage: 1
         };
 
         var omethods = {
             initialize: function (args) {
                 var st = settings;
-                basegrid.panetemp = st.tpane2;
-                basegrid.container = st.tcontainer;
+                basegrid.mainpane = st.tpane2;
+                basegrid.container = st.tcontainer; 
                 basegrid.container = st.tcontainer;
                 basegrid.template = st.ttemplate;
                 basegrid.urlpath = st.turlpath;
@@ -64,11 +66,14 @@
                 basegrid.modifyPanel = st.tmodifyPanel;
                 basegrid.modifyContainer = st.tmodifyContainer;
                 basegrid.dlgmodify = st.tdlgmodify;
+                basegrid.knockoutValidation = st.tknockoutValidation;
                 basegrid.customCallBack = st.tcustomCallBack;
                 basegrid.deleteCallBack = st.tdeleteCallBack;
                 basegrid.updateCallBack = st.tupdateCallBack;
                 basegrid.cancelCallBack = st.tcancelCallBack;
-                basegrid.initPagingBase();
+
+                basegrid.enableBackup = st.tenableBackup;
+                basegrid.initPagingBase(); 
                 //
                 if (settings.tformViewModel) {
                     var formpanel = $("#" + st.tpane1 + " .viewmodel").get(0);
@@ -107,35 +112,25 @@
                     e.stopPropagation();
                     basegrid.pageL();
                 });
-                //
-                $("#" + st.tpane2 + " *[data-sort]").live("click", function (e) {
-                    e.stopPropagation();
-                    if (basegrid.hasWaitingRequest() === false) {
-                        if (basegrid.records < 1)
-                            return;
-                        var colorder = "";
-                        var field = $(this).data();
-                        if (!field || !field.sort)
-                            return;
-                        colorder = field.sort;
-                        basegrid._setColumnOrderStyle(this);
-                        basegrid._setColumnOrder(colorder);
-                        basegrid.loadData();
-                    }
-                    else alert("WaitingRequest");
-                });
+                //              
                 $(basegrid).bind('isloading', function (event) {
                     $(that).trigger(event);
                     if ($("#" + settings.tpane3).length != 0) {
                         if (event.isloading == true)
                             $("#" + settings.tpane3).show();
                         else
-                            $("#" + settings.tpane3).hide();
+                            $("#" + settings.tpane3).hide(); 
                     };
                 });
-                $(basegrid).bind('databound', function (event) {
+                $(basegrid).bind('popupdetail', function (event) {  
                     $(that).trigger(event);
                 });
+                $(basegrid).bind('popupmodify', function (event) {
+                    $(that).trigger(event); 
+                });
+                $(basegrid).bind('databound', function (event) {
+                    $(that).trigger(event); 
+                });              
                 //
                 omethods._setupPanel(1);
             },
@@ -169,29 +164,29 @@
                 if (value == 3) {
                     if (st.ttype == "1") {
                         $("#" + st.tpane1).hide();
-                        $("#" + st.tpane2).show();
+                        $("#" + st.tpane2).show(); 
                     }
                     else $("#" + st.tpane1).dialog("close");
                 }
             },
 
             getObjectInstance: function () {
-                return $(this).data("__PagingBase__");
+                return $(this).data("__PagingBase__"); 
             },
 
             getSource: function () {
                 var obj = $(this).data("__PagingBase__");
-                return obj.source; 
+                return obj.source;
             },
 
-            closeModifyPopupUpdate: function () {
+            closeDialogFeilure: function () {
                 var obj = $(this).data("__PagingBase__");
-                obj._closeModifyPopup("update");
+                obj._closeDialogFeilure();
             },
 
-            closeModifyPopupCancel: function () {
+            closeDialogSuccess: function () {
                 var obj = $(this).data("__PagingBase__");
-                obj._closeModifyPopup("cancel");
+                obj._closeDialogSuccess();
             }
         };
 

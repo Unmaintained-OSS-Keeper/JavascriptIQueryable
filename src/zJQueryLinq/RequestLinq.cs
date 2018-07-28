@@ -182,5 +182,21 @@ namespace JQueryLinq
             };
             return result;
         }
+
+        public object SetArray(dynamic data, object array)
+        {
+            object result = new
+            {
+                total = data.total,
+                records = data.records,
+                rows = array,
+            };
+            return result;
+        }
+
+        public object[] GetArray(dynamic data)
+        {
+            return (object[])data.rows;
+        }
     }
 }

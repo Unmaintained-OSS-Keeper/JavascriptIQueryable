@@ -18,7 +18,7 @@ $(document).ready(function () {
         ttype: "2"
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
-         bind('databound', function (obj, evt) {
+         bind('databound', function (event) {
              //alert("databound");
          }
     );

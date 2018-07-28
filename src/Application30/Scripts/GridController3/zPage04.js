@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 function method1() {
     context.linqEnabled = false;
+    context.mainpane = "gpane2";
     context.container = "jpa";
 
     context.from("/Grid3/GetDataJson").pagingWithSize(10).orderBy(

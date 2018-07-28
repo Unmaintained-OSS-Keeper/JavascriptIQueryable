@@ -9,8 +9,8 @@ $(document).ready(function () {
         tcontainer: "jlist",
         tformViewModel: function () {
             return {
-                campo1: ko.observable(""),
-                campo2: ko.observable("")
+                city: ko.observable(""),
+                country: ko.observable("")
             };
         },
         tcustomCallBack: function (obj) {
@@ -30,19 +30,16 @@ $(document).ready(function () {
         tdetailContainer: "jlist1",
         tmodifyPanel: "gdialog2",
         tmodifyContainer: "jlist2",
-        tlinqEnabled: false,
+        tknockoutValidation: true,
+        tlinqEnabled: true,
         ttype: "2"
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
       bind('popupdetail', function (event) {
-          var dataitemKo = ko.dataFor(event.elemitem);
-          var dataitemJs = ko.toJS(dataitemKo);
-          alert("popupdialog");
+          //alert("databound");
       }).
       bind('popupmodify', function (event) {
-          var dataitemKo = ko.dataFor(event.elemitem);
-          var dataitemJs = ko.toJS(dataitemKo);
-          alert("popupmodify");
+          //alert("databound");
       }).
       bind('databound', function (event) {
           //alert("databound");
@@ -52,17 +49,42 @@ $(document).ready(function () {
 function searchfrm(context) {
     context.clearSearch();
 
-    var swhere = context.koWhereString();
+    var r = context.koWhereObjectAnd();
 
-    context.from("/Grid4/GetDataJson1").pagingWithSize(10).where(swhere).
-                orderBy("Country,City desc ").applyTempKo();
+    context.from("/Grid4/GetDataJson2").skip(0).take(8).where(r.value, r.param).
+               orderBy("Country,City desc").applyTempKo(mapKnock);
+};
+
+function mapKnock(data) {
+    return ko.observableArray(ko.utils.arrayMap(data, function (item) {
+            return new dataItem(item);
+        })
+    );
+};
+
+function dataItem(item) {
+    var that = this;  
+    this.CustomerID = ko.observable(item.CustomerID);
+    this.CompanyName = ko.observable(item.CompanyName);
+    this.Address = ko.observable(item.Address);
+    this.City = ko.observable(item.City);
+    this.Value1 = ko.observable(0);
+    this.Value2 = ko.observable(0);
+    this.Total = ko.observable(0);
+
+    this.Value1.subscribe(function (value) {
+        var ret = that.Value1() + that.Value2();
+        that.Total(ret);
+    });
+
+    this.Value2.subscribe(function (value) {
+        var ret = that.Value1() + that.Value2();
+        that.Total(ret);
+    });
 };
 
 function deletefrm(obj) {
-    //var ret1 = obj.currentIndex();
-    //var ret2 = obj.removeCurrent();
-    //var ret3 = obj.getArrayJs();
-    $.ajax({url:"/Grid4/Delete/", type:'post',
+    $.ajax({ url: "/Grid4/DeleteViewModel2/", type: 'post',
         data: ko.toJSON(obj.dataitemJs),
         contentType: 'application/json',
         error: function (request, state, error) {
@@ -75,11 +97,8 @@ function deletefrm(obj) {
     });
 };
 
-function updatefrm(obj) {
-    //var ret1 = obj.currentIndex();
-    //var ret2 = obj.removeCurrent();
-    //var ret3 = obj.getArrayJs();
-    $.ajax({ url: "/Grid4/Update/", type: 'post',
+function updatefrm(obj) {   
+    $.ajax({ url: "/Grid4/UpdateViewModel2/", type: 'post',
         data: ko.toJSON(obj.dataitemJs),
         contentType: 'application/json',
         error: function (request, state, error) {

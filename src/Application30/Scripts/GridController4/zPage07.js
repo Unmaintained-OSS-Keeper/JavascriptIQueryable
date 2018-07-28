@@ -9,8 +9,8 @@ $(document).ready(function () {
         tcontainer: "jlist",
         tformViewModel: function () {
             return {
-                campo1: ko.observable(""),
-                campo2: ko.observable("")
+                city: ko.observable(""),
+                country: ko.observable("")
             };
         },
         tcustomCallBack: function (obj) {
@@ -30,19 +30,16 @@ $(document).ready(function () {
         tdetailContainer: "jlist1",
         tmodifyPanel: "gdialog2",
         tmodifyContainer: "jlist2",
-        tlinqEnabled: false,
-        ttype: "2"
+        tknockoutValidation: true,
+        tlinqEnabled: true,
+        ttype: "1"
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
       bind('popupdetail', function (event) {
-          var dataitemKo = ko.dataFor(event.elemitem);
-          var dataitemJs = ko.toJS(dataitemKo);
-          alert("popupdialog");
+          //alert("databound");
       }).
       bind('popupmodify', function (event) {
-          var dataitemKo = ko.dataFor(event.elemitem);
-          var dataitemJs = ko.toJS(dataitemKo);
-          alert("popupmodify");
+          //alert("databound");
       }).
       bind('databound', function (event) {
           //alert("databound");
@@ -52,17 +49,14 @@ $(document).ready(function () {
 function searchfrm(context) {
     context.clearSearch();
 
-    var swhere = context.koWhereString();
+    var r = context.koWhereObjectAnd();
 
-    context.from("/Grid4/GetDataJson1").pagingWithSize(10).where(swhere).
-                orderBy("Country,City desc ").applyTempKo();
+    context.from("/Grid4/GetDataJson2").pagingWithSize(10).where(r.value, r.param).
+                    orderBy("Country,City desc ").applyTempKo();
 };
 
 function deletefrm(obj) {
-    //var ret1 = obj.currentIndex();
-    //var ret2 = obj.removeCurrent();
-    //var ret3 = obj.getArrayJs();
-    $.ajax({url:"/Grid4/Delete/", type:'post',
+    $.ajax({ url: "/Grid4/DeleteViewModel1/", type: 'post',
         data: ko.toJSON(obj.dataitemJs),
         contentType: 'application/json',
         error: function (request, state, error) {
@@ -75,11 +69,8 @@ function deletefrm(obj) {
     });
 };
 
-function updatefrm(obj) {
-    //var ret1 = obj.currentIndex();
-    //var ret2 = obj.removeCurrent();
-    //var ret3 = obj.getArrayJs();
-    $.ajax({ url: "/Grid4/Update/", type: 'post',
+function updatefrm(obj) {   
+    $.ajax({ url: "/Grid4/UpdateViewModel1/", type: 'post',
         data: ko.toJSON(obj.dataitemJs),
         contentType: 'application/json',
         error: function (request, state, error) {

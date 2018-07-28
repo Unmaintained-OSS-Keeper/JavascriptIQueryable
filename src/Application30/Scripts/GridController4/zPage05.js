@@ -17,10 +17,15 @@ $(document).ready(function () {
         ttype: "1"
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
-         bind('databound', function (obj, evt) {
-             //alert("databound");
-         }
-    );
+      bind('popupdetail', function (event) {
+          //alert("databound");
+      }).
+      bind('popupmodify', function (event) {
+          //alert("databound");
+      }).
+      bind('databound', function (event) {
+          //alert("databound");
+      });
 });
 
 function searchfrm(context) {
@@ -59,7 +64,7 @@ function dataItem(srv, item) {
 
     $(srv).bind("updated", function (event) {
         var result = event.eventargs.result;
-        //obj.context.refresh();
+        //obj.context.refresh();  
         that.message(result);
     });
 
@@ -78,7 +83,7 @@ function dataItem(srv, item) {
         var itemreq = ko.toJSON(this);
         srv.deleteItem(itemreq);
     } .bind(this);
-}
+};
 
 //
 // Model
@@ -119,4 +124,4 @@ function dataSource() {
         event.eventargs = argevent;
         $(this).trigger(event);
     };
-}
+};

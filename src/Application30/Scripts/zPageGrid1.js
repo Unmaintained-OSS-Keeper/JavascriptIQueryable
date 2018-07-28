@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-4.0
+// javascript-to-IQueryable-preview-5.0 
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
 //
 
@@ -16,10 +16,10 @@ Function.prototype.inherits = function (superclass) {
 function PagingBase() {
     var undefined;
     var maxcache = 999;
-    var cache = new Array(maxcache);
+    var cache = new Array(maxcache); 
     var that = this;
 
-    this.panetemp = "";
+    this.mainpane = "";
     this.container = "";
     this.template = "";
     this.urlpath = "";
@@ -31,11 +31,12 @@ function PagingBase() {
     this.modifyPanel = "";
     this.modifyContainer = "";
     this.dlgmodify = { modal: true, width: 600 };
-    this.formviewmodel = undefined;
+    this.knockoutValidation = false;   
     this.customCallBack = undefined;
     this.deleteCallBack = undefined;
     this.updateCallBack = undefined;
     this.cancelCallBack = undefined;
+    this.formviewmodel = undefined;
     this.enableBackup = true;
     this.source = {};
 
@@ -44,7 +45,9 @@ function PagingBase() {
     this._swhere = "";
     this._sorder = "";
     this._typeview = "client";
+    this._objectCall = undefined;
     this._bkdata = undefined;
+    this._currentaction = "";
     this._koenabled = false;
     this._templatename = ""; 
     this._callBackTemplate = null;
@@ -74,17 +77,18 @@ function PagingBase() {
     // ---------------------------------------------------------------
 
     this.initPagingBase = function () {
-        this._dialogConfigure();      
+        this._dialogConfigure();
+        this._sortConfigure();
     }
 
     this._setColumnOrder = function (col) {
         var ord = $(this).data("colorder");
         var scol = "";
-        if (ord == "desc") 
+        if (ord == "desc")
             ord = "asc";
         else ord = "desc";
         $(this).data("colorder", ord);
-        scol = col + " " + ord
+        scol = col + " " + ord;
         if (this.linqEnabled === false) {
             this._sorder = scol;
             return;
@@ -158,6 +162,14 @@ function PagingBase() {
     }
 
     // ---------------------------------------------------------------
+
+    this.closeDialogFeilure = function () {
+        this._closeModifyDialog("feilure");
+    }
+
+    this.closeDialogSuccess = function () {
+        this._closeModifyDialog("success");
+    }
 
     this.koWhereObjectAnd = function () {
         if (!this.formviewmodel)
@@ -236,7 +248,9 @@ function PagingBase() {
         this._owhere = {};
         this._swhere = "";
         this._typeview = "client";
+        this._objectCall = undefined;
         this._bkdata = undefined;
+        this._currentaction = "";
         this._koenabled = false;
         this._callBackTemplate = null;
         this._callBackContinue = null;
@@ -471,6 +485,11 @@ function PagingBase() {
         };
     }
 
+    this._renderObjectCall = function (sdata) {
+        var func = this._objectCall;
+        func.object[method](func.elem, sdata, func.param);
+    }
+
     this._renderTemplateKonock = function (sdata) {
         var ele = $("#" + this.container).get(0);
         ko.cleanNode(ele);
@@ -521,42 +540,41 @@ function PagingBase() {
 
     this._dialogConfigure = function () {
         var dlgcurritem1 = undefined; var dlgcurritem2 = undefined;
-        if (this.panetemp) {
-            var conf1 = $("#" + this.panetemp);
-            $("*[data-jcustomaction]", conf1).live("click", function (event) {
-                event.stopPropagation();
-                that._customAction(this);
-            });
-            $("*[data-jdeleteaction]", conf1).live("click", function (event) {
-                event.stopPropagation();
-                that._deleteAction(this);
-            });
-            $("*[data-jdetailaction]", conf1).live("click", function (event) {
+        if (this.mainpane) {
+            var $conf1 = $("#" + this.mainpane);
+            $conf1.delegate("*[data-jdetailaction]", "click", function (event) {
                 event.stopPropagation();
                 dlgcurritem1 = this;
                 that._detailAction(this);
             });
-            $("*[data-jmodifyaction]", conf1).live("click", function (event) {
+            $conf1.delegate("*[data-jmodifyaction]", "click", function (event) {
                 event.stopPropagation();
                 dlgcurritem2 = this;
                 that._modifyAction(this);
             });
+            $conf1.delegate("*[data-jcustomaction]", "click", function (event) {
+                event.stopPropagation();
+                that._customAction(this);
+            });
+            $conf1.delegate("*[data-jdeleteaction]", "click", function (event) {
+                event.stopPropagation();
+                that._deleteAction(this);
+            });
         }
         if (this.modifyPanel) {
-            var conf2 = $("#" + this.modifyPanel);
-            $("*[data-jupdateaction]", conf2).live("click", function (event) {
+            var $conf2 = $("#" + this.modifyPanel);
+            $conf2.delegate("*[data-jupdateaction]", "click", function (event) {
                 event.stopPropagation();
                 that._updateAction(this);
-                $("#" + that.modifyPanel).dialog("close");
             });
-            $("*[data-jcancelaction]", conf2).live("click", function (event) {
+            $conf2.delegate("*[data-jcancelaction]", "click", function (event) {
                 event.stopPropagation();
-              //that._cancelAction(this);
                 $("#" + that.modifyPanel).dialog("close");
             });
         }
         if (this.detailPanel) {
-            $("#" + this.detailPanel).live("dialogopen", function () {
+            var $conf3 = $("#" + this.detailPanel);
+            $conf3.live("dialogopen", function () {
                 if (!dlgcurritem1)
                     return;
                 var parent = $(dlgcurritem1).parents(".pagingbase-ui-selected-ou");
@@ -565,9 +583,7 @@ function PagingBase() {
                     parent.eq(0).addClass("pagingbase-ui-selected-in");
                 }
             });
-        }
-        if (this.detailPanel) {
-            $("#" + this.detailPanel).live("dialogclose", function () {
+            $conf3.live("dialogclose", function () {
                 if (!dlgcurritem1)
                     return;
                 var parent = $(dlgcurritem1).parents(".pagingbase-ui-selected-in");
@@ -578,18 +594,17 @@ function PagingBase() {
             });
         }
         if (this.modifyPanel) {
-            $("#" + this.modifyPanel).live("dialogopen", function () {
+            var $conf4 = $("#" + this.modifyPanel);
+            $conf4.live("dialogopen", function () {
                 if (!dlgcurritem2)
                     return;
                 var parent = $(dlgcurritem2).parents(".pagingbase-ui-selected-ou");
                 if (parent.length > 0) {
                     parent.eq(0).removeClass("pagingbase-ui-selected-ou");
                     parent.eq(0).addClass("pagingbase-ui-selected-in");
-                } 
+                }
             });
-        }
-        if (this.modifyPanel) {
-            $("#" + this.modifyPanel).live("dialogclose", function () {
+            $conf4.live("dialogclose", function () {
                 if (!dlgcurritem2)
                     return;
                 var parent = $(dlgcurritem2).parents(".pagingbase-ui-selected-in");
@@ -597,42 +612,48 @@ function PagingBase() {
                     parent.eq(0).removeClass("pagingbase-ui-selected-in");
                     parent.eq(0).addClass("pagingbase-ui-selected-ou");
                 }
-                that._cancelAction(dlgcurritem2); 
+                if (that._currentaction == "")
+                    that._cancelAction(dlgcurritem2);
             });
         }
     }
 
-    this._closeModifyPopup = function (type) {
-        if (    type === "update"    )
-            this._bkdata = undefined;
-        $("#" + this.modifyPanel).dialog("close");
-    } 
+    this._sortConfigure = function () {
+        var $conf = $("#" + this.mainpane);
+        $conf.delegate("*[data-sort]", "click", function (event) {
+            event.stopPropagation();
+            if (that.hasWaitingRequest() === false) {
+                if (that._records < 1)
+                    return;
+                var colorder = "";
+                var field = $(this).data();
+                if (!field || !field.sort) 
+                    return;
+                colorder = field.sort;
+                that._setColumnOrderStyle(this);
+                that._setColumnOrder(colorder);
+                that.loadData();
+            }
+            else alert("WaitingRequest");
+        });
+    }
 
     this._detailAction = function (sender) {
         var elem = $(sender);
         var field = elem.data();
         var jdetailtemplate = "";
-        var jdetailcallback = undefined;
+        this._currentaction = "";
         if (field && field.jdetailtemplate) {
             jdetailtemplate = field.jdetailtemplate;
         }
-        if (field && field.jdetailcallback) {
-            jdetailcallback = field.jdetailcallback;
-        }
         var item = $.tmplItem(elem);
-        var dataitem = item.data;
-        if (!jdetailtemplate) {
-            if (jdetailcallback) {
-                (eval(field.jdetailcallback))(dataitem);
-                return;
-            }
-            return;
-        }
+        var dataitem = item.data;     
         if (this._koenabled == false) {
             $("#" + this.detailContainer).empty();
-            var html = $("#" + jdetailtemplate).tmpl(dataitem);   
+            var html = $("#" + jdetailtemplate).tmpl(dataitem);
             html.appendTo("#" + this.detailContainer);
             $("#" + this.detailPanel).dialog(that.dlgdetail);
+            this._raisePopupDetail(sender);
         }
         if (this._koenabled == true) {
             var ele = $("#" + this.detailContainer).get(0);
@@ -640,43 +661,28 @@ function PagingBase() {
             $("#" + this.detailContainer).empty();
             ko.applyBindings(dataitem, ele);
             $("#" + this.detailPanel).dialog(that.dlgdetail);
+            this._raisePopupDetail(sender);
         }
     }
 
     this._modifyAction = function (sender) {
-        var elem = $(sender);
-        var field = elem.data();
-        var jmodifytemplate = "";
-        var jmodifycallback = undefined;
-        if (field && field.jmodifytemplate) {
-            jmodifytemplate = field.jmodifytemplate;
-        }
-        if (field && field.jmodifycallback) {
-            jmodifycallback = field.jmodifycallback;
-        }
-        var item = $.tmplItem(elem);
-        var dataitem = item.data;
-        if (!jmodifytemplate) {
-            if (jmodifycallback) {
-                (eval(field.jmodifycallback))(dataitem);
-                return;
-            }
+        if (this._koenabled == false) {
+            alert("modifyAction allowed if knockout")
             return;
         }
-        if (this._koenabled == false) {
-            $("#" + this.modifyContainer).empty();
-            var html = $("#" + jmodifytemplate).tmpl(dataitem);
-            html.appendTo("#" + this.modifyContainer);
-            $("#" + this.modifyPanel).dialog(that.dlgmodify);
-        }
-        if (this._koenabled == true) {
-            var ele = $("#" + this.modifyContainer).get(0);
-            ko.cleanNode(elem);
-            $("#" + this.modifyContainer).empty();
-            ko.applyBindings(dataitem, ele);
-            $("#" + this.modifyPanel).dialog(that.dlgmodify);
-            this._backupDataItem(dataitem);
-        }
+        var elem = $(sender);
+        var field = elem.data();
+        this._currentaction = "";
+        var item = $.tmplItem(elem);
+        var dataitem = item.data;     
+        var ele = $("#" + this.modifyContainer).get(0);
+        ko.cleanNode(elem);
+        $("#" + this.modifyContainer).empty();
+        ko.applyBindings(dataitem, ele);
+        $("#" + this.modifyPanel).dialog(that.dlgmodify);
+        this._backupDataItem(dataitem);
+        this._raisePopupModify(sender);
+        this._parseUnobtrusive(ele);
     }
 
     this._customAction = function (sender) {
@@ -697,17 +703,17 @@ function PagingBase() {
         this._bkdata = undefined;
         var param = this._createActionParam(sender);
         this.deleteCallBack(param);
-    } 
+    }
 
     this._updateAction = function (sender) {
         if (this._koenabled == false) {
             alert("updateAction allowed if knockout")
             return;
         }
-        this._bkdata = undefined;
         var elem = this._getModifyContainer();
         var param = this._createActionParam(elem);
-        this.updateCallBack(param);
+        if (this._jqueryValidateForm() == true)
+            this.updateCallBack(param);
     }
 
     this._cancelAction = function (sender) {
@@ -717,30 +723,60 @@ function PagingBase() {
         }
         var elem = this._getModifyContainer();
         var param = this._createActionParam(elem);
-        this._restoreDataItem(param.dataitemKo);
-        this.cancelCallBack();
+        this._restoreDataItem(param);
+        this.cancelCallBack(param);
         this._bkdata = undefined;
     }
 
-    this._restoreDataItem = function (dataitemKo) {
+    this._jqueryValidateForm = function () {
+        if (    this._koenabled == false    ) {
+            return true;
+        }
+        if (this.knockoutValidation == false) {
+            return true;
+        }
+        var form = "#" + this.modifyPanel + " form";
+        return $(form).valid();
+    }
+
+    this._parseUnobtrusive = function (sender) {
+        jQuery.validator.unobtrusive.parse($("form", sender));
+    }
+
+    this._closeModifyDialog = function (status) {
+        if (status == "feilure" && this.enableBackup == true ) {
+            if (this._koenabled == true && this._bkdata != undefined) {
+                var elem = this._getModifyContainer();
+                var param = this._createActionParam(elem); 
+                this._restoreDataItem(param);
+            }
+        }           
+        this._bkdata = undefined;
+        this._currentaction = "closeDialog";
+        $("#" + that.modifyPanel).dialog("close");
+        this._currentaction = "";
+    }
+
+    this._restoreDataItem = function (param) {
         if (this._koenabled == false || this.enableBackup == false)
             return;
         if (              this._bkdata == undefined               )
             return;
-        var dataitemJs = this._bkdata;
-        for (name in dataitemJs) {
+        var dataitemKo = param.dataitemKo;
+        for (name in this._bkdata) {
             var cmd = "";
-            if (typeof dataitemJs[name] == "string" ) {
-                cmd = "dataitemKo." + name + "('" + dataitemJs[name] + "')";
+            if (typeof this._bkdata[name] == "string" ) {
+                cmd = "dataitemKo." + name + "('" + this._bkdata[name] + "')";
             }
-            if (typeof dataitemJs[name] == "number" ) {
-                cmd = "dataitemKo." + name + "("  + dataitemJs[name] +  ")";
+            if (typeof this._bkdata[name] == "number" ) {
+                cmd = "dataitemKo." + name + "("  + this._bkdata[name] +  ")";
             }
-            if (typeof dataitemJs[name] == "boolean") {
-                cmd = "dataitemKo." + name + "("  + dataItemJs[name] +  ")";
+            if (typeof this._bkdata[name] == "boolean") {
+                cmd = "dataitemKo." + name + "("  + this._bkdata[name] +  ")";
             }
             if (cmd != "") eval(cmd);
         }
+        param.dataitemJs = ko.toJS(dataitemKo);
     }
 
     this._backupDataItem = function (dataitemKo) {
@@ -754,7 +790,7 @@ function PagingBase() {
             if (typeof dataitemJs[name] == "string" ) {
                 this._bkdata[name] = dataitemJs[name];
             }
-            if (typeof dataitemJs[name] == "number" ) {
+            if (typeof dataitemJs[name] == "number" ) { 
                 this._bkdata[name] = dataitemJs[name];
             }
             if (typeof dataitemJs[name] == "boolean") {
@@ -762,7 +798,7 @@ function PagingBase() {
             }
         }
         return this._bkdata;
-    }
+    } 
 
     this._createActionParam = function (elem) {
         var dataitemKo =  ko.dataFor(elem);
@@ -781,7 +817,7 @@ function PagingBase() {
                 return ko.toJS(this.context.source);
             },
             getArrayKo: function () {
-                return this.context.source;
+                return this.context.source; 
             }         
         };
         return param;
@@ -795,7 +831,19 @@ function PagingBase() {
     this._getModifyContainer = function () {
         var elem = $("#" + this.modifyContainer).get(0);
         return elem;
-    }                                      
+    }
+
+    this._raisePopupDetail = function (elem) {
+        var event = jQuery.Event("popupdetail");
+        event.elemitem = elem;
+        $(this).trigger(event);
+    }
+
+    this._raisePopupModify = function (elem) {
+        var event = jQuery.Event("popupmodify");
+        event.elemitem = elem;
+        $(this).trigger(event);
+    }                                     
 
     // ---------------------------------------------------------------
 
@@ -811,8 +859,9 @@ function PagingBase() {
         var class1 = "pagingbase-ui-ordercol-unselected";
         var class2 =  "pagingbase-ui-ordercol-selected";
         if (this._colorder) {
-            $(this._colorder).addClass(class1);
-            $(this._colorder).removeClass(class2);
+            var $colorder = $(this._colorder);
+            $colorder.addClass(class1);
+            $colorder.removeClass(class2);
         }
         $(col).addClass(class2);
         this._colorder = col;
@@ -1075,6 +1124,24 @@ function PagingBase() {
         return this;
     }
 
+    this.render = function (elem, object, method, param) {
+        this._objectCall = this._createObjectCall();
+        this._callBackTemplate = this._renderObjectCall; 
+        if (typeof elem == 'string') {
+            this._objectCall.elem = elem;
+        }
+        if (typeof object == 'object') {
+            this._objectCall.object = object;
+        }
+        if (typeof method == 'string') {
+            this._objectCall.method = method;
+        }
+        if (typeof param == 'object') {
+            this._objectCall.param = param;
+        }
+        return this;
+    }
+
     this.continueWith = function (funcontinue) {       
         if (typeof funcontinue == 'function') {
             this._callBackContinue = funcontinue;
@@ -1180,6 +1247,16 @@ function PagingBase() {
 
     // ---------------------------------------------------------------   
 
+    this._createObjectCall = function () {
+        var call = {
+            elem: undefined,
+            object: undefined,
+            method: undefined,
+            param: undefined
+        }
+        return call;
+    }
+
     this._createMessage = function () {
         var msg = {
             groupresult: false,
@@ -1193,3 +1270,70 @@ function PagingBase() {
         return msg;
     }
 }
+
+ko.bindingHandlers.valueStr = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                underlyingObservable(jQuery.trim(value));
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+
+ko.bindingHandlers.valueInt = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                if (!isNaN(value)) {
+                    underlyingObservable(parseInt(value));
+                }
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+
+ko.bindingHandlers.valueDec = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                if (!isNaN(value)) {
+                    underlyingObservable(parseFloat(value));
+                }
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};
+
+ko.bindingHandlers.valueBol = { 
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: underlyingObservable,
+            write: function (value) {
+                underlyingObservable(Boolean(value));
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: ko.bindingHandlers.value.update
+};

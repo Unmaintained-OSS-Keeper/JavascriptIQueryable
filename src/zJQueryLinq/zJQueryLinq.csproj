@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KnockoutTypeBinding.cs" />
+    <Compile Include="KnockoutHelper.cs" />
     <Compile Include="ControllerExtension.cs" />
     <Compile Include="FilterLinq.cs" />
     <Compile Include="FilterLinqData.cs" />

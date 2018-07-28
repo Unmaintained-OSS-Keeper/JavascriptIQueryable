@@ -40,6 +40,29 @@ namespace JQueryLinq
             return result;
         }
 
+        public static object JQueryToArray(this IQueryable query, IRequestQuery req)
+        {
+            int count = 0; object result;
+            query = query.Where(req).OrderBy(req);
+            if (req.HasPaging == true)
+                count = query.Count1();
+            query = query.ReadData(req);
+            if (req.HasPaging == false)
+                count = query.Count1();
+            query = query.Select(req);
+            if (req.HasGroupResult == true)
+            {
+                var query1 = query.GroupBy(req);
+                result = query1.ToArray1();
+            }
+            else
+            {
+                var query2 = (IQueryable)query;
+                result = query2.ToArray1();
+            }
+            return result;
+        }
+
         // ---------------  
 
         // linq extension hight level

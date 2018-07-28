@@ -6,7 +6,7 @@ var context = {};
 $(document).ready(function () {
     var search = $(".viewmodel").get(0);
     context = new PagingBase();
-    context.panetemp = "result1";
+    context.mainpane = "result1";
     context.container = "result2";
     context.linqEnabled = false;
     var form = {
@@ -104,7 +104,7 @@ function dataItem(srv, item) {
         var itemreq = ko.toJSON(this);
         srv.deleteItem(itemreq);      
     }.bind(this);
-}
+};
 
 //
 // Model
@@ -145,4 +145,4 @@ function dataSource() {
         event.eventargs = argevent;
         $(this).trigger(event);
     };
-}
+};

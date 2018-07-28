@@ -1,22 +1,22 @@
 ﻿
 /// <reference path="jquery-1.5.1.js" />
-/// <reference path="knockout-2.0.0.js" />
+/// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-preview-4.0
-// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
+// javascript-to-IQueryable-preview-5.0
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
 (function ($, undefined) {
-    $.fn.mobileTemplate = function (options) {
+    $.fn.mobileTemplate = function (options) {  
 
         var that = this;
 
         var backflag = false;  
 
-        var requestcurr = {};
+        var requestcurr = {};    
 
-        var arraysource = [];
+        var arraysource = [];  
 
         var settings = {
             ttype: '1'
@@ -40,7 +40,7 @@
                     event.stopPropagation();
                     omethods1.navbarAction(this);
                 });
-                $("*[data-jtouchaction]").live("swipeleft", function (event) {
+                $("*[data-jtouchaction]").live("swipeleft" , function (event) {
                     omethods1.swipeAction(this, "L");
                 });
                 $("*[data-jtouchaction]").live("swiperight", function (event) {
@@ -86,13 +86,14 @@
                     omethods1.execRestCall();
             },
 
-            createDatasource: function (sender) {
+            createDatasource: function (sender) { 
                 var elem = $(sender);
                 var sid = sender.id;
                 var context = {};
                 var autorun = true;
                 var field = elem.data();
                 var ds = new PagingBase();
+                ds.mainpane = sender.id;
                 ds.initPagingBase();
                 ds.linqEnabled = false;
                 ds.clearSearch();
