@@ -163,7 +163,7 @@ function PagingBase() {
     }
 
     // ---------------------------------------------------------------
-
+    
     this.closeCreateDialogFeilure = function () {
         this._closeDialog("feilure", 1);
     }
@@ -178,6 +178,13 @@ function PagingBase() {
 
     this.closeModifyDialogSuccess = function () {
         this._closeDialog("success", 2);
+    }
+
+    this.applyBindingsContainer = function (page, viewmodel) {
+        var ele = $("#" + page).get(0);
+        ko.cleanNode(ele);
+        $("#" + page).empty();
+        ko.applyBindings(viewmodel, ele);
     }
 
     this.koWhereObjectAnd = function () {
@@ -402,7 +409,7 @@ function PagingBase() {
             var entry = this._findCache(page);
             if (entry) {
                 this.source = entry;
-                if (this._koenabled == false)
+                if (this._koenabled === false)
                     this._renderTemplateClient(entry);
                 else
                     this._renderTemplateKonock(entry);
@@ -624,6 +631,8 @@ function PagingBase() {
                     parent.eq(0).removeClass("pagingbase-ui-selected-in");
                     parent.eq(0).addClass("pagingbase-ui-selected-ou");
                 }
+                if (that._koenabled === true)
+                    that._disposeDetailContainer();
             });
         }
         if (this.createPanel) {
@@ -647,6 +656,8 @@ function PagingBase() {
                 }
                 if (that._currentaction == "")
                     that._cancelAction(dlgcurritem2, 1);
+                if (that._koenabled === true)
+                    that._disposeCreateContainer();
             });
         }
         if (this.modifyPanel) {
@@ -670,6 +681,8 @@ function PagingBase() {
                 }
                 if (that._currentaction == "")
                     that._cancelAction(dlgcurritem3, 2);
+                if (that._koenabled === true)
+                    that._disposeModifyContainer();
             });
         }
     }
@@ -703,7 +716,7 @@ function PagingBase() {
         if (field && field.jdetailtemplate) {
             jdetailtemplate = field.jdetailtemplate;
         }
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             dataitem = $.tmplItem(elem).data;
             $("#" + this.detailContainer).empty();
             var html = $("#" + jdetailtemplate).tmpl(dataitem);
@@ -711,7 +724,7 @@ function PagingBase() {
             $("#" + this.detailPanel).dialog(that.dlgdetail);
             this._raisePopupDetail(sender);
         }
-        if (this._koenabled == true) {
+        if (this._koenabled === true) {
             dataitem = ko.dataFor(sender);
             var ele = $("#" + this.detailContainer).get(0);
             ko.cleanNode(ele);
@@ -738,7 +751,7 @@ function PagingBase() {
     }
 
     this._modifyAction = function (sender) {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             alert("modifyAction allowed if knockout")
             return;
         }
@@ -757,7 +770,7 @@ function PagingBase() {
     }
 
     this._customAction = function (sender) {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             alert("customAction allowed if knockout")
             return;
         }
@@ -767,7 +780,7 @@ function PagingBase() {
     } 
 
     this._deleteAction = function (sender) {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             alert("deleteAction allowed if knockout")
             return;
         }
@@ -777,7 +790,7 @@ function PagingBase() {
     }
 
     this._insertAction = function (sender) {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             alert("insertAction allowed if knockout")
             return;
         }
@@ -788,7 +801,7 @@ function PagingBase() {
     }
 
     this._updateAction = function (sender) {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             alert("updateAction allowed if knockout")
             return;
         }
@@ -799,7 +812,7 @@ function PagingBase() {
     }
 
     this._cancelAction = function (sender, type) {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             alert("cancelAction allowed if knockout")
             return;
         }
@@ -815,7 +828,7 @@ function PagingBase() {
     }
 
     this._jqueryValidateCreateForm = function () {
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             return true;
         }
         if (this.knockoutValidation == false) {
@@ -826,7 +839,7 @@ function PagingBase() {
     }
 
     this._jqueryValidateModifyForm = function () {
-        if (    this._koenabled == false    ) {
+        if (this._koenabled === false) {
             return true;
         }
         if (this.knockoutValidation == false) {
@@ -842,7 +855,7 @@ function PagingBase() {
 
     this._closeDialog = function (status, type) {
         if (type == 2 && status == "feilure" && this.enableBackup == true ) {
-            if (this._koenabled == true && this._bkdata != undefined) {
+            if (this._koenabled === true && this._bkdata != undefined) {
                 var elem = this._getModifyContainer();
                 var param = this._getActionParam(elem); 
                 this._restoreDataItem(param);
@@ -858,9 +871,9 @@ function PagingBase() {
     }
 
     this._restoreDataItem = function (param) {
-        if (this._koenabled == false || this.enableBackup == false)
+        if (this._koenabled === false || this.enableBackup === false)
             return;
-        if (              this._bkdata == undefined               )
+        if (               this._bkdata == undefined                )
             return;
         var dataitemKo = param.dataitemKo;
         for (name in this._bkdata) {
@@ -880,7 +893,7 @@ function PagingBase() {
     }
 
     this._backupDataItem = function (dataitemKo) {
-        if (this._koenabled == false || this.enableBackup == false) 
+        if (this._koenabled === false || this.enableBackup === false) 
             return;
         this._bkdata = {};
         var dataitemJs = ko.toJS(dataitemKo);
@@ -1317,7 +1330,7 @@ function PagingBase() {
 
     this._tryObservable = function (result) {
         var viewmodel = result;
-        if (this._koenabled == false) {
+        if (this._koenabled === false) {
             return viewmodel;
         }
         if (this._callBackMapKnock) {
@@ -1407,23 +1420,28 @@ function PagingBase() {
 
     this._dispose = function () {
         try {
-            if (this.mainpane) {
-                $("#" + this.mainpane).undelegate(".ngrid");
+            cache = undefined;
+            if (that.mainpane) {
+                that._disposeContainer();
+                $("#" + that.mainpane).undelegate(".ngrid");
             }
-            if (this.detailPanel) {
-                var $dp = $("#" + this.detailPanel);
+            if (that.detailPanel) {
+                that._disposeDetailContainer();
+                var $dp = $("#" + that.detailPanel);
                 $dp.undelegate(".ngrid");
                 $dp.dialog("destroy");
                 $dp.die();
             }
-            if (this.createPanel) {
-                var $cp = $("#" + this.createPanel);
+            if (that.createPanel) {
+                that._disposeCreateContainer();
+                var $cp = $("#" + that.createPanel);
                 $cp.undelegate(".ngrid");
                 $cp.dialog("destroy");
                 $cp.die();
             }
-            if (this.modifyPanel) {
-                var $mp = $("#" + this.modifyPanel);
+            if (that.modifyPanel) {
+                that._disposeModifyContainer();
+                var $mp = $("#" + that.modifyPanel);
                 $mp.undelegate(".ngrid");
                 $mp.dialog("destroy");
                 $mp.die();
@@ -1431,6 +1449,58 @@ function PagingBase() {
         }
         catch (e) {
 
+        }
+    }
+
+    this._disposeContainer = function () {
+        try {
+            if (that.mainpane) {
+                var $ele1 = $("#" + that.container);
+                ko.cleanNode($ele1.get(0));
+                $ele1.empty();
+            }           
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
+
+    this._disposeDetailContainer = function () {
+        try {
+            if (that.detailPanel) {
+                var $ele1 = $("#" + that.detailContainer);
+                ko.cleanNode($ele1.get(0));
+                $ele1.empty();
+            }
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
+
+    this._disposeCreateContainer = function () {
+        try {
+            if (that.createPanel) {
+                var $ele1 = $("#" + that.createContainer);
+                ko.cleanNode($ele1.get(0));
+                $ele1.empty();
+            }
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
+
+    this._disposeModifyContainer = function () {
+        try {
+            if (that.modifyPanel) {
+                var $ele1 = $("#" + that.modifyContainer);
+                ko.cleanNode($ele1.get(0));
+                $ele1.empty();
+            }
+        }
+        catch (e) {
+            alert(e);
         }
     }
 }

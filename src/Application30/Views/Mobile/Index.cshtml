@@ -80,6 +80,12 @@
    have three way to follow. 1) You must call, in the databound event, the $('.ui-page-active' ).page( 'destroy' ).page() method. This tell to the 
    jquery mobile plugin that it must recreate the page styles.  2) Use the "jrecreatestyle" attribute, this tell the plugin that it must recreate the 
    page style. 3) Use the custom binding "jqmRefreshList" (if you use a listview). (see examples style-01/style-05).
+   <br /><br />
+   When you navigate through pages in forward direction, the plugin create a new url every time and send a new query to the MVC action method. It will 
+   be used the datalink to the previous page. If you press the back button, the page is already in the DOM, then you must set the "jbackcurrpage=true" 
+   attribute on the link with "data-rel=back". In this way the plugin will not send a new query to the MVC action method. If you would like to refresh 
+   the data (when you press the back button), you can set the "jrefreshonback=true" attribute on the link with "data-rel=back". Important: in back 
+   direction the datalink between pages it will not work.
    </p>
 </div>
 
@@ -152,7 +158,30 @@
 </tr>
 
 <tr>
-<td>data-jrecreatestyle</td>
+<td>jbackcurrpage</td>
+<td>
+<div align="justify">
+(true/false) This property must be set on a link with "data-rel=back" and work with the "jbackcurrpage"
+attribute. the property tell to the plugin that when you press a back button, it must refresh the
+datasource. It will be used the url stored into the datasource. It will not be created a new datasource
+(as in forward direction).
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jrefreshonback</td>
+<td>
+<div align="justify">
+(true/false) This property must be set on a link with "data-rel=back", this tell to the plugin that
+when you press a back button, it must not send a query. In this way the querys will be sent only
+in forward direction (not in back direction).
+</div>
+</td>
+</tr>
+
+<tr>
+<td>jrecreatestyle</td>
 <td>
 <div align="justify">
 Specify if recreatestyle is enabled.
@@ -164,7 +193,7 @@ Alternatively you can use a knockout.js custom binding "jqmRefreshList" (if you 
 </tr>
 
 <tr>
-<td>data-jhidebeforeajaxcall</td>
+<td>jhidebeforeajaxcall</td>
 <td>
 <div align="justify">
 Specify if the container panel must be hidden before an ajax call.
@@ -173,7 +202,7 @@ Specify if the container panel must be hidden before an ajax call.
 </tr>
 
 <tr>
-<td>data-jautocompose</td>
+<td>jautocompose</td>
 <td>
 <div align="justify">
 Specify if autocompose is enabled.
@@ -184,7 +213,7 @@ If "jautocompose" attribute is set to "false" you must create a request in the e
 </tr>
 
 <tr>
-<td>data-jresturl</td>
+<td>jresturl</td>
 <td>
 <div align="justify">
 Specify the url.
@@ -193,7 +222,7 @@ Specify the url.
 </tr>
 
 <tr>
-<td>data-jpagesize</td>
+<td>jpagesize</td>
 <td>
 <div align="justify">
 Specify the pagesize. Optional, if not specified pagesize=9999 and paging is not enabled.
@@ -202,7 +231,7 @@ Specify the pagesize. Optional, if not specified pagesize=9999 and paging is not
 </tr>
 
 <tr>
-<td>data-jenableko</td>
+<td>jenableko</td>
 <td>
 <div align="justify">
 Specify if knockout is enabled (true/false). If you specify "jenableko='false'" you must set "jtypetemplate='value'", 
@@ -213,7 +242,7 @@ Specify if knockout is enabled (true/false). If you specify "jenableko='false'" 
 </tr>
 
 <tr>
-<td>data-jtypetemplate</td>
+<td>jtypetemplate</td>
 <td>
 <div align="justify">
 Specify the template type (client jquery template/ server partialview). For knockout 
@@ -223,7 +252,7 @@ template you must set: "jenableko='true'" and "jtypetemplate='client'".
 </tr>
 
 <tr>
-<td>data-jnametemplate</td>
+<td>jnametemplate</td>
 <td>
 <div align="justify">
 Specify the template name. Used for client/server side template. For knockout template
@@ -233,7 +262,7 @@ you must not use this attribute, the tempate name is inside the template definit
 </tr>
 
 <tr>
-<td>data-jcontainer</td>
+<td>jcontainer</td>
 <td>
 <div align="justify">
 This is the container of the template
@@ -242,7 +271,7 @@ This is the container of the template
 </tr>
 
 <tr>
-<td>data-jparam01/data-jparam05</td>
+<td>jparam01/data-jparam05</td>
 <td>
 <div align="justify">
 Specify searchs param. There are 3 type of param. 1) value: data-jparam01="germany", absolute value.
@@ -265,7 +294,7 @@ Specify an order by clause.
 </tr>
 
 <tr>
-<td>data-jsavecurritem="true"</td>
+<td>jsavecurritem="true"</td>
 <td>
 <div align="justify">
 It must put on a button/link template. It tell the framework that must pass the current
@@ -276,7 +305,7 @@ event of jquery mobile.
 </tr>
 
 <tr>
-<td>data-jautorun="false"</td>
+<td>jautorun="false"</td>
 <td>
 <div align="justify">
 Default behavior is that a query/search begin when you go on a new page. 
@@ -288,7 +317,7 @@ data-jselectaction="true".
 </tr>
 
 <tr>
-<td>data-jselectaction="true"</td>
+<td>jselectaction="true"</td>
 <td>
 <div align="justify">
 It must put on a button/link searchform. The plugin register it and when you press the button/link a new 
@@ -299,7 +328,7 @@ when you go on a new page.
 </tr>
 
 <tr>
-<td>data-jnavbaraction='<i>action</i>'</td>
+<td>jnavbaraction='<i>action</i>'</td>
 <td>
 <div align="justify">
 The param action can be "refresh,pageF,pageP,pageN,pageL". It tells the plugin that
@@ -309,7 +338,7 @@ this is a navigation button of the current datasource.
 </tr>
 
 <tr>
-<td>data-jinitialize</td>
+<td>initialize</td>
 <td>
 <div align="justify">
 Specify initialize event. Raised when the datasource was created.
@@ -318,7 +347,7 @@ Specify initialize event. Raised when the datasource was created.
 </tr>
 
 <tr>
-<td>data-jfselecting</td>
+<td>jfselecting</td>
 <td>
 <div align="justify">
 Specify selecting event. Raised before a request will be send to rhe server.
@@ -327,7 +356,7 @@ Specify selecting event. Raised before a request will be send to rhe server.
 </tr>
 
 <tr>
-<td>data-jfdatabound</td>
+<td>jfdatabound</td>
 <td>
 <div align="justify">
 Specify databound event. 
@@ -336,7 +365,7 @@ Specify databound event.
 </tr>
 
 <tr>
-<td>data-jfisloading</td>
+<td>jfisloading</td>
 <td>
 <div align="justify">
 Specify isloading event.

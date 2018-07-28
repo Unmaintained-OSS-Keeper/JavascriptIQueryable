@@ -4,14 +4,14 @@
 var context = null;
 $(document).ready(function () {
     context = new PagingBase();
-    method1();
-});
-
-function method1() {
     context.linqEnabled = false;
     context.mainpane = "gpane2";
     context.container = "jpa";
+    context.initPagingBase();
+    method1();
+});
 
+function method1() { 
     context.from("/Grid3/GetDataJson").pagingWithSize(10).orderBy(
       "Country,City desc").applyTempServer("view1").loadData();
 

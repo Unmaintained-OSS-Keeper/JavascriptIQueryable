@@ -20,6 +20,7 @@
         var arraysource = [];
 
         var settings = {
+            tscope: undefined,
             ttype: '1'
         };
 
@@ -37,18 +38,19 @@
                         return;
                     omethods1._pageInit(event);
                 });
-                $(document).bind("pagebeforeshow", function (event) {                  
+                $(document).bind("pagebeforeshow", function (event) {
                     if (omethods1._isPage(event.target.id) == false)
                         return;
                     if (backflag == true)
-                        return;              
+                        return;
                     omethods1._hideContainer(event);
                 });
                 $(document).bind("pagechange", function (event, data) {
                     if (omethods1._isPage(data.toPage.get(0).id) == false)
-                        return;              
+                        return;
                     var origin = data.options.fromPage;
                     omethods1._pageChange(event, data.toPage, origin);
+                    omethods1._checkRefreshOnback(); 
                     backflag = false;
                 });
                 $("*[data-jsavecurritem]").live("click", function (event) {
@@ -93,7 +95,7 @@
                 arraysource[sid2] = cobj;
                 var field = $("#" + sid2).data();
                 if (field && field.jinitialize)
-                    (eval(field.jinitialize))(cobj.source);
+                    (this._resolveScope(field.jinitialize))(cobj.source);
             },
 
             _pageChange: function (event, target, origin) {
@@ -137,16 +139,16 @@
                     ds._templatename = field.jnametemplate;
                 }
                 if (field && field.jfselecting) {
-                    ds.xselecting = eval(field.jfselecting);
+                    ds.xselecting = omethods1._resolveScope(field.jfselecting);
                 }
                 if (field && field.jfisloading) {
                     $(ds).bind("isloading.nmobile", function (event) {
-                        (eval(field.jfisloading))(event);
+                        (omethods1._resolveScope(field.jfisloading))(event);
                     });
                 }
                 if (field && field.jfdatabound) {
                     $(ds).bind("databound.nmobile", function (event) {
-                        (eval(field.jfdatabound))(event);
+                        (omethods1._resolveScope(field.jfdatabound))(event);
                         omethods1._recreateStyle(field);
                     });
                 }
@@ -297,11 +299,16 @@
             },
 
             _hasRestCall: function (field, tcontext, fcontext, eventargs) {
+                var ds = tcontext.source;
+                if ((!fcontext || !fcontext.curritem) && field.jresturl == "none") {
+                    if (ds.xselecting)
+                        ds.xselecting(eventargs);
+                    return false;
+                }
                 if (!fcontext || !fcontext.curritem)
                     return true;
-                if (field.jresturl != "none")
+                if (    field.jresturl != "none"   )
                     return true;
-                var ds = tcontext.source;
                 var entry = fcontext.curritem;
                 if (ds.xselecting)
                     ds.xselecting(eventargs);
@@ -401,7 +408,7 @@
             _isAutocompose: function (field) {
                 if (field.jautocompose === undefined)
                     return true;
-                if (field.jautocompose === true)
+                if (   field.jautocompose === true  )
                     return true;
                 return false;
             },
@@ -428,7 +435,27 @@
                 return eventargs;
             },
 
-            _pageRemove: function (event) { 
+            _checkRefreshOnback: function () {
+                var field = requestcurr.field;
+                var context = requestcurr.tcontext;
+                if (backflag === true && field && context && context.source) {
+                    if (field.jrefreshonback === true) {
+                        context.source.refresh();
+                    }
+                }
+            },
+
+            _resolveScope: function (func) {
+                if (   settings.tscope === undefined   ) {
+                    return eval(func);
+                }
+                if (typeof settings.tscope !== "object") {
+                    return eval(func);
+                }
+                return settings.tscope[func];
+            },
+
+            _pageRemove: function (event) {
                 var sid = event.target.id;
                 var context = omethods1._getContextByName(sid);
                 arraysource[sid] = undefined;
