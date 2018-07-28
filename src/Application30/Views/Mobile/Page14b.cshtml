@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+<title>Pagina14b</title>
+<meta content="width=device-width,minimum-scale=1,maximum-scale=3" name="viewport">.
+<link href="../../JQueryMobile/jquery.mobile-1.0rc2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../JQueryMobile/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="../../Scripts/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout-2.0.0.js"></script>
+<script type="text/javascript" src="../../Scripts/knockout.mapping.js"></script>
+<script type="text/javascript" src="../../Scripts/json2.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid1.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid3.js"></script>
+<script type="text/javascript" src="../../Scripts/Mobile/zPage13.js"></script>
+<script type="text/javascript" src="../../JQueryMobile/jquery.mobile-1.0.1.js"></script>
+</head>
+<body>
+
+<!-- page -->
+<div id="page4" data-role="page" data-jresturl="GetData1" data-jautocompose="true" data-jenableko="true" 
+                      data-jpagesize="10" data-jcontainer="c4" data-jparam02="Germany">
+	<div data-role="header">
+		<h1>Page Title-2</h1>
+    <div data-role="controlgroup" data-type="horizontal">
+      <a id="buttonR" data-role="button" data-jnavbaraction="refresh">Refresh</a>
+      <a id="buttonF" data-role="button" data-jnavbaraction="pageF">MoveF</a>
+      <a id="buttonP" data-role="button" data-jnavbaraction="pageP">MoveP</a>
+      <a id="buttonN" data-role="button" data-jnavbaraction="pageN">MoveN</a>
+      <a id="buttonL" data-role="button" data-jnavbaraction="pageL">MoveL</a>
+    </div>    
+	</div>
+	<div data-role="content">	
+    <div id="jtable4">
+      <ul id="c4" data-role="listview" data-bind="jqmRefreshList: {name: 'temp2', foreach: $data}"></ul>
+    </div>	
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+</body>
+</html>

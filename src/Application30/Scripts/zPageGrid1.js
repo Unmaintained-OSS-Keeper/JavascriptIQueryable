@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-beta-1.0   
+// javascript-to-IQueryable-beta-0.81   
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
@@ -555,52 +555,52 @@ function PagingBase() {
 
     this._dialogConfigure = function () {
         var dlgcurritem1 = undefined;
-        var dlgcurritem2 = undefined; 
+        var dlgcurritem2 = undefined;
         var dlgcurritem3 = undefined;
         if (this.mainpane) {
             var $conf1 = $("#" + this.mainpane);
-            $conf1.delegate("*[data-jdetailaction]", "click", function (event) {
+            $conf1.delegate("*[data-jdetailaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 dlgcurritem1 = this;
                 that._detailAction(this);
             });
-            $conf1.delegate("*[data-jcreateaction]", "click", function (event) {
+            $conf1.delegate("*[data-jcreateaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 dlgcurritem2 = this;
                 that._createAction(this);
             });
-            $conf1.delegate("*[data-jmodifyaction]", "click", function (event) {
+            $conf1.delegate("*[data-jmodifyaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 dlgcurritem3 = this;
                 that._modifyAction(this);
             });
-            $conf1.delegate("*[data-jcustomaction]", "click", function (event) {
+            $conf1.delegate("*[data-jcustomaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 that._customAction(this);
             });
-            $conf1.delegate("*[data-jdeleteaction]", "click", function (event) {
+            $conf1.delegate("*[data-jdeleteaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 that._deleteAction(this);
             });
         }
         if (this.createPanel) {
             var $conf2 = $("#" + this.createPanel);
-            $conf2.delegate("*[data-jinsertaction]", "click", function (event) {
+            $conf2.delegate("*[data-jinsertaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 that._insertAction(this);
             });
-            $conf2.delegate("*[data-jcancelaction]", "click", function (event) {
+            $conf2.delegate("*[data-jcancelaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 $("#" + that.createPanel).dialog("close");
             });
         }
         if (this.modifyPanel) {
             var $conf3 = $("#" + this.modifyPanel);
-            $conf3.delegate("*[data-jupdateaction]", "click", function (event) {
+            $conf3.delegate("*[data-jupdateaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 that._updateAction(this);
             });
-            $conf3.delegate("*[data-jcancelaction]", "click", function (event) {
+            $conf3.delegate("*[data-jcancelaction]", "click.ngrid", function (event) {
                 event.stopPropagation();
                 $("#" + that.modifyPanel).dialog("close");
             });
@@ -676,7 +676,7 @@ function PagingBase() {
 
     this._sortConfigure = function () {
         var $conf = $("#" + this.mainpane);
-        $conf.delegate("*[data-sort]", "click", function (event) {
+        $conf.delegate("*[data-sort]", "click.ngrid", function (event) {
             event.stopPropagation();
             if (that.hasWaitingRequest() === false) {
                 if (that._records < 1)
@@ -1403,6 +1403,35 @@ function PagingBase() {
             take: 9999
         }
         return msg;
+    }
+
+    this._dispose = function () {
+        try {
+            if (this.mainpane) {
+                $("#" + this.mainpane).undelegate(".ngrid");
+            }
+            if (this.detailPanel) {
+                var $dp = $("#" + this.detailPanel);
+                $dp.undelegate(".ngrid");
+                $dp.dialog("destroy");
+                $dp.die();
+            }
+            if (this.createPanel) {
+                var $cp = $("#" + this.createPanel);
+                $cp.undelegate(".ngrid");
+                $cp.dialog("destroy");
+                $cp.die();
+            }
+            if (this.modifyPanel) {
+                var $mp = $("#" + this.modifyPanel);
+                $mp.undelegate(".ngrid");
+                $mp.dialog("destroy");
+                $mp.die();
+            }
+        }
+        catch (e) {
+
+        }
     }
 }
 

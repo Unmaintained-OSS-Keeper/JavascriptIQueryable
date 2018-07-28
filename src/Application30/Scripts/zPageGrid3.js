@@ -1,14 +1,15 @@
 ﻿
-/// <reference path="jquery-1.5.1.js" />
+/// <reference path="../JQueryMobile/jquery-1.6.2.min.js" />
+/// <reference path="../JQueryMobile/jquery-1.6.2-vsdoc.js" />
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-beta-1.0 
+// javascript-to-IQueryable-beta-0.81 
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/  
 //
 
 (function ($, undefined) {
-    $.fn.mobileTemplate = function (options) { 
+    $.fn.mobileTemplate = function (options) {
 
         var that = this;
 
@@ -22,19 +23,30 @@
             ttype: '1'
         };
 
+        //
+        // pageinit,pagebeforeshow,jsavecurritem,pagechange
+        // [data-rel='back'],pageinit,pagebeforeshow,pagechange
+        //
+
         var omethods1 = {
             initialize: function (args) {
                 var st = settings;
                 //
                 $(document).bind("pageinit", function (event) {
+                    if (omethods1._isPage(event.target.id) == false)
+                        return;
                     omethods1._pageInit(event);
                 });
-                $(document).bind("pagebeforeshow", function (event) {
-                    if (backflag == true)
+                $(document).bind("pagebeforeshow", function (event) {                  
+                    if (omethods1._isPage(event.target.id) == false)
                         return;
-                    omethods1._hideContainer(event.target);
+                    if (backflag == true)
+                        return;              
+                    omethods1._hideContainer(event);
                 });
                 $(document).bind("pagechange", function (event, data) {
+                    if (omethods1._isPage(data.toPage.get(0).id) == false)
+                        return;              
                     var origin = data.options.fromPage;
                     omethods1._pageChange(event, data.toPage, origin);
                     backflag = false;
@@ -63,22 +75,25 @@
                         backflag = true;
                     else backflag = false;
                 });
+                $(document).bind("pageremove", function (event) {
+                    omethods1._pageRemove(event);
+                });
             },
 
             _pageInit: function (event) {
                 var sid1 = event.target.id; var cobj = {};
-                $("div[data-jresturl]").each(function (i, el) {
-                    var sid2 = el.id;
-                    if (arraysource[sid2] != undefined)
-                        return;
-                    cobj = omethods1._createDatasource(el);
-                    arraysource[sid2] = cobj;
-                    if (cobj.sid && cobj.sid != sid2)
-                        alert("context name error");
-                    var field = $("#" + sid2).data();
-                    if (field && field.jinitialize)
-                        (eval(field.jinitialize))(cobj.source);
-                });
+                var cds = $("#" + sid1 + "[data-jresturl]");
+                if (cds.length == 0)
+                    return;
+                var elem = cds.get(0);
+                var sid2 = elem.id;
+                if (arraysource[sid2] != undefined)
+                    return;
+                cobj = omethods1._createDatasource(elem);
+                arraysource[sid2] = cobj;
+                var field = $("#" + sid2).data();
+                if (field && field.jinitialize)
+                    (eval(field.jinitialize))(cobj.source);
             },
 
             _pageChange: function (event, target, origin) {
@@ -125,18 +140,19 @@
                     ds.xselecting = eval(field.jfselecting);
                 }
                 if (field && field.jfisloading) {
-                    $(ds).bind('isloading', function (event) {
+                    $(ds).bind("isloading.nmobile", function (event) {
                         (eval(field.jfisloading))(event);
                     });
                 }
                 if (field && field.jfdatabound) {
-                    $(ds).bind('databound', function (event) {
+                    $(ds).bind("databound.nmobile", function (event) {
                         (eval(field.jfdatabound))(event);
+                        omethods1._recreateStyle(field);
                     });
                 }
                 if (field && field.jhidebeforeajaxcall !== undefined)
                     hidebeforeajaxcall = field.jhidebeforeajaxcall;
-                $(ds).bind('isloading', function (event) {
+                $(ds).bind("isloading.nmobile", function (event) {
                     if (hidebeforeajaxcall === true)
                         omethods1._isloading(ds, event.isloading);
                 });
@@ -286,7 +302,7 @@
                 if (field.jresturl != "none")
                     return true;
                 var ds = tcontext.source;
-                var entry = fcontext.curritem;               
+                var entry = fcontext.curritem;
                 if (ds.xselecting)
                     ds.xselecting(eventargs);
                 ds._callBackTemplate(entry);
@@ -358,13 +374,13 @@
                 return context;
             },
 
-            _hideContainer: function (target) {
-                var sid = target.id;
+            _hideContainer: function (event) {
+                var sid = event.target.id;
                 var context = omethods1._getContextByName(sid);
-                var field = $(target).data();
-                if (   !context || !context.source.container     )
+                var field = $(event.target).data();
+                if (!context || !context.source.container)
                     return;
-                if (    !field || field.jresturl === "none"      )
+                if (!field || field.jresturl === "none")
                     return;
                 if (!field || field.jhidebeforeajaxcall === false)
                     return;
@@ -383,11 +399,17 @@
             },
 
             _isAutocompose: function (field) {
-                if (field.jautocompose == undefined)
+                if (field.jautocompose === undefined)
                     return true;
-                if (  field.jautocompose === true  )
+                if (field.jautocompose === true)
                     return true;
                 return false;
+            },
+
+            _isPage: function (sid) {
+                if (sid || $("#" + sid).filter("div[data-role='page']").length != 0)
+                    return true;
+                else return false;
             },
 
             _createContext: function (sid, ds) {
@@ -404,6 +426,34 @@
                 if (fcontext) curr = { item: fcontext.curritem };
                 var eventargs = { fromPage: fctx, toPage: tctx, curritem: curr };
                 return eventargs;
+            },
+
+            _pageRemove: function (event) { 
+                var sid = event.target.id;
+                var context = omethods1._getContextByName(sid);
+                arraysource[sid] = undefined;
+                $(context.source).unbind(".nmobile");
+                context.source._dispose();
+            },
+
+            _recreateStyle: function (field) {
+                if (field && field.jrecreatestyle !== true)
+                    return;
+                try {
+                    $(".ui-page-active").page("destroy").page();
+                }
+                catch (e) {
+                    $(".ui-page-active").page();
+                }
+            },
+
+            styleActivePage: function () {
+                try {
+                    $(".ui-page-active").page("destroy").page();
+                }
+                catch (e) {
+                    $(".ui-page-active").page();
+                }
             }
         };
 
@@ -423,3 +473,16 @@
 
     };
 })(jQuery);
+
+ko.bindingHandlers.jqmRefreshList = {
+    init: ko.bindingHandlers.template.init,
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel, context) {
+        ko.bindingHandlers.template.update(element, valueAccessor, 
+                allBindingsAccessor, viewModel, context);
+        try {
+            $(element).listview('refresh');
+        } catch (e) {
+            $(element).listview();
+        }
+    }
+};

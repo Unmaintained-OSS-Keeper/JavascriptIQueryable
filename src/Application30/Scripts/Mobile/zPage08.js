@@ -126,6 +126,7 @@ function dataItem(item) {
 //  Databound event.
 //
 function databound2(event) {
+    //$('.ui-page-active').page("destroy").page();
     var itemKo = event.context.source;
     var itemJs = ko.toJS(itemKo);
 }
@@ -133,6 +134,7 @@ function databound2(event) {
 //  Databound event.
 //
 function databound3(event) {
+    //$('.ui-page-active').page("destroy").page();
     var itemKo = event.context.source;
     var itemJs = ko.toJS(itemKo);
 }
@@ -140,5 +142,6 @@ function databound3(event) {
 //  Databound event.
 //
 function databound4(event) {
+    //$('.ui-page-active').page("destroy").page();
     $.validator.unobtrusive.parse($("#page4"));
 }

@@ -124,6 +124,42 @@ namespace Application30.Controllers
             return View();
         }
 
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page10()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page11()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page12()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page13()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page14a()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page14b()
+        {
+            return View();
+        }
+
         [HttpPost]
         [OutputCache(Duration = 0, VaryByParam = "*")]
         public JsonResult UpdateViewModel1(CustomerViewModel1 entity)

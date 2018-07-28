@@ -24,6 +24,12 @@
   @Html.ActionLink("ex-07", "page07", "Mobile")&nbsp;
   @Html.ActionLink("ex-08", "page08", "Mobile")&nbsp; 
   @Html.ActionLink("ex-09", "page09", "Mobile")&nbsp; 
+  <br /><br />
+  @Html.ActionLink("style-01", "page10" , "Mobile")&nbsp;
+  @Html.ActionLink("style-02", "page11" , "Mobile")&nbsp;
+  @Html.ActionLink("style-03", "page12" , "Mobile")&nbsp;
+  @Html.ActionLink("style-04", "page13" , "Mobile")&nbsp;
+  @Html.ActionLink("style-05", "page14a", "Mobile")&nbsp;
 </div>
 
 <br /><br />
@@ -69,6 +75,11 @@
    <br /><br />
    There is also support for mvc3 jquery validation. There are 5 type of html helper: Html.KoTextBoxFor(),Html.KoTextBoxStrFor(),Html.KoTextBoxIntFor()
    Html.KoTextBoxDecFor() and Html.KoTextBoxBolFor().
+   <br /><br />
+   If you create the page elements dynamically (for example a listview) jquery mobile may not apply the page style. To apply jquery mobile styles you
+   have three way to follow. 1) You must call, in the databound event, the $('.ui-page-active' ).page( 'destroy' ).page() method. This tell to the 
+   jquery mobile plugin that it must recreate the page styles.  2) Use the "jrecreatestyle" attribute, this tell the plugin that it must recreate the 
+   page style. 3) Use the custom binding "jqmRefreshList" (if you use a listview). (see examples style-01/style-05).
    </p>
 </div>
 
@@ -138,6 +149,18 @@
 <tr>
 <td width="200">attribute</td>
 <td>description</td>
+</tr>
+
+<tr>
+<td>data-jrecreatestyle</td>
+<td>
+<div align="justify">
+Specify if recreatestyle is enabled.
+If "jrecreatestyle" attribute is set to "true" the plugin will recreate the page style.
+It will be called the "$('.ui-page-active').page('destroy').page()" method.
+Alternatively you can use a knockout.js custom binding "jqmRefreshList" (if you use a listview).
+</div>
+</td>
 </tr>
 
 <tr>
