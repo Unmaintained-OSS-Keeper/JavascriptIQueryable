@@ -32,6 +32,12 @@
                 $("*[data-jnavbaraction]").live("click", function (event) {
                     omethods1.navbarAction(this);
                 });
+                $("*[data-jtouchaction]").live("swipeleft" , function (event) {
+                    omethods1.swipeAction(this, "L");
+                });
+                $("*[data-jtouchaction]").live("swiperight", function (event) {
+                    omethods1.swipeAction(this, "R");
+                });
                 $("*[data-jselectaction]").live("click", function (event) {
                     omethods1.execRestCall();
                 });
@@ -53,7 +59,7 @@
                     if (cobj.sid && sid2 != cobj.sid)
                         alert("context name error");
                 });
-            },         
+            },
 
             pageChange: function (event, data) {
                 var currbackflag = backflag;
@@ -61,13 +67,13 @@
                 var field = data.toPage.data();
                 var tcontext = (     omethods1.getContextByPage(data.toPage)     );
                 var fcontext = (omethods1.getContextByPage(data.options.fromPage));
-                if ( tcontext && tcontext.curritem )
+                if (tcontext && tcontext.curritem)
                     tcontext.curritem = undefined;
-                requestcurr = { field: field, tcontext: tcontext, fcontext: fcontext };               
+                requestcurr = { field: field, tcontext: tcontext, fcontext: fcontext };
                 if (currbackflag == true || !field || !tcontext || !tcontext.source) {
                     return;
-                }               
-                if ( tcontext.autorun == true )
+                }
+                if (tcontext.autorun == true)
                     omethods1.execRestCall();
             },
 
@@ -98,7 +104,7 @@
                 }
                 if (field && field.jnametemplate) {
                     ds.templatename = field.jnametemplate;
-                }            
+                }
                 if (field && field.jfselecting) {
                     ds.xselecting = eval(field.jfselecting);
                 }
@@ -129,7 +135,7 @@
                 var context = omethods1.getContextByName(sid);
                 if (!context)
                     return;
-                var field = elem.data(); 
+                var field = elem.data();
                 var item = $.tmplItem(elem);
                 context.curritem = item.data;
             },
@@ -143,7 +149,7 @@
                 var context = omethods1.getContextByName(sid);
                 if (!context)
                     return;
-                var field = elem.data();                                    
+                var field = elem.data();
                 if (field && field.jnavbaraction) {
                     if (field.jnavbaraction == "refresh") {
                         context.source.refresh();
@@ -160,6 +166,20 @@
                     if (field.jnavbaraction == "pageL") {
                         context.source.pageL();
                     };
+                }
+            },
+
+            swipeAction: function (sender, type) {
+                var elem = $(sender);
+                var sid = elem.get(0).id;
+                var context = omethods1.getContextByName(sid);
+                if (!context)
+                    return;
+                if (type == "L") {
+                    context.source.pageP();
+                }
+                if (type == "R") {
+                    context.source.pageN();
                 }
             },
 
@@ -305,11 +325,12 @@
             },
 
             createContext: function (sid, ds) {
-                var context = { id: sid, source: ds, autorun: true, 
-                             curritem: undefined }
+                var context = { id: sid, source: ds, autorun: true,
+                    curritem: undefined
+                }
                 return context;
-            }     
-        };       
+            }
+        };
 
         if (!omethods1[options]) {
             return this.each(function (i, el) {

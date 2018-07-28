@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="basic.html" />
+    <Content Include="Content\PagingBase.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -162,6 +163,8 @@
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftMvcAjax.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\jquery-1.5.1.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.js" />
     <Content Include="Scripts\Mobile\zIndex.js" />
     <Content Include="Scripts\Mobile\zPage01.js" />
     <Content Include="Scripts\Mobile\zPage02.js" />
@@ -307,7 +310,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49352</DevelopmentServerPort>
+          <DevelopmentServerPort>49773</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

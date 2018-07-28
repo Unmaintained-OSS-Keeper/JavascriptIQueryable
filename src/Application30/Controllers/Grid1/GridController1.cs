@@ -60,10 +60,11 @@ namespace Application30.Controllers
         [OutputCache(Duration = 0, VaryByParam = "*")]
         public ActionResult GetDataJson(RequestLinq linq)
         {
+            //System.Threading.Thread.Sleep(1000);
             linq.SetSecurity(true, true, true);
             var query = Repository.GetRepository<Customer>().Query();
             return Json(query.JQuery(linq), JsonRequestBehavior.AllowGet);
-            //Thread.Sleep(1000);
+            //Thread.Sleep(100000);
         }
     }
 }

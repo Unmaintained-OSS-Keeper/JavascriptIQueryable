@@ -4,19 +4,26 @@
 $(document).ready(function () {
     var settings = {
         tpane2: 'gpane2',
+        tpane3: 'gpane3',
         tcontainer: "jlist1",
-        ttemplate: "jtableTemplate",
-        tcacheEnabled: false,        
-        ttype: "2",
+        tdetailPanel: "gdialog",
+        tdetailContainer: "jlist2",
+        ttemplate: "jtableTemplate",      
+        tcacheEnabled: true,        
+        ttype: "2"
     };
-    $("#gpane2").gridTemplate(settings, searchfrm).
-         bind('databound', function (event) {
-           //alert("databound");
-         }
-    );
+    $("#gpane2").gridTemplate(settings, searchfrm1, searchfrm2);
+
+    $("#gpane2").bind('isloading', function (event) {
+        //alert("isloading");
+    });
+
+    $("#gpane2").bind('databound', function (event) {
+        //alert("databound");
+    });  
 });
 
-function searchfrm(context) {
+function searchfrm1(context) {
     context.clearSearch();
 
     var text1 = $("#text1").val();
@@ -53,3 +60,12 @@ function searchfrm(context) {
            "CustomerID").pagingWithSize(10).applyTempClient();  
 }
 
+function searchfrm2(context) {
+    //
+    //
+    //
+    //  Called when the search popup is showing.
+    //
+    //
+    //
+}

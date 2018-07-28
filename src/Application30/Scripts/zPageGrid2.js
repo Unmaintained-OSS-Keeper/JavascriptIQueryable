@@ -13,18 +13,20 @@
           tpane1: 'gpane1',
           tpane2: 'gpane2',
           tpane3: 'gpane3',
-          tsearch1: 'gbutton1',
+          tsearch1: 'gbutton1',          
+          tsearch2: 'gbutton6',  
           tpageF: 'gbutton2',
           tpageP: 'gbutton3',
           tpageN: 'gbutton4',
-          tpageL: 'gbutton5',
-          tsearch2: 'gbutton6',    
+          tpageL: 'gbutton5',  
           //
           tcontainer: "",
           ttemplate: "",
           turlpath: "",
           tcacheEnabled: false,   
-          tlinqEnabled: true,          
+          tlinqEnabled: true,     
+          tdetailPanel: "",
+          tdetailContainer: "",     
           tdlgparent: { modal: true, width: 600 },
           tdlgdetail: { modal: true, width: 600 },
           tpage: 1   
@@ -32,25 +34,31 @@
 
         var omethods = {
             initialize: function (args) {
-               var st = settings; 
-               var jfldsort = " thead td[data-sort] "; 
-               basegrid.initPagingBase();
+               var st = settings;
                basegrid.container = st.tcontainer;
                basegrid.template = st.ttemplate;
                basegrid.urlpath = st.turlpath;
                basegrid.cacheEnabled = st.tcacheEnabled;
                basegrid.linqEnabled = st.tlinqEnabled;
-               basegrid.dlgdetail = st.tdlgdetail;
+               basegrid.detailPanel = st.tdetailPanel;
+               basegrid.detailContainer = st.tdetailContainer;
+               basegrid.dlgdetail = st.tdlgdetail;                
+               basegrid.initPagingBase();
                //
                $("#" + st.tsearch1).click(function (e) {
-                   if (fsearch1) fsearch1(basegrid);
-                   omethods.setupPanel(2);
+                   if (basegrid.hasWaitingRequest() === false) {
+                       if (fsearch1) fsearch1(basegrid);
+                       omethods.setupPanel(2);
+                   }
+                   else alert("WaitingRequest");                  
                });
                $("#" + st.tsearch2).click(function (e) {
-                   //basegrid.clearSearch();
-                   if (fsearch2) fsearch2(basegrid);  
-                   basegrid.loadData();
-                   omethods.setupPanel(3);
+                   if (basegrid.hasWaitingRequest() === false) {
+                       if (fsearch2) fsearch2(basegrid);  
+                       basegrid.loadData();
+                       omethods.setupPanel(3);
+                   }
+                   else alert("WaitingRequest"); 
                });
                $("#" + st.tpageF).click(function (e) {
                    basegrid.pageF();
@@ -65,21 +73,30 @@
                    basegrid.pageL();
                });
                //
-               $("#" + st.tpane2 + jfldsort).click(function (e) {
-                   if (basegrid.records < 1)
-                       return;
-                   var colorder = $(this).data().sort;   
-                   basegrid._setColumnOrder(colorder);             
-                   basegrid.loadData();
+               $("#" + st.tpane2 +" *[data-sort]").click(function (e) {
+                   if (basegrid.hasWaitingRequest() === false) {
+                      if (basegrid.records < 1)
+                          return;
+                      var colorder = "";
+                      var field = $(this).data();
+                      if (!field || !field.sort)
+                          return;
+                      colorder = field.sort;                      
+                      basegrid._setColumnOrderStyle(this);    
+                      basegrid._setColumnOrder(colorder);           
+                      basegrid.loadData();
+                   }
+                   else alert("WaitingRequest");
                });
                $(basegrid).bind('isloading', function (event) {
+                   $(that).trigger(event);
                    if ($("#" + settings.tpane3).length != 0)
                    {
                       if (event.isloading == true)
                          $("#" + settings.tpane3).show();
                       else
                          $("#" + settings.tpane3).hide();
-                   }
+                   }                  
                });               
                $(basegrid).bind('databound', function (event) {
                    $(that).trigger(event);
