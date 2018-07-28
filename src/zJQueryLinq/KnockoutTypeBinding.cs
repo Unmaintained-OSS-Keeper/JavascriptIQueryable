@@ -9,5 +9,5 @@ using System.IO;
 
 namespace JQueryLinq
 {
-    public enum KnockoutTypeBinding { None, Str, Int, Dec, Bol };
+    public enum KnockoutTypeBinding { None, Str, Int, Dec, Dat, Bol };
 }

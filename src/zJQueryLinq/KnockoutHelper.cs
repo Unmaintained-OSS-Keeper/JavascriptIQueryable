@@ -27,6 +27,10 @@ namespace JQueryLinq
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Dec, 60, 60, null);
         }
+        public static MvcHtmlString KoTextBoxDatFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Dat, 60, 60, null);
+        }
         public static MvcHtmlString KoTextBoxBolFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Bol, 60, 60, null);
@@ -49,6 +53,10 @@ namespace JQueryLinq
         public static MvcHtmlString KoTextBoxDecFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
         {
             return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Dec, size, size, null);
+        }
+        public static MvcHtmlString KoTextBoxDatFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
+        {
+            return KoTextBoxFor(htmlHelper, expression, KnockoutTypeBinding.Dat, size, size, null);
         }
         public static MvcHtmlString KoTextBoxBolFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, int size) where TModel : class
         {
@@ -97,6 +105,13 @@ namespace JQueryLinq
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("valueDec: ");
+                sb.Append(field);
+                param.Add("data-bind", sb.ToString());
+            }
+            else if (type == KnockoutTypeBinding.Dat)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("valueDat: ");
                 sb.Append(field);
                 param.Add("data-bind", sb.ToString());
             }

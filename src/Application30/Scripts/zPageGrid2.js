@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-beta-0.84  
+// javascript-to-IQueryable-beta-0.85  
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/  
 //
 
@@ -12,7 +12,7 @@
 
         var that = this;
 
-        var basegrid = new PagingBase(); 
+        var basegrid = new PagingBase();
 
         var undefined;
 
@@ -34,6 +34,7 @@
             turlpath: "",
             tajaxdatatype: "json",
             tcacheEnabled: false,
+            tconvertJsonDate: false,
             tlinqEnabled: true,
             tdetailPanel: "",
             tdetailContainer: "",
@@ -55,7 +56,7 @@
             tcreateViewModel: undefined,
             tdeleteCallBackUrl: "",
             tinsertCallBackUrl: "",
-            tupdateCallBackUrl: "", 
+            tupdateCallBackUrl: "",
             tenableBackup: true,
             tpage: 1
         };
@@ -70,6 +71,7 @@
                 basegrid.ajaxdatatype = st.tajaxdatatype;
                 basegrid.urlpath = st.turlpath;
                 basegrid.cacheEnabled = st.tcacheEnabled;
+                basegrid.convertJsonDate = st.tconvertJsonDate;
                 basegrid.linqEnabled = st.tlinqEnabled;
                 basegrid.detailPanel = st.tdetailPanel;
                 basegrid.detailContainer = st.tdetailContainer;

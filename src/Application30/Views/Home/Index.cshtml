@@ -33,10 +33,25 @@ AddWhereMappingEq(string field, string param), AddWhereMappingStrEq(string field
 AddWhereMappingDecEq(string field, string param), AddWhereMappingDatEq(string field, string param), AddWhereMappingBolEq(string field, string param), AddWhereMappingNq(string field, string param), 
 AddWhereMappingStrNq(string field, string param), AddWhereMappingIntNq(string field, string param), AddWhereMappingDblNq(string field, string param), AddWhereMappingDecNq(string field, string param),
 AddWhereMappingDatNq(string field, string param), AddWhereMappingBolNq(string field, string param).
+<br /><br />
+You must use the following properties to set the format of the decimal point and datetime type values (ko.iqueryable.decimalPoint = "point" / 
+ko.iqueryable.dateFormat = "date"). Point may be set to "." , ",". Date may be set to "mda", "dma", "amd". By default it will be set to "." 
+and "mda". Internally the datetime format it will be in millisecond. You can also use the plugin property "tconvertJsonDate" to convert 
+automatically the datetime that it will be returned from the server. If you set tconvertJsonDate="true" every datetime field it will be 
+converted in the corresponding string format. There are also some knockout.js custom binding to manage decimal and datetime value. For input 
+field (valueStr, valueInt,valueDec, valueDat, valueBol) . For text field (textDec, textDat). See examples in Application30-beta0.85x project
+for more details (extras files). 
 </div>
 
 <h3>Plugin (zPageGrid2.js) properties/methods</h3>
 <table>
+<tr>
+<td>tconvertJsonDate</td>
+<td>
+Convert automatically the date when it will be returned from the server. Default value "false". If you set tconvertJsonDate="true" every datetime field it will be converted in the corresponding string format.
+</td>
+</tr>
+
 <tr>
 <td>ttype</td>
 <td>
@@ -370,6 +385,13 @@ boolean). So when you change the value of a field and close the popup without "s
 
 <h3>PagingBase (zPageGrid1.js) properties/methods</h3>
 <table>
+<tr>
+<td>convertJsonDate</td>
+<td>
+Convert automatically the date when it will be returned from the server. Default value "false". If you set tconvertJsonDate="true" every datetime field it will be converted in the corresponding string format.
+</td>
+</tr>
+
 <tr>
 <td>mainpane</td>
 <td>

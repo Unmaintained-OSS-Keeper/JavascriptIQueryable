@@ -47,17 +47,17 @@ namespace JQueryLinq
             object[] ret = new object[param.Length];
             for (int i = 0; i < param.Length; i++)
             {               
-                if (ptype[i] == "str")
+                if (ptype[i].ToLower() == "str")
                     ret[i] = param[i];
-                if (ptype[i] == "int")
+                if (ptype[i].ToLower() == "int")
                     ret[i] = Convert.ToInt32(param[i]);
-                if (ptype[i] == "dbl")
+                if (ptype[i].ToLower() == "dbl")
                     ret[i] = Convert.ToDouble(param[i]);
-                if (ptype[i] == "dec")
+                if (ptype[i].ToLower() == "dec")
                     ret[i] = Convert.ToDecimal(param[i]);
-                if (ptype[i] == "dat")
+                if (ptype[i].ToLower() == "dat")
                     ret[i] = Convert.ToDateTime(param[i]);
-                if (ptype[i] == "bol")
+                if (ptype[i].ToLower() == "bol")
                     ret[i] = Convert.ToBoolean(param[i]);
             }
             return ret;

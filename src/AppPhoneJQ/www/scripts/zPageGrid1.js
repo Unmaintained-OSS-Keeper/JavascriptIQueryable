@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-beta-0.84   
+// javascript-to-IQueryable-beta-0.85   
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
@@ -22,6 +22,7 @@ function PagingBase() {
     this.urlpath = "";
     this.ajaxdatatype = "json";
     this.cacheEnabled = false;
+    this.convertJsonDate = false;
     this.linqEnabled = true;
     this.detailPanel = "";
     this.detailContainer = "";
@@ -1468,16 +1469,30 @@ function PagingBase() {
     }
 
     this._tryObservable = function (result) {
-        var viewmodel = result;
+        var viewmodel = this._tryConvJsonDate(result);        
         if (this._koenabled === false) {
             return viewmodel;
         }
         if (this._callBackMapKnock) {
-            viewmodel = this._callBackMapKnock(result);
+            viewmodel = this._callBackMapKnock(viewmodel);
             return viewmodel;
         }
-        viewmodel = ko.mapping.fromJS(result);
+        viewmodel = ko.mapping.fromJS(viewmodel);
         return viewmodel;
+    }
+
+    this._tryConvJsonDate = function (result) {
+        if (this.convertJsonDate == false)
+            return result;
+        for (var j = 0; j < result.length; j++) {
+            var maps = result[j];
+            for (var row in maps) {
+                if ((new String(maps[row])).indexOf("/Date(") == 0) {
+                    maps[row] = ko.iqueryable.formatDat(maps[row]);
+                }
+            };
+        };
+        return result;
     }  
 
     this._resetCache = function () {
@@ -1773,6 +1788,10 @@ function PagingBase() {
     }
 }
 
+ko.iqueryable = {};
+ko.iqueryable.decimalPoint = ".";
+ko.iqueryable.dateFormat = "mda";
+
 ko.bindingHandlers.valueStr = {
     init: function (element, valueAccessor, allBindingsAccessor) {
         var underlyingObservable = valueAccessor();
@@ -1811,20 +1830,77 @@ ko.bindingHandlers.valueDec = {
     init: function (element, valueAccessor, allBindingsAccessor) {
         var underlyingObservable = valueAccessor();
         var interceptor = ko.dependentObservable({
-            read: underlyingObservable,
+            read: function () {
+                var value = underlyingObservable();
+                return ko.iqueryable.formatNum(value, 2);
+            },
             write: function (value) {
+                if (ko.iqueryable.decimalPoint == ",")
+                    value = value.replace(",", ".");
                 if (!isNaN(value)) {
                     underlyingObservable(parseFloat(value));
                 }
             }
         });
         ko.bindingHandlers.value.init(element, function () {
-            return interceptor }, allBindingsAccessor);
+            return interceptor
+        }, allBindingsAccessor);
     },
-    update: ko.bindingHandlers.value.update
+    update: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        var interceptor = ko.dependentObservable({
+            read: function () {
+                var value = underlyingObservable();
+                return ko.iqueryable.formatNum(value, 2);
+            },
+            write: function (value) {
+                if (ko.iqueryable.decimalPoint == ",")
+                    value = value.replace(",", ".");
+                if (!isNaN(value)) {
+                    underlyingObservable(parseFloat(value));
+                }
+            }
+        });
+        ko.bindingHandlers.value.update(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    }
 };
 
-ko.bindingHandlers.valueBol = { 
+ko.bindingHandlers.valueDat = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        interceptor = ko.dependentObservable({
+            read: function () {
+                var value = underlyingObservable();
+                return ko.iqueryable.formatDat(value);
+            },
+            write: function (value) {
+                underlyingObservable(value);
+            }
+        });
+        ko.bindingHandlers.value.init(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    },
+    update: function (element, valueAccessor, allBindingsAccessor) {
+        var underlyingObservable = valueAccessor();
+        interceptor = ko.dependentObservable({
+            read: function () {
+                var value = underlyingObservable();
+                return ko.iqueryable.formatDat(value);
+            },
+            write: function (value) {
+                underlyingObservable(value);
+            }
+        });
+        ko.bindingHandlers.value.update(element, function () {
+            return interceptor
+        }, allBindingsAccessor);
+    }
+};
+
+ko.bindingHandlers.valueBol = {
     init: function (element, valueAccessor, allBindingsAccessor) {
         var underlyingObservable = valueAccessor();
         var interceptor = ko.dependentObservable({
@@ -1838,4 +1914,79 @@ ko.bindingHandlers.valueBol = {
         }, allBindingsAccessor);
     },
     update: ko.bindingHandlers.value.update
+};
+
+ko.bindingHandlers.textDec = {
+    update: function (element, valueAccessor, allBindingsAccessor) {
+        var dec = 2;
+        var value = valueAccessor(), allBindings = allBindingsAccessor();
+        var valueUnwrapped = ko.utils.unwrapObservable(value);
+        if (allBindings.decimal) dec = parseInt(allBindings.decimal);
+        var result = "";
+        if (valueUnwrapped) {
+            result = ko.iqueryable.formatNum(valueUnwrapped, dec);
+        }
+        $(element).text(result);
+    }
+};
+
+ko.bindingHandlers.textDat = {
+    update: function (element, valueAccessor, allBindingsAccessor) {
+        var value = valueAccessor(), allBindings = allBindingsAccessor();
+        var valueUnwrapped = ko.utils.unwrapObservable(value);
+        var result = "";
+        if (valueUnwrapped) {
+            result = ko.iqueryable.formatDat(valueUnwrapped);
+        }
+        $(element).text(result);
+    }
+};
+
+ko.iqueryable.formatNum = function (number, ndec) {
+    var result = '';
+    try {
+        var num1 = parseFloat(number);
+        var num2 = num1.toFixed(ndec);
+        var value = new String(num2);
+        if (ko.iqueryable.decimalPoint == ",")
+            result = value.replace(".", ko.iqueryable.decimalPoint);
+        else result = value.replace("", "");
+    }
+    catch (e) {
+
+    }
+    return result;
+};
+
+ko.iqueryable.formatDat = function (value) {
+    var result = '';
+    var format = ko.iqueryable.dateFormat;
+    try {
+        var str1 = new String(value);
+        var pos1 = str1.indexOf("(");
+        var pos2 = str1.indexOf(")");
+        if (pos1 == -1 || pos2 == -1)
+            return value;
+        var str2 = str1.substring(pos1 + 1, pos2);
+        var date = new Date(new Number(str2));
+        var dd = date.getDate().toString();
+        var mm = (date.getMonth() + 1).toString();
+        var aa = date.getYear().toString();
+        if (date.getYear() < 2000)
+            aa = "19" + aa;
+        else aa = "20" + aa;
+        if (format == "dma") {
+            result = dd + "/" + mm + "/" + aa;
+        }
+        if (format == "mda") {
+            result = mm + "/" + dd + "/" + aa;
+        }
+        if (format == "amg") {
+            result = aa + "/" + mm + "/" + dd;
+        }
+    }
+    catch (e) {
+
+    }
+    return result;
 };

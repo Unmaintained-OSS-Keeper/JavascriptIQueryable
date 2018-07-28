@@ -4,7 +4,7 @@
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-beta-0.84 
+// javascript-to-IQueryable-beta-0.85 
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/  
 //
 
