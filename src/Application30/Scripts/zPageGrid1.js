@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-beta-0.81   
+// javascript-to-IQueryable-beta-0.83   
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
@@ -822,8 +822,9 @@ function PagingBase() {
         if (type == 2)
             elem = this._getModifyContainer();
         var param = this._getActionParam(elem);
-        this._restoreDataItem(param); 
-        this.cancelCallBack(param);
+        this._restoreDataItem(param);
+        if (this.cancelCallBack != undefined)
+           this.cancelCallBack(param);
         this._bkdata = undefined;
     }
 

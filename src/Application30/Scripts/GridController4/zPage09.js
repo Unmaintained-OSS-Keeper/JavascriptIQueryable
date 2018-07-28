@@ -28,9 +28,9 @@ $(document).ready(function () {
         tupdateCallBack: function (obj) {
             updatefrm(obj);
         },
-        tcancelCallBack: function (obj) {
-            cancelfrm(obj);
-        },
+      //tcancelCallBack: function (obj) {
+      //    cancelfrm(obj);
+      //},
         tcacheEnabled: false,
         tdetailPanel: "gdialog1",
         tdetailContainer: "jlist1",
