@@ -3,20 +3,16 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-8.0   
-// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
+// javascript-to-IQueryable-beta-1.0   
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
-Function.prototype.inherits = function (superclass) {
-    this.prototype = new superclass(); 
-}
-
-// ---------------------------------------------------------
+// --------------------------------------------------------- 
 
 function PagingBase() {
     var undefined;
     var maxcache = 999;
-    var cache = new Array(maxcache); 
+    var cache = new Array(maxcache);  
     var that = this;
 
     this.mainpane = "";
@@ -454,16 +450,16 @@ function PagingBase() {
         return valret;
     }
 
-    this._sendAjaxRequest = function (surl, enableprefetch) {
+    this._sendAjaxRequest = function (surl, enableprefetch) { 
         this._waitaction = true;
-        this._raiseIsloading(true, this.page);
+        this._raiseIsloading(true, this._page); 
         var arrsource = [];
         $.ajax(
         {
             url: surl, type: "GET", dataType: "json",
             error: function (request, state, error) {
-                alert("Ajax error:" + error);
-                that._raiseIsloading(false);
+                alert("Ajax error: " + error);
+                that._raiseIsloading(false, that._page);
                 that._waitaction = false;
             },
             success: function (result, state) {
@@ -484,7 +480,7 @@ function PagingBase() {
                 if (that._flagfirst === true)
                     that._renderContinueWith();
                 that._flagfirst = false;
-                that._raiseIsloading(false, that.page);
+                that._raiseIsloading(false, that._page);
                 that._waitaction = false;
                 if (enableprefetch === true)
                     that._prefetch1();
@@ -505,12 +501,14 @@ function PagingBase() {
     this._renderObjectCall = function (sdata) {
         var func = this._objectCall;
         func.object[method](func.elem, sdata, func.param);
-    }
+    } 
 
-    this._renderTemplateKonock = function (sdata) {
+    this._renderTemplateKonock = function (sdata) { 
+        if (!this.container)
+            return;
         var ele = $("#" + this.container).get(0);
         ko.cleanNode(ele);
-        $("#" + this.container).empty();
+        $(ele).empty();
         ko.applyBindings(sdata, ele);
     }
 
@@ -525,7 +523,7 @@ function PagingBase() {
     }
 
     this._applayTemplate1 = function (sdata) {
-        var html = $("#" + this._templatename).tmpl(sdata);
+        var html = $("#" + this._templatename).tmpl(sdata); 
         return html;
     }
 
@@ -906,6 +904,7 @@ function PagingBase() {
         var dataitemKo =  ko.dataFor(elem);
         var dataitemJs = ko.toJS(dataitemKo);
         var param = {
+            element: elem,
             context: that,
             dataitemJs: dataitemJs,
             dataitemKo: dataitemKo,

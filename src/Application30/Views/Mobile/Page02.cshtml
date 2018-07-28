@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>Pagina2</title>
-<meta name="viewport" content="initial-scale=2, maximum-scale=4">
+<meta content="width=device-width,minimum-scale=1,maximum-scale=3" name="viewport">.
 <link href="../../JQueryMobile/jquery.mobile-1.0rc2.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../../JQueryMobile/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="../../Scripts/jquery.tmpl.min.js"></script>
@@ -18,9 +18,9 @@
 <body>
 
 <!-- page -->
-<div id="page1" data-role="page" data-jresturl="GetData1" data-jpagesize="10" data-jtypetemplate="client"
-                   data-jnametemplate="template1" data-jcontainer="c1" data-jparam01="">
-	<div data-role="header">
+<div id="page1" data-role="page" data-jresturl="GetData1" data-jpagesize="10" data-jtypetemplate="client" 
+                  data-jnametemplate="template1" data-jcontainer="c1" data-jparam01="">
+	<div data-role="header" data-position="fixed">
 		<h1>Page Title 1a</h1>
     <div data-role="controlgroup" data-type="horizontal">
       <a id="buttonR" data-role="button" data-jnavbaraction="refresh">Refresh</a>
@@ -51,7 +51,7 @@
     </table>
     </div>	
 	</div>
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
 		<h4>Page Footer</h4>
 	</div>
 </div>
@@ -60,7 +60,7 @@
 <!-- page -->
 <div id="page2" data-role="page" data-jresturl="GetData1" data-jtypetemplate="client"
     data-jnametemplate="template2" data-jcontainer="c2" data-jparam02="Germany">
-	<div data-role="header">
+	<div data-role="header" data-position="fixed">
 		<h1>Page Title-2</h1>
 	</div>
 	<div data-role="content">	
@@ -81,7 +81,7 @@
     </table>
     </div>	
 	</div>
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
 		<h4>Page Footer</h4>
 	</div>
 </div>
@@ -89,8 +89,8 @@
 
 <!-- page -->
 <div id="page3" data-role="page" data-jresturl="GetData1" data-jtypetemplate="client"
-    data-jnametemplate="template3" data-jcontainer="c3" data-jparam02="Sweden">
-	<div data-role="header">
+   data-jnametemplate="template3" data-jcontainer="c3" data-jparam02="Sweden">
+	<div data-role="header" data-position="fixed">
 		<h1>Page Title-3</h1>
 	</div>
 	<div data-role="content">	
@@ -111,7 +111,7 @@
     </table>
     </div>	
 	</div>
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
 		<h4>Page Footer</h4>
 	</div>
 </div>

@@ -24,6 +24,10 @@ $(document).bind("pageload", function (event, data) {
     //event.preventDefault();
 });
 
+$(document).bind("pagebeforechange", function (event, data) {
+    //event.preventDefault();
+});
+
 $(document).bind("pagechange", function (event, data) {
     //event.preventDefault();
 });

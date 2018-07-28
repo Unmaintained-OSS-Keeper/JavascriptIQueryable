@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Collections.ObjectModel;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
+using System.Threading;
 using System.Linq;
 using System.Web;
 
@@ -186,6 +187,7 @@ namespace Application30.Controllers
         public ActionResult GetData1(RequestRest rest)
         {
             object result = null;
+            //Thread.Sleep( 1000 );
             //
             try
             {
@@ -209,6 +211,7 @@ namespace Application30.Controllers
         public ActionResult GetData2(RequestLinq linq)
         {
             object result = null;
+            //Thread.Sleep( 1000 );
             //
             try
             {

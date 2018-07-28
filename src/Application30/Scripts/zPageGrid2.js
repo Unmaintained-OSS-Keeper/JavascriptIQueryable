@@ -1,18 +1,18 @@
 ﻿
 /// <reference path="jquery-1.5.1.js" />
-/// <reference path="knockout-2.0.0.js" />
+/// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-preview-8.0  
-// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
+// javascript-to-IQueryable-beta-1.0  
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/  
 //
 
 (function ($, undefined) {
-    $.fn.gridTemplate = function (options, fsearch2, fsearch1) {
+    $.fn.gridTemplate = function (options, fsearch2, fsearch1) {    
 
         var that = this;
 
-        var basegrid = new PagingBase();  
+        var basegrid = new PagingBase();     
 
         var undefined;
 
@@ -60,7 +60,6 @@
                 var st = settings;
                 basegrid.mainpane = st.tpane2;
                 basegrid.container = st.tcontainer; 
-                basegrid.container = st.tcontainer;
                 basegrid.template = st.ttemplate;
                 basegrid.urlpath = st.turlpath;
                 basegrid.cacheEnabled = st.tcacheEnabled;
@@ -85,7 +84,10 @@
                 basegrid.initPagingBase(); 
                 //
                 if (settings.tformViewModel) {
-                    var formpanel = $("#" + st.tpane1 + " .viewmodel").get(0);
+                    var $formpanel = $("#" + st.tpane1 + " .viewmodel");
+                    if ($formpanel.length == 0)
+                        return;
+                    var formpanel = $formpanel.get(0);
                     omethods._confKnockoutForm(formpanel);
                 }
                 $("#" + st.tsearch1).click(function (e) {

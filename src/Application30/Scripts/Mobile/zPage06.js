@@ -12,6 +12,7 @@ function selecting2(eventargs) {
     var text2 = $("#text2").val();
 
     context.linqEnabled = true;
+    context.cacheEnabled = true;      
     context.beginWhere("and");
     if (text1 != "") {
         context.addWhereClause( "City"  , "=", text1);

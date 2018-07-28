@@ -3,18 +3,18 @@
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-preview-8.0  
-// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
+// javascript-to-IQueryable-beta-1.0 
+// (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/  
 //
 
 (function ($, undefined) {
-    $.fn.mobileTemplate = function (options) {  
+    $.fn.mobileTemplate = function (options) { 
 
         var that = this;
 
         var backflag = false;
 
-        var requestcurr = {}; 
+        var requestcurr = {};
 
         var arraysource = [];
 
@@ -25,12 +25,18 @@
         var omethods1 = {
             initialize: function (args) {
                 var st = settings;
-                //                        
+                //
                 $(document).bind("pageinit", function (event) {
                     omethods1._pageInit(event);
                 });
+                $(document).bind("pagebeforeshow", function (event) {
+                    if (backflag == true)
+                        return;
+                    omethods1._hideContainer(event.target);
+                });
                 $(document).bind("pagechange", function (event, data) {
-                    omethods1._pageChange(event, data);
+                    var origin = data.options.fromPage;
+                    omethods1._pageChange(event, data.toPage, origin);
                     backflag = false;
                 });
                 $("*[data-jsavecurritem]").live("click", function (event) {
@@ -75,10 +81,10 @@
                 });
             },
 
-            _pageChange: function (event, data) {
-                var field = data.toPage.data();
-                var tcontext = (     omethods1._getContextByPage(data.toPage)     );
-                var fcontext = (omethods1._getContextByPage(data.options.fromPage));
+            _pageChange: function (event, target, origin) {
+                var field = target.data();
+                var tcontext = (omethods1._getContextByPage(target));
+                var fcontext = (omethods1._getContextByPage(origin));
                 if (tcontext && tcontext.curritem)
                     tcontext.curritem = undefined;
                 requestcurr = { field: field, tcontext: tcontext, fcontext: fcontext };
@@ -93,6 +99,7 @@
                 var sid = sender.id;
                 var context = {};
                 var autorun = true;
+                var hidebeforeajaxcall = true;
                 var field = elem.data();
                 var ds = new PagingBase();
                 ds.mainpane = sender.id;
@@ -113,7 +120,7 @@
                 }
                 if (field && field.jnametemplate) {
                     ds._templatename = field.jnametemplate;
-                }                        
+                }
                 if (field && field.jfselecting) {
                     ds.xselecting = eval(field.jfselecting);
                 }
@@ -127,12 +134,18 @@
                         (eval(field.jfdatabound))(event);
                     });
                 }
+                if (field && field.jhidebeforeajaxcall !== undefined)
+                    hidebeforeajaxcall = field.jhidebeforeajaxcall;
+                $(ds).bind('isloading', function (event) {
+                    if (hidebeforeajaxcall === true)
+                        omethods1._isloading(ds, event.isloading);
+                });
                 if (field && field.jorderby) {
                     ds.orderBy(field.jorderby);
                 }
                 if (field && ds._typeview == "client" && field.jenableko ===  true) {
                     ds._callBackTemplate = ds._renderTemplateKonock;
-                    ds._koenabled =  true;
+                    ds._koenabled = true;
                 }
                 if (field && ds._typeview == "server" && field.jenableko === false) {
                     ds._callBackTemplate = ds._renderTemplateServer;
@@ -140,7 +153,7 @@
                 }
                 if (field && field.jpagesize) {
                     ds._setPageSize(field.jpagesize);
-                }              
+                }
                 context = omethods1._createContext(sid, ds);
                 context.autorun = autorun;
                 return context;
@@ -155,8 +168,11 @@
                 var context = omethods1._getContextByName(sid);
                 if (!context)
                     return;
-                var item = $.tmplItem(elem);
-                context.curritem = item.data;
+                var item = {};
+                if (context.source._koenabled === false)
+                    item = $.tmplItem(elem).data;
+                else item = ko.dataFor(elem.get(0));
+                context.curritem = item;
             },
 
             _navbarAction: function (sender) {
@@ -210,7 +226,7 @@
                 var fcontext = requestcurr.fcontext;
                 var ds = tcontext.source;
                 var eventargs = this._createEventArgs(fcontext, tcontext);
-                if (omethods1._hasRestCall(field, tcontext, fcontext, eventargs) === false) {                    
+                if (omethods1._hasRestCall(field, tcontext, fcontext, eventargs) === false) {
                     return;
                 }
                 var param = ""; var where = "";
@@ -267,10 +283,10 @@
             _hasRestCall: function (field, tcontext, fcontext, eventargs) {
                 if (!fcontext || !fcontext.curritem)
                     return true;
-                var ds = tcontext.source;
-                var entry = fcontext.curritem;
                 if (field.jresturl != "none")
                     return true;
+                var ds = tcontext.source;
+                var entry = fcontext.curritem;               
                 if (ds.xselecting)
                     ds.xselecting(eventargs);
                 ds._callBackTemplate(entry);
@@ -329,7 +345,7 @@
 
             _getContextByPage: function (page) {
                 var context = undefined;
-                if (!page)
+                if (!page || page.length == 0)
                     return context;
                 var name = jQuery.trim(page.get(0).id);
                 if (arraysource[name] == undefined)
@@ -340,6 +356,30 @@
                         alert("context name error");
                 }
                 return context;
+            },
+
+            _hideContainer: function (target) {
+                var sid = target.id;
+                var context = omethods1._getContextByName(sid);
+                var field = $(target).data();
+                if (   !context || !context.source.container     )
+                    return;
+                if (    !field || field.jresturl === "none"      )
+                    return;
+                if (!field || field.jhidebeforeajaxcall === false)
+                    return;
+                $("#" + context.source.container).hide();
+            },
+
+            _isloading: function (ds, status) {
+                if (ds.container && status ===  true) {
+                    $.mobile.showPageLoadingMsg();
+                    $("#" + ds.container).hide();
+                }
+                if (ds.container && status === false) {
+                    $.mobile.hidePageLoadingMsg();
+                    $("#" + ds.container).show();
+                }
             },
 
             _isAutocompose: function (field) {

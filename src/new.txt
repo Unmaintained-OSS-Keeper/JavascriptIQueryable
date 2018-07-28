@@ -1,8 +1,0 @@
-
-linq.js - LINQ for JavaScript
-
-
-formViewmodel,createViewmodel,createPanel,createContainer,dlgcreate,insertCallBack,closeCreateDialogFeilure,closeCreateDialogSuccess,closeModifyDialogFeilure,closeModifyDialogSuccess
-
-tformViewmodel,tcreateViewmodel,tcreatePanel,tcreateContainer,tdlgcreate,tinsertCallBack,closeCreateDialogFeilure,closeCreateDialogSuccess,closeModifyDialogFeilure,closeModifyDialogSuccess
-refresh
