@@ -35,6 +35,6 @@ function searchfrm(context) {
         else swhere = swhere + "&campo2=" + text2;
     } 
 
-    context.from("/Grid3/GetDataJson").pagingWithSize(10).
-           where(swhere).applyTempServer("view1");
+    context.from("/Grid3/GetDataJson").pagingWithSize(10).where(swhere).
+          orderBy("Country,City desc ").applyTempServer("view1");
 }

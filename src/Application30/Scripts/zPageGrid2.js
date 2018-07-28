@@ -1,7 +1,7 @@
 ﻿
 /// <reference path="jquery-1.5.1.js" />
 
-(function ($) {
+(function ($, undefined) {
     $.fn.gridTemplate = function (options, fsearch2,  fsearch1) {    
 
         var that = this;
@@ -24,20 +24,23 @@
           ttemplate: "",
           turlpath: "",
           tcacheEnabled: false,   
-          tlinqEnabled: true,
-          tpage: 1,   
-          tdlg: { modal: true, width: 600 }
+          tlinqEnabled: true,          
+          tdlgparent: { modal: true, width: 600 },
+          tdlgdetail: { modal: true, width: 600 },
+          tpage: 1   
         };           
 
         var omethods = {
             initialize: function (args) {
                var st = settings; 
                var jfldsort = " thead td[data-sort] "; 
+               basegrid.initPagingBase();
                basegrid.container = st.tcontainer;
                basegrid.template = st.ttemplate;
                basegrid.urlpath = st.turlpath;
                basegrid.cacheEnabled = st.tcacheEnabled;
                basegrid.linqEnabled = st.tlinqEnabled;
+               basegrid.dlgdetail = st.tdlgdetail;
                //
                $("#" + st.tsearch1).click(function (e) {
                    if (fsearch1) fsearch1(basegrid);
@@ -107,7 +110,7 @@
                      $("#" + st.tpane1).show();
                      $("#" + st.tpane2).hide();
                   }
-                  else $("#" + st.tpane1).dialog(st.tdlg);
+                  else $("#" + st.tpane1).dialog(st.tdlgparent);
                }
                if (value == 3) 
                {

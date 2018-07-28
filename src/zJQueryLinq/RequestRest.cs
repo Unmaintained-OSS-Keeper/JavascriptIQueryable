@@ -21,7 +21,7 @@ namespace JQueryLinq
         private WhereOperator _Operator;
         private bool _HasGroupResult;
         private string _Select = "";
-        private string _OrderBy = "";
+        private string _DefaultOrderBy = "";
         private Dictionary<string, WhereClause> where = new Dictionary<string, WhereClause>();
         protected Dictionary<string, string> qstring;
 
@@ -50,10 +50,10 @@ namespace JQueryLinq
             _Select = value;
         }
 
-        public void SetOrderBy(string value)
+        public void DefaultOrderBy(string value)
         {
-            _OrderBy = value;
-        }       
+            _DefaultOrderBy = value;
+        }
 
         public void AddWhereMapping(string field, string op, string param)
         {
@@ -113,7 +113,8 @@ namespace JQueryLinq
             get
             {
                 bool valret = false;
-                if (String.IsNullOrEmpty(_OrderBy) == false)
+                string param = "orderby";
+                if (String.IsNullOrEmpty(param) == false)
                     valret = true;
                 return valret;
             }
@@ -145,8 +146,14 @@ namespace JQueryLinq
 
         public PredicateExpr GetOrderBy()
         {
+            string param = "orderby";
             PredicateExpr predicate = new PredicateExpr();
-            predicate.value = _OrderBy;
+            if (qstring.ContainsKey(param) == false)
+            {
+                predicate.value = _DefaultOrderBy;
+                return predicate;
+            }
+            predicate.value = qstring[param].Trim(); 
             return predicate;
         }
 

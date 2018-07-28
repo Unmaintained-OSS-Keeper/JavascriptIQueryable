@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section header{
@@ -19,7 +20,7 @@ pagingWithSize(10).applyTempClient("jtableTemplate1").continueWith(continue1);
 pagingWithSize(10).applyTempClient("jtableTemplate2").continueWith(continue1); 
 
 context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
-         pagingWithSize(10).select("new(CustomerID,City,Country)").
+     pagingWithSize(10).select("new(CustomerID,City,Country,Orders)").
                     applyTempClient("jtableTemplate3");    
 </pre>
 </p>
@@ -63,7 +64,7 @@ context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
 <br /><br />
 
 <script id="jtableTemplate1" type="text/x-jquery-tmpl">
-<div>jtableTemplate1</div>
+<div><b>jtableTemplate1</b></div>
 <table> 
   <tbody>
     <tr>
@@ -78,7 +79,7 @@ context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
 </script>
 
 <script id="jtableTemplate2" type="text/x-jquery-tmpl">
-<div>jtableTemplate2</div>
+<div><b>jtableTemplate2</b></div>
 <table> 
   <tbody>
     <tr>
@@ -93,7 +94,7 @@ context.from("/Grid1/GetDataJson").where(where,param).orderBy("CustomerID").
 </script>
 
 <script id="jtableTemplate3" type="text/x-jquery-tmpl">
-<div>jtableTemplate3</div>
+<div><b>jtableTemplate3</b></div>
 <div> 
 <span class="identity">CustomerID:</span> ${CustomerID} <br>
 City: ${City} - Country: ${Country} <br>

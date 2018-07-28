@@ -25,7 +25,7 @@ function searchfrm(context) {
     var text2 = $("#text2").val();
     var param = new Array(1);   
     
-    if (text2 != "") {
+   if (text2 != "") {
         if (where != "")
             where = where + " and Country = @" + index;
         else where = where + " Country = @" + index;

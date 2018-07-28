@@ -65,7 +65,6 @@ namespace Application30.Controllers
             rest.Operator = WhereOperator.And;
             rest.AddWhereMapping("City", "=", "campo1");
             rest.AddWhereMapping("Country", "=", "campo2");
-            rest.SetOrderBy("CustomerID");
             var query = Repository.GetRepository<Customer>().Query();
             result = this.TryApplyView(rest, query.JQuery(rest));
             //

@@ -4,7 +4,7 @@
 $(document).ready(function () {
     var settings = {
         tpane2: 'gpane2',
-        tcontainer: "jlist",
+        tcontainer: "jlist1",
         ttemplate: "jtableTemplate",
         tcacheEnabled: false,        
         ttype: "2",

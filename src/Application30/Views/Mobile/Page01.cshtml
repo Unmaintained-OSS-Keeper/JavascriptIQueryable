@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+<title>Pagina1</title>
+<meta name="viewport" content="initial-scale=2, maximum-scale=4">
+<link href="../../JQueryMobile/jquery.mobile-1.0rc2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../JQueryMobile/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="../../Scripts/Mobile/zPage01.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid1.js"></script>
+<script type="text/javascript" src="../../Scripts/zPageGrid3.js"></script>
+<script type="text/javascript" src="../../JQueryMobile/jquery.mobile-1.0rc2.js"></script>
+</head>
+<body>
+
+<!-- page -->
+<div id="page1" data-role="page" data-jresturl="GetData1" data-jtypetemplate="client"
+    data-jnametemplate="template1" data-jcontainer="c1" data-jparam01="valore1">
+	<div data-role="header">
+		<h1>Page Title 1a</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-1 goes here (@DateTime.Now).</p>	
+    <a href="#page2" data-transition="fade">Page2</a><br /> 
+    <a href="#page3" data-transition="fade">Page3</a><br /> 
+	</div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page2" data-role="page" data-jresturl="GetData2" data-jtypetemplate="client"
+    data-jnametemplate="template2" data-jcontainer="c2" data-jparam01="valore2">
+	<div data-role="header">
+		<h1>Page Title-2</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-2 goes here (@DateTime.Now).</p>
+    <a data-rel="back" data-direction="reverse">Back</a><br /> 		
+	</div>
+  <div>
+    <ul data-role="listview">
+	    <li>
+        <div class="ui-grid-b">
+          <div class="ui-block-a"><a href="Link01">Link-1</a></div>
+          <div class="ui-block-b">Block-11</div>
+          <div class="ui-block-c">Block-12</div>
+        </div>
+      </li>
+	    <li>
+        <div class="ui-grid-b">
+          <div class="ui-block-a"><a href="Link02">Link-2</a></div>
+          <div class="ui-block-b">Block-21</div>
+          <div class="ui-block-c">Block-22</div>
+        </div>
+      </li>
+      <li>
+        <div class="ui-grid-b">
+          <div class="ui-block-a"><a href="Link03">Link-3</a></div>
+          <div class="ui-block-b">Block-31</div>
+          <div class="ui-block-c">Block-32</div>
+        </div>
+      </li>
+    </ul>
+    <br /><br />
+  </div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+<!-- page -->
+<div id="page3" data-role="page" data-jresturl="GetData3" data-jtypetemplate="client"
+    data-jnametemplate="template3" data-jcontainer="c3" data-jparam01="valore3">
+	<div data-role="header">
+		<h1>Page Title-3</h1>
+	</div>
+	<div data-role="content">	
+		<p>Page content-3 goes here (@DateTime.Now).</p>		
+    <a data-rel="back" data-direction="reverse">Back</a><br /> 			
+	</div>
+  <div>
+    <ul data-role="listview">
+	    <li>
+        <div>Link-1</div>
+        <ul data-role="listview">          
+	        <li><a href="link1.html">Link-10</a></li>
+	        <li><a href="link2.html">Link-20</a></li>
+	        <li><a href="link3.html">Link-30</a></li>
+        </ul>
+      </li>
+	    <li>
+        <div>Link-2</div>
+        <ul data-role="listview">
+	        <li><a href="link1.html">Link-40</a></li>
+	        <li><a href="link2.html">Link-50</a></li>
+	        <li><a href="link3.html">Link-60</a></li>
+        </ul>
+      </li>
+	    <li>
+        <div>Link-3</div>
+        <ul data-role="listview">
+	        <li><a href="link1.html">Link-70</a></li>
+	        <li><a href="link2.html">Link-80</a></li>
+	        <li><a href="link3.html">Link-90</a></li>
+        </ul>
+      </li>
+    </ul>
+    <br /><br />
+  </div>
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div>
+</div>
+<!-- /page -->
+
+</body>
+</html>

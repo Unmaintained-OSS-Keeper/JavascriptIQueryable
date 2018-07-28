@@ -8,6 +8,7 @@ Function.prototype.inherits = function (superclass) {
 // ---------------------------------------------------------
 
 function PagingBase() {
+    var undefined;
     var maxcache = 999;
     var cache = new Array(maxcache);
     var that = this;
@@ -17,10 +18,12 @@ function PagingBase() {
     this.urlpath = "";
     this.cacheEnabled = false;
     this.linqEnabled = true;
+    this.dlgdetail = { modal: true, width: 600 };
     this.source = {};
       
     this._owhere = {};
     this._swhere = "";
+    this._sorder = "";
     this._typeview = "client"; 
     this.templatename = ""; // *
     this._callBackTemplate = null; // *
@@ -40,10 +43,16 @@ function PagingBase() {
         order: { value: '', param: '' },
         where: { value: '', param: '' },
         skip: 0,
-        take: 9999 
-    }
+        take: 9999
+    };  
 
     // --------------------------------------------------------------- 
+
+    this.initPagingBase = function () {
+        $("*[data-jdetailaction]").live("click", function (event) {
+            that._detailAction(this);
+        });             
+    }
 
     this._setColumnOrder = function (col) {
         var ord = $(this).data("colorder");
@@ -80,6 +89,7 @@ function PagingBase() {
 
     this._setOrder = function (pvalue1, pvalue2) {
         if (this.linqEnabled == false) {
+            this._sorder = pvalue1;
             return;
         }
         this._message.order.value = pvalue1;
@@ -143,6 +153,12 @@ function PagingBase() {
         this._records = -1;
         this._page = 1;
         this.pageIndex(1);
+    }
+
+    this.refresh = function () {
+        if (this._isCacheEnabled() == true)
+            this._resetCache();
+        this.pageIndex(this._page);
     }
 
     this.clearSearch = function () {
@@ -236,8 +252,10 @@ function PagingBase() {
         }
         if (this.linqEnabled == false) {
             valret = "pagecurr=" + this._page + "&pagesize=" + this._pagesize;
-            if (this._swhere != "") 
+            if (this._swhere != "")
                 valret = valret + "&" + this._swhere;
+            if (this._sorder != "")
+                valret = valret + "&orderby=" + this._sorder;
         }
         if (this._typeview == "server") {
             surl = surl + "?view=" + this.templatename;
@@ -272,16 +290,25 @@ function PagingBase() {
                         that._addCache(result);
                 }
                 that.source = result.rows;
-                that._records = result.records;
-                that._pagemax =  result.total;
+                that._addIndex(that.source);
+                that._records = (result.records);
+                that._pagemax = ( result.total );
                 that._callBackTemplate(result.rows);
                 that._raiseDatabound(that, result.rows);
-                if (  that._flagfirst == true  )
+                if (that._flagfirst == true)
                     that._renderContinueWith();
                 that._raiseIsloading(false);
                 that._flagfirst = false;
             }
         });
+    }
+
+    this._addIndex = function (array) {
+        if (typeof array == 'string')
+            return array;
+        for (var i = 0; i < array.length; i++) {
+            array[i]._index = i;
+        };
     }
 
     this._renderTemplateClient = function (sdata) {
@@ -319,7 +346,42 @@ function PagingBase() {
             return;
         var view = $("#" + this.container);
         this._callBackContinue(view);
-    }  
+    }
+
+    this._detailAction = function (sender) {
+        var elem = $(sender);
+        var field = elem.data();
+        var jdetailpanel = "";
+        var jdetailcontainer = "";
+        var jdetailtemplate = "";
+        var jdetailcallback = undefined;
+        if (field && field.jdetailpanel) {
+            jdetailpanel = field.jdetailpanel;
+        }
+        if (field && field.jdetailcontainer) {
+            jdetailcontainer = field.jdetailcontainer;
+        }
+        if (field && field.jdetailtemplate) {
+            jdetailtemplate = field.jdetailtemplate;
+        }
+        if (field && field.jdetailcallback) {
+            jdetailcallback = field.jdetailcallback;
+        }
+        var item = $.tmplItem(elem);
+        var dataitem = item.data;      
+        if (!jdetailpanel || !jdetailcontainer || !jdetailtemplate) {
+            if (jdetailcallback) {
+
+                (eval(field.jdetailcallback))(dataitem);
+                return;
+            }
+            return; 
+        }    
+        $("#" + jdetailcontainer).empty();
+        var html = $("#" + jdetailtemplate).tmpl(dataitem);
+        html.appendTo("#" + jdetailcontainer);
+        $("#" + jdetailpanel).dialog(that.dlgdetail);
+    }
 
     // ---------------------------------------------------------------
 
@@ -351,10 +413,6 @@ function PagingBase() {
     }
 
     this.orderBy = function (expression) {
-        if (this.linqEnabled == false) {
-            alert("Linq is not enabled");
-            return this;
-        }
         if (typeof expression == 'string') {
             if (expression == "")
                 return this;
@@ -484,9 +542,11 @@ function PagingBase() {
                     temp2[i] = this._tab3[i];
                 }
                 return { value: temp1, param: temp2 };
-            },           
+            },
 
             addWhereClause: function (pvalue1, pvalue2, pvalue3) {
+                if (!jQuery.trim(pvalue3))
+                    return;
                 this._tab1[this._index] = jQuery.trim(pvalue1);
                 this._tab2[this._index] = jQuery.trim(pvalue2);
                 this._tab3[this._index] = jQuery.trim(pvalue3);
@@ -494,7 +554,7 @@ function PagingBase() {
             },
 
             addWhereClauseEq: function (pvalue1, pvalue2) {
-                addWhereClause(pvalue1, "=" , pvalue2);
+                addWhereClause(pvalue1, "=", pvalue2);
             },
 
             addWhereClauseNq: function (pvalue1, pvalue2) {

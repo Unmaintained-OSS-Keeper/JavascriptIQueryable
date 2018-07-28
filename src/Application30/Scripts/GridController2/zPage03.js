@@ -8,11 +8,7 @@ $(document).ready(function () {
     };
     $("#gpane2").gridTemplate(settings, searchfrm).
          bind('databound', function (obj, evt) {
-            var plugin = obj.context;
-            if (plugin.templatename == "view3")
-                $(".identity").css("color","blue");
-            if (plugin.templatename == "view4")
-                $(".identity").css("color","aqua");  
+           //alert("databound"); 
          }
     );
 });

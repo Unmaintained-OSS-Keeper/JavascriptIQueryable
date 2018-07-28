@@ -11,8 +11,8 @@ function method1() {
     context.linqEnabled = false;
     context.container = "jpa";
 
-    context.from("/Grid3/GetDataJson").pagingWithSize(10).
-        applyTempClient("jtableTemplate").loadData();
+    context.from("/Grid3/GetDataJson").pagingWithSize(10).orderBy(
+  "Country,City desc").applyTempClient("jtableTemplate").loadData();
 
     $("#gpane2").show();
 }

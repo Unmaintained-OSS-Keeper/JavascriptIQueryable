@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section header{
@@ -12,7 +13,8 @@
 
 <p>
 <pre>
-
+context.from("/Grid3/GetDataJson").pagingWithSize(10).where(swhere).
+ orderBy("Country,City desc ").applyTempClient("jtableTemplate");
 </pre>
 </p>
 
