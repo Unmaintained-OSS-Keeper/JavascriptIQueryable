@@ -1,4 +1,4 @@
-﻿
+﻿<!--
 /// <reference path="jquery-1.5.1.js" />
 
 $(document).ready(function () {
@@ -57,7 +57,7 @@ function searchfrm1(context) {
     var r = context.endWhere();   
          
     context.from("/Grid1/GetDataJson").where(r.value,r.param).orderBy(
-           "CustomerID").pagingWithSize(10).applyTempClient();  
+           "CustomerID").pagingWithSize(10).applyTempClient();    
 }
 
 function searchfrm2(context) {
@@ -69,3 +69,4 @@ function searchfrm2(context) {
     //
     //
 }
+-->

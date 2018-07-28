@@ -40,6 +40,18 @@ namespace Application30.Controllers
         }
 
         [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page01a()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
+        public ActionResult Page01b()
+        {
+            return View();
+        }
+
+        [OutputCache(Duration = 0, VaryByParam = "*")]
         public ActionResult Page02()
         {
             return View();

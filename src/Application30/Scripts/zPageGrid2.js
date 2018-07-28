@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-5.0
+// javascript-to-IQueryable-preview-7.0 
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
@@ -12,7 +12,7 @@
 
         var that = this;
 
-        var basegrid = new PagingBase(); 
+        var basegrid = new PagingBase();  
 
         var undefined;
 

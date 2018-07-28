@@ -3,12 +3,12 @@
 /// <reference path="knockout-2.0.0.js" />
 
 //
-// javascript-to-IQueryable-preview-5.0 
+// javascript-to-IQueryable-preview-7.0  
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/
 //
 
 Function.prototype.inherits = function (superclass) {
-    this.prototype = new superclass();
+    this.prototype = new superclass(); 
 }
 
 // ---------------------------------------------------------
@@ -268,7 +268,7 @@ function PagingBase() {
         this._templatename = this.template;
         this._callBackTemplate = this._renderTemplateClient;
         this._message = this._createMessage();
-    }   
+    }      
 
     this.hasWaitingRequest = function () {
         if (this._waitaction === true || this._waitschedule === true)
@@ -642,13 +642,13 @@ function PagingBase() {
         var elem = $(sender);
         var field = elem.data();
         var jdetailtemplate = "";
+        var dataitem = {};
         this._currentaction = "";
         if (field && field.jdetailtemplate) {
             jdetailtemplate = field.jdetailtemplate;
         }
-        var item = $.tmplItem(elem);
-        var dataitem = item.data;     
         if (this._koenabled == false) {
+            dataitem = $.tmplItem(elem).data;
             $("#" + this.detailContainer).empty();
             var html = $("#" + jdetailtemplate).tmpl(dataitem);
             html.appendTo("#" + this.detailContainer);
@@ -656,6 +656,7 @@ function PagingBase() {
             this._raisePopupDetail(sender);
         }
         if (this._koenabled == true) {
+            dataitem = ko.dataFor(sender);
             var ele = $("#" + this.detailContainer).get(0);
             ko.cleanNode(elem);
             $("#" + this.detailContainer).empty();
@@ -673,8 +674,7 @@ function PagingBase() {
         var elem = $(sender);
         var field = elem.data();
         this._currentaction = "";
-        var item = $.tmplItem(elem);
-        var dataitem = item.data;     
+        var dataitem = ko.dataFor(sender);     
         var ele = $("#" + this.modifyContainer).get(0);
         ko.cleanNode(elem);
         $("#" + this.modifyContainer).empty();
@@ -1041,8 +1041,8 @@ function PagingBase() {
 
     this.where = function (expression, param) {
         if (typeof expression == 'string') {
-            if (expression == "")
-                return this;
+            //if (expression == "")
+            //    return this;
             this._setWhere(expression, param);
         }
         return this;
@@ -1050,8 +1050,8 @@ function PagingBase() {
 
     this.orderBy = function (expression) {
         if (typeof expression == 'string') {
-            if (expression == "")
-                return this;
+            //if (expression == "")
+            //    return this;
             this._setOrder(expression, null);
         }
         return this;

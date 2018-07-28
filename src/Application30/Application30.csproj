@@ -360,6 +360,12 @@
   <ItemGroup>
     <Content Include="Views\Mobile\Page92.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page01a.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Mobile\Page01b.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -86,23 +86,22 @@ Linq is not enabled.
     <td><a href="#" data-jdeleteaction>Delete</a></td>
     <td><a href="#" data-jdetailaction>Detail</a></td>
     <td><a href="#" data-jmodifyaction>Modify</a></td>
-    <td> ${CustomerID} </td>
-    <td> ${CompanyName} </td>
-    <td> ${Address} </td>
-    <td> ${City} </td>
-    <td> ${Value1} </td>
-    <td> ${Value2} </td>
-    <td> ${Total} </td>
+    <td><span data-bind="text: CustomerID" /></td>
+    <td><span data-bind="text: CompanyName" /></td>
+    <td><span data-bind="text: City" /></td>
+    <td><span data-bind="text: Value1" /></td>
+    <td><span data-bind="text: Value2" /></td>
+    <td><span data-bind="text: Total" /></td>
   <tr>
 </script>
 
 <script id="jdetailTemplate" type="text/x-jquery-tmpl">
-  <b>CustomerID: </b><span data-bind="text: CustomerID" /></span><br>
-  <b>CompanyName: </b><span data-bind="text: CompanyName" /></span><br>
-  <b>City: </b><span data-bind="text: City" /></span><br>
-  <b>Value1: </b><span data-bind="text: Value1" /></span><br>
-  <b>Value2: </b><span data-bind="text: Value2" /></span><br>
-  <b>Total: </b><span data-bind="text: Total" /></span><br>
+  <b>CustomerID: </b><span data-bind="text: CustomerID" /><br>
+  <b>CompanyName: </b><span data-bind="text: CompanyName" /><br>
+  <b>City: </b><span data-bind="text: City" /><br>
+  <b>Value1: </b><span data-bind="text: Value1" /><br>
+  <b>Value2: </b><span data-bind="text: Value2" /><br>
+  <b>Total: </b><span data-bind="text: Total" /><br>
 </script>
 
 <script id="jmodifyTemplate" type="text/x-jquery-tmpl">

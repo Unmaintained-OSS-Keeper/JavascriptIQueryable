@@ -85,21 +85,21 @@ Linq is not enabled.
     <td><a href="#" data-jdeleteaction>Delete</a></td>
     <td><a href="#" data-jdetailaction>Detail</a></td>
     <td><a href="#" data-jmodifyaction>Modify</a></td>
-    <td> ${CustomerID} </td>
-    <td> ${CompanyName} </td>
-    <td> ${ContactName} </td>
-    <td> ${Address} </td>
-    <td> ${City} </td>
-    <td> ${Country} </td>
+    <td><span data-bind="text: CustomerID" /></td>
+    <td><span data-bind="text: CompanyName" /></td>
+    <td><span data-bind="text: ContactName" /></td>
+    <td><span data-bind="text: Address" /></td>
+    <td><span data-bind="text: City" /></td>
+    <td><span data-bind="text: Country" /></td>
   <tr>
 </script>
 
 <script id="jdetailTemplate" type="text/x-jquery-tmpl">
-  <b>CustomerID: </b><span data-bind="text: CustomerID" /></span><br>
-  <b>CompanyName: </b><span data-bind="text: CompanyName" /></span><br>
-  <b>ContactName: </b><span data-bind="text: ContactName" /></span><br>
-  <b>City: </b><span data-bind="text: City" /></span><br>
-  <b>Country: </b><span data-bind="text: Country" /></span><br>
+  <b>CustomerID: </b><span data-bind="text: CustomerID" /><br>
+  <b>CompanyName: </b><span data-bind="text: CompanyName" /><br>
+  <b>ContactName: </b><span data-bind="text: ContactName" /><br>
+  <b>City: </b><span data-bind="text: City" /><br>
+  <b>Country: </b><span data-bind="text: Country" /><br>
 </script>
 
 <script id="jmodifyTemplate" type="text/x-jquery-tmpl">

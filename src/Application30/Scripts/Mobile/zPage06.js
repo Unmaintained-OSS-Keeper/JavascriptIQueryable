@@ -21,7 +21,7 @@ function selecting2(eventargs) {
     }
     var r = context.endWhere();
 
-    context.where(r.value, r.param).orderBy("CustomerID"); 
+    context.where(r.value, r.param).orderBy("CustomerID");
 }
 
 function databound2(context) {

@@ -3,7 +3,7 @@
 /// <reference path="knockout-2.0.0.js" /> 
 
 //
-// javascript-to-IQueryable-preview-5.0
+// javascript-to-IQueryable-preview-7.0 
 // (c) 2012 - Stefano Marchisio - http://javascriptiqueryable.codeplex.com/ 
 //
 
@@ -129,9 +129,14 @@
                 }
                 if (field && field.jorderby) {
                     ds.orderBy(field.jorderby);
-                }   
-                if (field && field.jenableko === true) {
+                }
+                if (field && ds._typeview == "client" && field.jenableko ===  true) {
                     ds._callBackTemplate = ds._renderTemplateKonock;
+                    ds._koenabled =  true;
+                }
+                if (field && ds._typeview == "server" && field.jenableko === false) {
+                    ds._callBackTemplate = ds._renderTemplateServer;
+                    ds._koenabled = false;
                 }
                 if (field && field.jpagesize) {
                     ds._setPageSize(field.jpagesize);
@@ -250,8 +255,8 @@
                             else where = where + "&param05=" + param;
                         }
                     }
-                    ds._swhere = where;
                 }
+                ds._swhere = where;
                 if (ds.xselecting) {
                     if (ds.xselecting(eventargs) === false)
                         return;
